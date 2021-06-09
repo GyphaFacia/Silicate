@@ -917,6 +917,9 @@ class Perk {
 	
 }
 
+const __MINSCALE = 15
+const __SPAWNLIMIT = 20
+
 let c = new Canvas()
 c.clearAll = 1
 c.setFullscreen()
