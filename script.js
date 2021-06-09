@@ -768,7 +768,9 @@ class Silicate extends Ngon{
 		)))
 		this.setOColor(Clr(0))
 		this.setWidth(1)
-		this.setScale(vec(15))
+		this.setScale(vec(__MINSCALE))
+		
+		this.isSilicate = true
 	}
 }
 
@@ -795,9 +797,8 @@ class Perk {
 		this.setEntity(Silicate)
 		this.render()
 		this.setCallback(callback)
+		this.level = 1
 		this.active = false
-		
-		this.setCooldown()
 	}
 	// Класс энтити с которыми работает этот перк
 	setEntity(ent){this.ent = ent}
@@ -931,23 +932,26 @@ w.setScale(getRes().mul(1.35))
 let l = new Landscape(500, 255, 2.5, 1, 11, 0.35)
 l.setPos(getRes().mul(0.5, 1))
 
-new Perk('SpawnSome', 0, 0, (perk)=>{
-	for(let i = 0; i < 5; i++){
+new Perk('SpawnSome', __MINSCALE*2, 1, (perk)=>{
+	let cnt = 1 + parseInt(perk.level/2)
+	for(let i = 0; i < perk.level; i++){
 		let e = new perk.ent()
-		e.setPos(cursor().add(randvecX(random(perk.rad))))
+		e.setPos(cursor().add(angvecX(360/5*i+time(100), perk.rad)))
 	}
 })
 
-new Perk('SpawnBig', 0, 0, (perk)=>{
+new Perk('SpawnBig', __MINSCALE*3, 0, (perk)=>{
 	let e = new perk.ent()
 	e.setPos(cursor())
-	e.setScale(vec(50))
+	e.setScale(vec(__MINSCALE*3))
 })
 
-new Perk('Reproduce', 0, 0, (perk)=>{
+new Perk('Reproduce', __MINSCALE*5, 0, (perk)=>{
 	let i = 0
 	for(let ent of getCanvas().ents.slice()){
-		if(ent.getPos().dist(cursor()) < perk.rad){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
 			let e = new perk.ent()
 			e.setScale(ent.getScale())
 			e.setPos(ent.getPos())
@@ -961,17 +965,19 @@ new Perk('Reproduce', 0, 0, (perk)=>{
 	}
 })
 
-new Perk('Split', 0, 0, (perk)=>{
-	let areaChild = 15*15*Math.PI
+new Perk('Split', __MINSCALE*5, 0, (perk)=>{
+	let areaChild = __MINSCALE*__MINSCALE*Math.PI
 	for(let ent of getCanvas().ents.slice()){
-		if(ent.getPos().dist(cursor()) < perk.rad){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
 			let rad = ent.getScale().x
 			let areaCur = rad*rad*Math.PI
 			let n = parseInt(areaCur/areaChild)
-			n = n > 300 ? 300 : n
+			n = n > __SPAWNLIMIT*15 ? __SPAWNLIMIT*15 : n
 			for(let i = 0; i < n; i++){
 				let e = new perk.ent()
-				e.setScale(vec(15))
+				e.setScale(vec(__MINSCALE))
 				e.setPos(ent.getPos().add(angvecX(360*3/n*i, rad/n*i)))
 				e.setColor(ent.getColor())
 				e.setOColor(ent.getOColor())
@@ -982,18 +988,22 @@ new Perk('Split', 0, 0, (perk)=>{
 	}
 })
 
-new Perk('Grow', 0, 0, (perk)=>{
+new Perk('Grow', __MINSCALE*4, 0, (perk)=>{
 	for(let ent of getCanvas().ents.slice()){
-		if(ent.getPos().dist(cursor()) < perk.rad){
-			ent.setScale(ent.getScale().mul(1.25))
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			ent.setScale(ent.getScale().add(5))
 		}
 	}
 })
 
-new Perk('Explode', 0, 0, (perk)=>{
+new Perk('Explode', 50, 0, (perk)=>{
 	for(let ent of getCanvas().ents.slice()){
-		if(ent.getPos().dist(cursor()) < perk.rad){
-			ent.setVel(ent.getPos().sub(cursor()).ort().mul(30))
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			ent.setVel(ent.getPos().sub(cursor()).ort().mul(20))
 		}
 	}
 })
