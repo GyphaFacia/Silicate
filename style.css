@@ -1,0 +1,71 @@
+*{
+	box-sizing: border-box;
+}
+
+body{
+	background-color: #222;
+	overflow: hidden;
+}
+
+.unclickable{
+	pointer-events: none;
+}
+
+.perk-section{
+	z-index: 100;
+	position: absolute;
+	top: 90%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.perk-frame{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+}
+
+.perk-frame:not(:last-child){
+	margin-right: 3vh;
+}
+
+.perk-frame__perkimg, .perk--active{
+	cursor: pointer;
+	width: 10vh;
+	padding: 10px;
+	border-radius: 15px;
+	transition-duration: 255ms;
+	border: 5px solid black;
+	opacity: 0.25;
+	filter: invert(0.5) sepia(1) hue-rotate(-50deg) saturate(10);
+	user-select: none;
+}
+
+.perk-frame__perkimg:hover, .perk--active{
+	opacity: 1;
+	filter: invert(0.5) sepia(1) hue-rotate(-50deg) saturate(10) 
+	drop-shadow(0 5px 5px black);
+	
+}
+.perk-frame:nth-child(2n+1)>.perk-frame__perkimg:hover, .perk-frame:nth-child(2n+1)>.perk--active{
+	transform: scale(1.25) translateY(-25%) rotate(15deg);
+}
+.perk-frame:nth-child(2n)>.perk-frame__perkimg:hover, .perk-frame:nth-child(2n)>.perk--active{
+	transform: scale(1.25) translateY(-25%) rotate(-15deg);
+}
+
+.perk-frame__overlay{
+	background-color: #0005;
+	height: 10vh;
+	width: 10vh;
+	border-radius: 15px;
+	position: absolute;
+}
+
+
+
+
