@@ -490,6 +490,21 @@ class Ngon extends Entity {
 	}
 }
 
+// 8888888b.                  888    d8b          888          
+// 888   Y88b                 888    Y8P          888          
+// 888    888                 888                 888          
+// 888   d88P 8888b.  888d888 888888 888  .d8888b 888  .d88b.  
+// 8888888P"     "88b 888P"   888    888 d88P"    888 d8P  Y8b 
+// 888       .d888888 888     888    888 888      888 88888888 
+// 888       888  888 888     Y88b.  888 Y88b.    888 Y8b.     
+// 888       "Y888888 888      "Y888 888  "Y8888P 888  "Y8888  
+class Particle extends Ngon {
+	first(){
+		this.setSides(randint(3, 7))
+	}
+	
+}
+
 // 8888888b.          888          
 // 888   Y88b         888          
 // 888    888         888          
@@ -766,6 +781,28 @@ class Water extends Entity {
 // 	    "888 888 888 888 888      .d888888 888   88888888 
 // Y88b  d88P 888 888 888 Y88b.    888  888 Y88b. Y8b.     
 //  "Y8888P"  888 888 888  "Y8888P "Y888888  "Y888 "Y8888  
+function shatter(ent, flakescl = 7, maxcnt = 30, life = 500){
+	let rad = ent.getScale().x
+	let square = rad*rad
+	let n = square / flakescl / flakescl
+	n = n > maxcnt ? maxcnt : n
+	for(let i = 0; i < n; i++){
+		let p = new Particle()
+		p.setSides(randint(3, 7))
+		p.setPos(ent.getPos())
+		p.setWidth(1)
+		p.setOColor(ent.getColor())
+		p.setColor(ent.getColor())
+		p.setScale(random(0.75, 1.25)*flakescl)
+		p.setPos(ent.getPos().add(angvecX(360/n*i, rad/n*i*random(0.5, 1))))
+		
+		p.setVel(randvecX(random()))
+		setTimeout(function () {
+			p.remove()
+		}, random(0.75, 1.25)*life)
+	}
+}
+
 class Silicate extends Ngon{
 	first(){
 		this.setSides(6)
@@ -781,6 +818,10 @@ class Silicate extends Ngon{
 		this.setScale(vec(__MINSCALE))
 		
 		this.isSilicate = true
+	}
+	
+	last(){
+		shatter(this)
 	}
 }
 
@@ -1268,7 +1309,7 @@ let pink = new Player(Pink, 1)
 pink.allPerksTest()
 // pink.perk('SpawnSome').applyAt(getRes().mul(0.5))
 
-let cyan = new Player(Cyan, 2, 'ai')
+let cyan = new Player(Cyan, 2)
 cyan.allPerksTest()
 cyan.perk('SpawnBig').applyAt(getRes().mul(0.5))
 
@@ -1299,7 +1340,6 @@ Matter.Events.on(getCanvas().engine, 'collisionStart', function(event) {
 		}
 	}, 25)
 })
-
 
 
 
