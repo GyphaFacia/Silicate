@@ -178,13 +178,34 @@ class Canvas {
 		this.Composite = Matter.Composite
 		
 		this.engine = this.Engine.create()
-		// this.engine.gravity.scale = 0
 		this.runner = this.Runner.create()
 		this.Runner.run(this.runner, this.engine)
 		
-		let res = this.getRes()
-		let ground = this.Bodies.rectangle(res.x/2, res.y, res.x, res.y/100, { isStatic: true })
-		this.Composite.add(this.engine.world, ground)
+		Matter.Events.on(getCanvas().engine, 'collisionStart', function(event) {
+			let a = event.pairs[0].bodyA.renderelt
+			let b = event.pairs[0].bodyB.renderelt
+			
+			setTimeout(()=>{
+				if(a.isSilicate && b.isSilicate){
+					if(a.team && b.team && a.team != b.team){
+						let scla = a.getScale().x*a.getScale().x - b.getScale().x*b.getScale().x
+						let sclb = b.getScale().x*b.getScale().x - a.getScale().x*a.getScale().x
+						if(scla <= __MINSCALE){
+							a.remove(1)
+						}
+						else{
+							a.setScale(Math.sqrt(scla))
+						}
+						if(sclb <= __MINSCALE){
+							b.remove(1)
+						}
+						else{
+							a.setScale(Math.sqrt(scla))
+						}
+					}
+				}
+			}, 25)
+		})
 	}
 	stopEngine(){
 		this.Engine = null
@@ -240,7 +261,7 @@ class Entity {
 		
 		this.setDefaults()
 		this.first(...arguments)
-		this.addBody()
+		// this.addBody()
 		this.second()
 	}
 	
@@ -315,8 +336,10 @@ class Entity {
 		this.setWidth(1)
 	}
 	
-	remove(){
-		this.last()
+	remove(wlast = false){
+		if(wlast){
+			this.last()
+		}
 		this.removeBody()
 		this.parent.removeEnt(this.id)
 	}
@@ -356,6 +379,7 @@ class Entity {
 		this.body = this.parent.Bodies.rectangle(
 			this.getPos().x, this.getPos().y, this.getScale().x, this.getScale().y)
 		this.parent.Composite.add(this.parent.engine.world, this.body)
+		return this
 	}
 	removeBody(){
 		if(!this.body){
@@ -429,6 +453,7 @@ class Circle extends Entity {
 			this.getPos().x, this.getPos().y, this.getScale().x)
 		this.parent.Composite.add(this.parent.engine.world, this.body)
 		this.body.renderelt = this
+		return this
 	}
 	
 	draw(){
@@ -467,6 +492,7 @@ class Ngon extends Entity {
 		this.body = this.parent.Bodies.polygon(pos.x, pos.y, this.getSides(), rad)
 		this.parent.Composite.add(this.parent.engine.world, this.body)
 		this.body.renderelt = this
+		return this
 	}
 
 	draw(){
@@ -488,21 +514,6 @@ class Ngon extends Entity {
 		this.ctx.closePath()
 		this.drawEnd()
 	}
-}
-
-// 8888888b.                  888    d8b          888          
-// 888   Y88b                 888    Y8P          888          
-// 888    888                 888                 888          
-// 888   d88P 8888b.  888d888 888888 888  .d8888b 888  .d88b.  
-// 8888888P"     "88b 888P"   888    888 d88P"    888 d8P  Y8b 
-// 888       .d888888 888     888    888 888      888 88888888 
-// 888       888  888 888     Y88b.  888 Y88b.    888 Y8b.     
-// 888       "Y888888 888      "Y888 888  "Y8888P 888  "Y8888  
-class Particle extends Ngon {
-	first(){
-		this.setSides(randint(3, 7))
-	}
-	
 }
 
 // 8888888b.          888          
@@ -536,6 +547,7 @@ class Poly extends Entity {
 		this.body = this.parent.Bodies.fromVertices(0, 0, this.points, [])
 		this.parent.Composite.add(this.parent.engine.world, this.body)
 		this.body.renderelt = this
+		return this
 	}
 	
 	drawStart(){
@@ -577,22 +589,22 @@ class Poly extends Entity {
 // 8888888P"   "Y88P"   "Y88888 888  888  "Y88888  88888P' 
 function setBounds(width = 500, outline = 0){
 	let e
-	e = new Entity()
+	e = new Entity().addBody()
 	e.setStatic()
 	e.setPos(getRes().mul(0.5, 1).add(0, width/2 - outline))
 	e.setScale(getRes().mul(2, 0).add(0, width))
 	
-	e = new Entity()
+	e = new Entity().addBody()
 	e.setStatic()
 	e.setPos(getRes().mul(0.5, 0).add(0, -width/2 + outline))
 	e.setScale(getRes().mul(2, 0).add(0, width))
 	
-	e = new Entity()
+	e = new Entity().addBody()
 	e.setStatic()
 	e.setPos(getRes().mul(0, 0.5).add(-width/2 + outline, 0))
 	e.setScale(getRes().mul(0, 2).add(width, 0))
 	
-	e = new Entity()
+	e = new Entity().addBody()
 	e.setStatic()
 	e.setPos(getRes().mul(1, 0.5).add(width/2 - outline, 0))
 	e.setScale(getRes().mul(0, 2).add(width, 0))
@@ -642,6 +654,7 @@ class Landscape extends Poly {
 		this.points.push(vec(res.x, res.y))
 		
 		this.setInset(wave)
+		this.addBody()
 	}		
 	second(){
 		this.setStatic()
@@ -781,14 +794,13 @@ class Water extends Entity {
 // 	    "888 888 888 888 888      .d888888 888   88888888 
 // Y88b  d88P 888 888 888 Y88b.    888  888 Y88b. Y8b.     
 //  "Y8888P"  888 888 888  "Y8888P "Y888888  "Y888 "Y8888  
-function shatter(ent, flakescl = 7, maxcnt = 30, life = 500){
+function shatter(ent, flakescl = 7, maxcnt = 50, life = 500){
 	let rad = ent.getScale().x
 	let square = rad*rad
 	let n = square / flakescl / flakescl
 	n = n > maxcnt ? maxcnt : n
 	for(let i = 0; i < n; i++){
-		let p = new Particle()
-		p.setSides(randint(3, 7))
+		let p = new Ngon(randint(4, 6)).addBody()
 		p.setPos(ent.getPos())
 		p.setWidth(1)
 		p.setOColor(ent.getColor())
@@ -797,7 +809,7 @@ function shatter(ent, flakescl = 7, maxcnt = 30, life = 500){
 		p.setPos(ent.getPos().add(angvecX(360/n*i, rad/n*i*random(0.5, 1))))
 		
 		p.setVel(randvecX(random()))
-		setTimeout(function () {
+		setTimeout(()=>{
 			p.remove()
 		}, random(0.75, 1.25)*life)
 	}
@@ -818,25 +830,13 @@ class Silicate extends Ngon{
 		this.setScale(vec(__MINSCALE))
 		
 		this.isSilicate = true
+		this.addBody()
 	}
 	
 	last(){
 		shatter(this)
 	}
 }
-
-class Pink extends Silicate{
-	second(){
-		this.setColor(HslClr(326, 100, 93))
-	}
-}
-
-class Cyan extends Silicate{
-	second(){
-		this.setColor(HslClr(175, 100, 50))
-	}
-}
-
 
 // 8888888b.                  888               
 // 888   Y88b                 888               
@@ -1285,8 +1285,16 @@ class Player {
 	allPerksTest(){
 		this.addPerk(getPerk('SpawnSome'))
 		this.addPerk(getPerk('SpawnBig'))
-		this.addPerk(getPerk('Levi'))
-		this.addPerk(getPerk('Spin'))
+		// this.addPerk(getPerk('Levi'))
+		// this.addPerk(getPerk('Spin'))
+		// this.addPerk(getPerk('Explode'))
+		// this.addPerk(getPerk('Grow'))
+		// this.addPerk(getPerk('Jump'))
+		// this.addPerk(getPerk('Randomize'))
+		// this.addPerk(getPerk('Reproduce'))
+		// this.addPerk(getPerk('Split'))
+		// this.addPerk(getPerk('Swap'))
+		// this.addPerk(getPerk('Union'))
 	}
 }
 
@@ -1298,48 +1306,32 @@ let c = new Canvas()
 c.clearAll = 1
 c.setFullscreen()
 setBounds()
-// let w = new Water()
-// w.setPos(getRes().mul(0.5, 1.45))
-// w.setScale(getRes().mul(1.35))
+let w = new Water()
+w.setPos(getRes().mul(0.5, 1.45))
+w.setScale(getRes().mul(1.35))
 // let l = new Landscape(200, 255, -1.5, 1, 9, 0.1)
-let l = new Landscape(500, 255, 1.5, 1)
+let l = new Landscape(500, 255, 1.5, 1, 11, 0.01)
 l.setPos(getRes().mul(0.5, 0.85))
 
-let pink = new Player(Pink, 1)
-pink.allPerksTest()
-// pink.perk('SpawnSome').applyAt(getRes().mul(0.5))
+class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
+let p1 = new Player(Ruby, 1)
+p1.allPerksTest()
 
-let cyan = new Player(Cyan, 2)
-cyan.allPerksTest()
-cyan.perk('SpawnBig').applyAt(getRes().mul(0.5))
+class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
+let p2 = new Player(Emerald, 2)
+p2.allPerksTest()
 
 
 
-Matter.Events.on(getCanvas().engine, 'collisionStart', function(event) {
-	let a = event.pairs[0].bodyA.renderelt
-	let b = event.pairs[0].bodyB.renderelt
-	
-	setTimeout(()=>{
-		if(a.isSilicate && b.isSilicate){
-			if(a.team && b.team && a.team != b.team){
-				let scla = a.getScale().x*a.getScale().x - b.getScale().x*b.getScale().x
-				let sclb = b.getScale().x*b.getScale().x - a.getScale().x*a.getScale().x
-				if(scla <= __MINSCALE){
-					a.remove()
-				}
-				else{
-					a.setScale(Math.sqrt(scla))
-				}
-				if(sclb <= __MINSCALE){
-					b.remove()
-				}
-				else{
-					a.setScale(Math.sqrt(scla))
-				}
-			}
-		}
-	}, 25)
-})
+
+
+
+
+
+
+
+
+
 
 
 
