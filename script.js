@@ -374,7 +374,7 @@ class Entity {
 		this.pos = pos
 		this.ang = this.body.angle / Math.PI * 180
 		if(this.getMass() != 0.123456789){
-			this.applyForce(__GRAVITY)
+			this.applyForce(__GRAVITY.mul(this.getMass()))
 		}
 	}
 	
@@ -932,7 +932,7 @@ class Perk {
 
 const __MINSCALE = 15
 const __SPAWNLIMIT = 20
-const __GRAVITY = vec(0, 0.00075)
+const __GRAVITY = vec(0, 0.001)
 
 let c = new Canvas()
 c.clearAll = 1
@@ -952,7 +952,7 @@ new Perk('Levi', (perk)=>{
 		if(dist < perk.rad){
 			let mass = ent.getMass()
 			ent.setMass(0.123456789)
-			ent.applyForce(__GRAVITY.mul(-2))
+			ent.setVel(ent.getPos().sub(cursor()).ort().mul(3))
 			setTimeout(()=>{
 				ent.setMass(mass)
 			}, perk.disperce(2000, 5000))
@@ -972,7 +972,6 @@ new Perk('SpawnSome', (perk)=>{
 new Perk('SpawnBig', (perk)=>{
 	let e = new perk.ent()
 	e.setPos(cursor())
-	// e.setScale(vec(__MINSCALE*3))
 	e.setScale(vec(perk.disperce(__MINSCALE*2, __MINSCALE*5)))
 }, Silicate, __MINSCALE*3, 1, 5)
 
