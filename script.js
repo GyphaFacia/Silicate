@@ -178,6 +178,7 @@ class Canvas {
 		this.Composite = Matter.Composite
 		
 		this.engine = this.Engine.create()
+		this.engine.gravity.scale = 0
 		this.runner = this.Runner.create()
 		this.Runner.run(this.runner, this.engine)
 		
@@ -372,6 +373,9 @@ class Entity {
 		pos = vec(pos.x, pos.y)
 		this.pos = pos
 		this.ang = this.body.angle / Math.PI * 180
+		if(this.getMass() != 0.123456789){
+			this.applyForce(__GRAVITY)
+		}
 	}
 	
 	setStatic(isStatic = true){
@@ -386,6 +390,9 @@ class Entity {
 	}
 	setMass(mass){
 		Matter.Body.setMass(this.body, mass)
+	}
+	applyForce(){
+		Matter.Body.applyForce(this.body, this.pos, vec(...arguments))
 	}
 	
 	getPos(){return this.pos}
@@ -925,6 +932,7 @@ class Perk {
 
 const __MINSCALE = 15
 const __SPAWNLIMIT = 20
+const __GRAVITY = vec(0, 0.00075)
 
 let c = new Canvas()
 c.clearAll = 1
@@ -937,66 +945,27 @@ w.setScale(getRes().mul(1.35))
 let l = new Landscape(500, 255, 2.5, 1, 11, 0.35)
 l.setPos(getRes().mul(0.5, 1))
 
-new Perk('Jump', (perk)=>{
-	let i = 0
+new Perk('Levi', (perk)=>{
 	for(let ent of getCanvas().ents.slice()){
 		if(!ent.isSilicate){continue}
 		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 		if(dist < perk.rad){
-			i += 1
+			let mass = ent.getMass()
+			ent.setMass(0.123456789)
+			ent.applyForce(__GRAVITY.mul(-2))
 			setTimeout(()=>{
-				ent.setVel(vec(0, -20).add(randvecX(random(5))))
-			}, i * 50)
+				ent.setMass(mass)
+			}, perk.disperce(2000, 5000))
 		}
 	}
 }, Silicate, __MINSCALE*5, 1, 5)
-
-new Perk('Swap', (perk)=>{
-	let arr = []
-	for(let ent of getCanvas().ents.slice()){
-		if(!ent.isSilicate){continue}
-		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-		if(dist < perk.rad){
-			arr.push(ent)
-		}
-	}
-	
-	for (var i = 0; i < arr.length/2; i++){
-		let j = arr.length-i-1
-		let temp = arr[i].getPos()
-		arr[i].setPos(arr[j].getPos())
-		arr[j].setPos(temp)
-	}
-	
-}, Silicate, __MINSCALE*10, 1, 5)
-
-new Perk('Union', (perk)=>{
-	let scl = 0
-	let pos = vec(0)
-	let cnt = 0
-	for(let ent of getCanvas().ents.slice()){
-		if(!ent.isSilicate){continue}
-		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-		if(dist < perk.rad){
-			pos = pos.add(ent.getPos())
-			scl += ent.getScale().x*ent.getScale().x
-			cnt += 1
-			ent.remove()
-		}
-	}
-	if(cnt){
-		let e = new perk.ent()
-		e.setPos(pos.div(cnt))
-		scl = Math.sqrt(scl)
-		e.setScale(vec(scl))
-	}
-}, Silicate, __MINSCALE*4, 1, 5)
 
 new Perk('SpawnSome', (perk)=>{
 	let cnt = perk.disperce(1, 7)
 	for(let i = 0; i < cnt; i++){
 		let e = new perk.ent()
 		e.setPos(cursor().add(angvecX(360/cnt*i+time(100), perk.rad*(cnt > 1))))
+		console.log(e.getMass());
 	}
 }, Silicate, __MINSCALE*2.5, 1, 5)
 
@@ -1088,6 +1057,61 @@ new Perk('Randomize', (perk)=>{
 		}
 	}
 	
+}, Silicate, __MINSCALE*4, 1, 5)
+
+new Perk('Jump', (perk)=>{
+	let i = 0
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			i += 1
+			setTimeout(()=>{
+				ent.setVel(vec(0, -20).add(randvecX(random(5))))
+			}, i * 50)
+		}
+	}
+}, Silicate, __MINSCALE*5, 1, 5)
+
+new Perk('Swap', (perk)=>{
+	let arr = []
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			arr.push(ent)
+		}
+	}
+	
+	for (var i = 0; i < arr.length/2; i++){
+		let j = arr.length-i-1
+		let temp = arr[i].getPos()
+		arr[i].setPos(arr[j].getPos())
+		arr[j].setPos(temp)
+	}
+	
+}, Silicate, __MINSCALE*10, 1, 5)
+
+new Perk('Union', (perk)=>{
+	let scl = 0
+	let pos = vec(0)
+	let cnt = 0
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			pos = pos.add(ent.getPos())
+			scl += ent.getScale().x*ent.getScale().x
+			cnt += 1
+			ent.remove()
+		}
+	}
+	if(cnt){
+		let e = new perk.ent()
+		e.setPos(pos.div(cnt))
+		scl = Math.sqrt(scl)
+		e.setScale(vec(scl))
+	}
 }, Silicate, __MINSCALE*4, 1, 5)
 
 // for(let i = 0; i < 2; i++){
