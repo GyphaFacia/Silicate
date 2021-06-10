@@ -937,6 +937,20 @@ w.setScale(getRes().mul(1.35))
 let l = new Landscape(500, 255, 2.5, 1, 11, 0.35)
 l.setPos(getRes().mul(0.5, 1))
 
+new Perk('Jump', (perk)=>{
+	let i = 0
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			i += 1
+			setTimeout(()=>{
+				ent.setVel(vec(0, -20).add(randvecX(random(5))))
+			}, i * 50)
+		}
+	}
+}, Silicate, __MINSCALE*5, 1, 5)
+
 new Perk('Swap', (perk)=>{
 	let arr = []
 	for(let ent of getCanvas().ents.slice()){
