@@ -783,22 +783,26 @@ class Silicate extends Ngon{
 // 888       Y8b.     888     888 "88b      X88 
 // 888        "Y8888  888     888  888  88888P' 
 class Perk {
-	constructor(name, rad, cooldown, callback, renderasap = true){
+	constructor(name, callback, ent = Silicate, rad = 100, cooldown = 1, level = 1, render = true){
 		this.parent = getCanvas()
 		this.ctx = this.parent.ctx
 		if(!this.parent.perks){
 			this.parent.perks = []
 		}
 		this.parent.perks.push(this)
+		
 		this.name = name
-		this.rad = rad ? rad : 150
-		this.cooldown = cooldown ? cooldown : 500
-		this.oncooldown = 0
-		this.setEntity(Silicate)
-		this.render()
+		this.setEntity(ent)
 		this.setCallback(callback)
-		this.level = 1
+		
+		this.rad = rad
+		this.level = level
+		this.cooldown = cooldown
+		
 		this.active = false
+		this.oncooldown = 0
+		
+		if(render){	this.render() }
 	}
 	// Класс энтити с которыми работает этот перк
 	setEntity(ent){this.ent = ent}
@@ -838,6 +842,10 @@ class Perk {
 			this.callback(this)
 			this.setCooldown()
 		}
+	}
+	
+	disperce(min, max){
+		return min + (max - min)/4*(this.level - 1)
 	}
 	
 	// Для интерфейсов врагов. Применить скилл в точке
@@ -884,7 +892,6 @@ class Perk {
 	
 	setCallback(callback){
 		this.callback = callback
-		this.bind()
 	}
 	
 	render(){
@@ -893,6 +900,7 @@ class Perk {
 		this.btn = frame.addElement('.perk-frame__perkimg', 'img')
 		this.cdoverlay = frame.addElement('.perk-frame__overlay')
 		this.btn.src = `./src/Ico/Perks/${this.name}.svg`
+		this.bind()
 	}
 	
 	draw(){
@@ -932,21 +940,23 @@ w.setScale(getRes().mul(1.35))
 let l = new Landscape(500, 255, 2.5, 1, 11, 0.35)
 l.setPos(getRes().mul(0.5, 1))
 
-new Perk('SpawnSome', __MINSCALE*2, 1, (perk)=>{
-	let cnt = 1 + parseInt(perk.level/2)
-	for(let i = 0; i < perk.level; i++){
+new Perk('SpawnSome', (perk)=>{
+	let cnt = perk.disperce(1, 7)
+	for(let i = 0; i < cnt; i++){
 		let e = new perk.ent()
-		e.setPos(cursor().add(angvecX(360/5*i+time(100), perk.rad)))
+		e.setPos(cursor().add(angvecX(360/cnt*i+time(100), perk.rad*(cnt > 1))))
 	}
-})
+}, Silicate, __MINSCALE*2.5, 1, 5)
+console.log(getCanvas().perks[0]);
 
-new Perk('SpawnBig', __MINSCALE*3, 0, (perk)=>{
+new Perk('SpawnBig', (perk)=>{
 	let e = new perk.ent()
 	e.setPos(cursor())
-	e.setScale(vec(__MINSCALE*3))
-})
+	// e.setScale(vec(__MINSCALE*3))
+	e.setScale(vec(perk.disperce(__MINSCALE*2, __MINSCALE*5)))
+}, Silicate, __MINSCALE*3, 1, 5)
 
-new Perk('Reproduce', __MINSCALE*5, 0, (perk)=>{
+new Perk('Reproduce', (perk)=>{
 	let i = 0
 	for(let ent of getCanvas().ents.slice()){
 		if(!ent.isSilicate){continue}
@@ -963,9 +973,9 @@ new Perk('Reproduce', __MINSCALE*5, 0, (perk)=>{
 			}
 		}
 	}
-})
+}, Silicate, __MINSCALE*4.5, 1, 5)
 
-new Perk('Split', __MINSCALE*5, 0, (perk)=>{
+new Perk('Split', (perk)=>{
 	let areaChild = __MINSCALE*__MINSCALE*Math.PI
 	for(let ent of getCanvas().ents.slice()){
 		if(!ent.isSilicate){continue}
@@ -986,51 +996,51 @@ new Perk('Split', __MINSCALE*5, 0, (perk)=>{
 			ent.remove()
 		}
 	}
-})
+}, Silicate, __MINSCALE*4.5, 1, 5)
 
-new Perk('Grow', __MINSCALE*4, 0, (perk)=>{
+new Perk('Grow', (perk)=>{
 	for(let ent of getCanvas().ents.slice()){
 		if(!ent.isSilicate){continue}
 		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 		if(dist < perk.rad){
-			ent.setScale(ent.getScale().add(5))
+			ent.setScale(ent.getScale().add(perk.disperce(__MINSCALE/4, __MINSCALE/2)))
 		}
 	}
-})
+}, Silicate, __MINSCALE*4, 1, 5)
 
-new Perk('Explode', 50, 0, (perk)=>{
+new Perk('Explode', (perk)=>{
 	for(let ent of getCanvas().ents.slice()){
 		if(!ent.isSilicate){continue}
 		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 		if(dist < perk.rad){
-			ent.setVel(ent.getPos().sub(cursor()).ort().mul(20))
+			ent.setVel(ent.getPos().sub(cursor()).ort().mul(perk.disperce(10, 20)))
 		}
 	}
-})
+}, Silicate, __MINSCALE*3.3, 1, 5)
 
-for(let i = 0; i < 2; i++){
-	setTimeout(()=>{
-		for(let j = 0; j < i*5+2; j++){
-			getCanvas().perks[0].applyAt()
-		}
-	},100*i)
-}
-
-let n = 5
-for(let i = 0; i < n; i++){
-	setTimeout(()=>{
-		let cnt = 0
-		let avg = vec(0)
-		for(let ent of getCanvas().ents){
-			if(ent.name == 'Silicate'){
-				avg = avg.add(ent.getPos())
-				cnt += 1
-			}
-		}
-		avg = avg.div(cnt)
-		getCanvas().perks[i+1 == n ? 5 : 4].applyAt(avg)
-	}, 0)
-}
+// for(let i = 0; i < 2; i++){
+// 	setTimeout(()=>{
+// 		for(let j = 0; j < i*5+2; j++){
+// 			getCanvas().perks[0].applyAt()
+// 		}
+// 	},100*i)
+// }
+// 
+// let n = 5
+// for(let i = 0; i < n; i++){
+// 	setTimeout(()=>{
+// 		let cnt = 0
+// 		let avg = vec(0)
+// 		for(let ent of getCanvas().ents){
+// 			if(ent.name == 'Silicate'){
+// 				avg = avg.add(ent.getPos())
+// 				cnt += 1
+// 			}
+// 		}
+// 		avg = avg.div(cnt)
+// 		getCanvas().perks[i+1 == n ? 5 : 4].applyAt(avg)
+// 	}, 70)
+// }
 
 
 
