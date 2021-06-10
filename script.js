@@ -428,6 +428,7 @@ class Circle extends Entity {
 		this.body = this.parent.Bodies.circle(
 			this.getPos().x, this.getPos().y, this.getScale().x)
 		this.parent.Composite.add(this.parent.engine.world, this.body)
+		this.body.renderelt = this
 	}
 	
 	draw(){
@@ -465,6 +466,7 @@ class Ngon extends Entity {
 		let rad = this.getScale().x - this.getWidth()/2
 		this.body = this.parent.Bodies.polygon(pos.x, pos.y, this.getSides(), rad)
 		this.parent.Composite.add(this.parent.engine.world, this.body)
+		this.body.renderelt = this
 	}
 
 	draw(){
@@ -518,6 +520,7 @@ class Poly extends Entity {
 		}
 		this.body = this.parent.Bodies.fromVertices(0, 0, this.points, [])
 		this.parent.Composite.add(this.parent.engine.world, this.body)
+		this.body.renderelt = this
 	}
 	
 	drawStart(){
@@ -631,7 +634,7 @@ class Landscape extends Poly {
 		// this.setOColor(HslClr(75, 75, 50))
 		this.setColor(HslClr(45, 40, 80))
 		this.setOColor(HslClr(45, 40, 60))
-		this.setWidth(10)
+		this.setWidth(5)
 	}
 }
 
@@ -1226,7 +1229,6 @@ class Player {
 	}
 	
 	perk(name){
-		console.log(name, typeof(name));
 		if(typeof(name) == 'string'){
 			for(let perk of this.perks){
 				if(perk.name == name){
@@ -1262,15 +1264,41 @@ setBounds()
 let l = new Landscape(500, 255, 1.5, 1)
 l.setPos(getRes().mul(0.5, 0.85))
 
-let pink = new Player(Pink, 1, 0)
+let pink = new Player(Pink, 1)
 pink.allPerksTest()
-pink.perk('SpawnSome').applyAt(getRes().mul(0.5))
+// pink.perk('SpawnSome').applyAt(getRes().mul(0.5))
 
-let cyan = new Player(Cyan, 2, 1)
+let cyan = new Player(Cyan, 2, 'ai')
 cyan.allPerksTest()
-cyan.perk('SpawnSome').applyAt(getRes().mul(0.5))
+cyan.perk('SpawnBig').applyAt(getRes().mul(0.5))
 
 
+
+Matter.Events.on(getCanvas().engine, 'collisionStart', function(event) {
+	let a = event.pairs[0].bodyA.renderelt
+	let b = event.pairs[0].bodyB.renderelt
+	
+	setTimeout(()=>{
+		if(a.isSilicate && b.isSilicate){
+			if(a.team && b.team && a.team != b.team){
+				let scla = a.getScale().x*a.getScale().x - b.getScale().x*b.getScale().x
+				let sclb = b.getScale().x*b.getScale().x - a.getScale().x*a.getScale().x
+				if(scla <= __MINSCALE){
+					a.remove()
+				}
+				else{
+					a.setScale(Math.sqrt(scla))
+				}
+				if(sclb <= __MINSCALE){
+					b.remove()
+				}
+				else{
+					a.setScale(Math.sqrt(scla))
+				}
+			}
+		}
+	}, 25)
+})
 
 
 
