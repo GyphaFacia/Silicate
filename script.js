@@ -1113,6 +1113,17 @@ new Perk('Union', (perk)=>{
 	}
 }, Silicate, __MINSCALE*4, 1, 5)
 
+new Perk('Spin', (perk)=>{
+	let avel = perk.disperce(0.5, 2)
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			ent.setAngVel(randelt([-avel, avel]))
+		}
+	}
+}, Silicate, __MINSCALE*3, 1, 5)
+
 // for(let i = 0; i < 2; i++){
 // 	setTimeout(()=>{
 // 		for(let j = 0; j < i*5+2; j++){
