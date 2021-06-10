@@ -938,12 +938,12 @@ let c = new Canvas()
 c.clearAll = 1
 c.setFullscreen()
 setBounds()
-let w = new Water()
-w.setPos(getRes().mul(0.5, 1.5))
-w.setScale(getRes().mul(1.35))
+// let w = new Water()
+// w.setPos(getRes().mul(0.5, 1.45))
+// w.setScale(getRes().mul(1.35))
 // let l = new Landscape(200, 255, -1.5, 1, 9, 0.1)
-let l = new Landscape(500, 255, 2.5, 1, 11, 0.35)
-l.setPos(getRes().mul(0.5, 1))
+let l = new Landscape(500, 255, 1.5, 1)
+l.setPos(getRes().mul(0.5, 0.85))
 
 new Perk('Levi', (perk)=>{
 	for(let ent of getCanvas().ents.slice()){
