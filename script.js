@@ -178,7 +178,7 @@ class Canvas {
 		this.Composite = Matter.Composite
 		
 		this.engine = this.Engine.create()
-		this.engine.gravity.scale = 0
+		// this.engine.gravity.scale = 0
 		this.runner = this.Runner.create()
 		this.Runner.run(this.runner, this.engine)
 		
@@ -373,7 +373,7 @@ class Entity {
 		pos = vec(pos.x, pos.y)
 		this.pos = pos
 		this.ang = this.body.angle / Math.PI * 180
-		if(this.getMass() != 0.123456789){
+		if(this.getMass() != 0.123456789 && !this.parent.engine.gravity.scale){
 			this.applyForce(__GRAVITY.mul(this.getMass()))
 		}
 	}
@@ -973,10 +973,12 @@ function getPerk(name){
 				if(perk.team && ent.team && ent.team != perk.team){ continue }
 				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 				if(dist < perk.rad){
+					getCanvas().engine.gravity.scale = 0
 					let mass = ent.getMass()
 					ent.setMass(0.123456789)
 					ent.setVel(ent.getPos().sub(cursor()).ort().mul(3))
 					setTimeout(()=>{
+						getCanvas().engine.gravity.scale = 0.001
 						ent.setMass(mass)
 					}, perk.disperce(2000, 5000))
 				}
@@ -1244,7 +1246,6 @@ class Player {
 		this.addPerk(getPerk('Spin'))
 	}
 }
-        
 
 const __MINSCALE = 15
 const __SPAWNLIMIT = 20
