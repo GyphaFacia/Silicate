@@ -13,6 +13,7 @@ body{
 
 .perk-section{
 	z-index: 100;
+	max-width: 50vw;
 	position: absolute;
 	top: 90%;
 	left: 50%;
@@ -20,6 +21,7 @@ body{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-wrap: wrap;
 }
 
 .perk-frame{

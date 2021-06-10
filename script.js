@@ -940,6 +940,27 @@ w.setScale(getRes().mul(1.35))
 let l = new Landscape(500, 255, 2.5, 1, 11, 0.35)
 l.setPos(getRes().mul(0.5, 1))
 
+new Perk('Randomize', (perk)=>{
+	let min = getRes().x
+	let max = 0
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			if(ent.getScale().x > max){max = ent.getScale().x}
+			if(ent.getScale().x < min){min = ent.getScale().x}
+		}
+	}
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			ent.setScale(vec(random(min, max)))
+		}
+	}
+	
+}, Silicate, __MINSCALE*4, 1, 5)
+
 new Perk('SpawnSome', (perk)=>{
 	let cnt = perk.disperce(1, 7)
 	for(let i = 0; i < cnt; i++){
