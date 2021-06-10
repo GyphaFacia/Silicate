@@ -940,6 +940,29 @@ w.setScale(getRes().mul(1.35))
 let l = new Landscape(500, 255, 2.5, 1, 11, 0.35)
 l.setPos(getRes().mul(0.5, 1))
 
+new Perk('Union', (perk)=>{
+	let scl = 0
+	let pos = vec(0)
+	let cnt = 0
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			pos = pos.add(ent.getPos())
+			scl += ent.getScale().x*ent.getScale().x
+			cnt += 1
+			ent.remove()
+		}
+	}
+	if(cnt){
+		let e = new perk.ent()
+		e.setPos(pos.div(cnt))
+		scl = Math.sqrt(scl)
+		e.setScale(vec(scl))
+	}
+}, Silicate, __MINSCALE*4, 1, 5)
+console.log(getCanvas().perks[0]);
+
 new Perk('Randomize', (perk)=>{
 	let min = getRes().x
 	let max = 0
