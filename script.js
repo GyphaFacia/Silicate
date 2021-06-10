@@ -905,9 +905,6 @@ class Perk {
 	
 	draw(){
 		let clipY = this.oncooldown ? (this.oncooldown - time())*1000/this.cooldown*10 : 10
-		if(this.oncooldown){
-			console.log(this.oncooldown, time());
-		}
 		this.cdoverlay.style.clip = `rect(${clipY}vh, auto, 10vh, auto)`
 		
 		if(this.active){
@@ -940,6 +937,25 @@ w.setScale(getRes().mul(1.35))
 let l = new Landscape(500, 255, 2.5, 1, 11, 0.35)
 l.setPos(getRes().mul(0.5, 1))
 
+new Perk('Swap', (perk)=>{
+	let arr = []
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			arr.push(ent)
+		}
+	}
+	
+	for (var i = 0; i < arr.length/2; i++){
+		let j = arr.length-i-1
+		let temp = arr[i].getPos()
+		arr[i].setPos(arr[j].getPos())
+		arr[j].setPos(temp)
+	}
+	
+}, Silicate, __MINSCALE*10, 1, 5)
+
 new Perk('Union', (perk)=>{
 	let scl = 0
 	let pos = vec(0)
@@ -961,28 +977,6 @@ new Perk('Union', (perk)=>{
 		e.setScale(vec(scl))
 	}
 }, Silicate, __MINSCALE*4, 1, 5)
-console.log(getCanvas().perks[0]);
-
-new Perk('Randomize', (perk)=>{
-	let min = getRes().x
-	let max = 0
-	for(let ent of getCanvas().ents.slice()){
-		if(!ent.isSilicate){continue}
-		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-		if(dist < perk.rad){
-			if(ent.getScale().x > max){max = ent.getScale().x}
-			if(ent.getScale().x < min){min = ent.getScale().x}
-		}
-	}
-	for(let ent of getCanvas().ents.slice()){
-		if(!ent.isSilicate){continue}
-		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-		if(dist < perk.rad){
-			ent.setScale(vec(random(min, max)))
-		}
-	}
-	
-}, Silicate, __MINSCALE*4, 1, 5)
 
 new Perk('SpawnSome', (perk)=>{
 	let cnt = perk.disperce(1, 7)
@@ -991,7 +985,6 @@ new Perk('SpawnSome', (perk)=>{
 		e.setPos(cursor().add(angvecX(360/cnt*i+time(100), perk.rad*(cnt > 1))))
 	}
 }, Silicate, __MINSCALE*2.5, 1, 5)
-console.log(getCanvas().perks[0]);
 
 new Perk('SpawnBig', (perk)=>{
 	let e = new perk.ent()
@@ -1061,6 +1054,27 @@ new Perk('Explode', (perk)=>{
 		}
 	}
 }, Silicate, __MINSCALE*3.3, 1, 5)
+
+new Perk('Randomize', (perk)=>{
+	let min = getRes().x
+	let max = 0
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			if(ent.getScale().x > max){max = ent.getScale().x}
+			if(ent.getScale().x < min){min = ent.getScale().x}
+		}
+	}
+	for(let ent of getCanvas().ents.slice()){
+		if(!ent.isSilicate){continue}
+		let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+		if(dist < perk.rad){
+			ent.setScale(vec(random(min, max)))
+		}
+	}
+	
+}, Silicate, __MINSCALE*4, 1, 5)
 
 // for(let i = 0; i < 2; i++){
 // 	setTimeout(()=>{
