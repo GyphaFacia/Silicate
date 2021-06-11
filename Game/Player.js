@@ -18,7 +18,6 @@ class Player {
 	}
 	
 	addPerk(perk){
-		console.log(perk);
 		perk.team = this.team
 		perk.ent = this.ent
 		this.perks.push(perk)
@@ -44,15 +43,15 @@ class Player {
 	allPerksTest(){
 		this.addPerk(perkDict('SpawnSome'))
 		this.addPerk(perkDict('SpawnBig'))
-		// this.addPerk(getPerk('Levi'))
-		// this.addPerk(getPerk('Spin'))
-		// this.addPerk(getPerk('Explode'))
-		// this.addPerk(getPerk('Grow'))
-		// this.addPerk(getPerk('Jump'))
-		// this.addPerk(getPerk('Randomize'))
-		// this.addPerk(getPerk('Reproduce'))
-		// this.addPerk(getPerk('Split'))
-		// this.addPerk(getPerk('Swap'))
-		// this.addPerk(getPerk('Union'))
+		// this.addPerk(perkDict('Levi'))
+		// this.addPerk(perkDict('Spin'))
+		// this.addPerk(perkDict('Explode'))
+		// this.addPerk(perkDict('Grow'))
+		// this.addPerk(perkDict('Jump'))
+		// this.addPerk(perkDict('Randomize'))
+		// this.addPerk(perkDict('Reproduce'))
+		// this.addPerk(perkDict('Split'))
+		// this.addPerk(perkDict('Swap'))
+		// this.addPerk(perkDict('Union'))
 	}
 }

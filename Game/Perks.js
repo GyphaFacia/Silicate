@@ -279,7 +279,7 @@ class Explode extends Perk {
 	first(){
 		this.rad = __MINSCALE*3.3
 	}
-	constructor() {
+	callback() {
 		for(let ent of getCanvas().ents.slice()){
 			if(!ent.isSilicate){continue}
 			if(this.team && ent.team && ent.team != this.team){ continue }
@@ -295,7 +295,7 @@ class Randomize extends Perk {
 	first(){
 		this.rad = __MINSCALE*4
 	}
-	constructor() {
+	callback() {
 		let min = getRes().x
 		let max = 0
 		for(let ent of getCanvas().ents.slice()){
@@ -322,7 +322,7 @@ class Jump extends Perk {
 	first(){
 		this.rad = __MINSCALE*5
 	}
-	constructor() {
+	callback() {
 		let i = 0
 		for(let ent of getCanvas().ents.slice()){
 			if(!ent.isSilicate){continue}
@@ -342,7 +342,7 @@ class Swap extends Perk {
 	first(){
 		this.rad = __MINSCALE*10
 	}
-	constructor() {
+	callback() {
 		let arr = []
 		for(let ent of getCanvas().ents.slice()){
 			if(!ent.isSilicate){continue}
@@ -366,7 +366,7 @@ class Union extends Perk {
 	first(){
 		this.rad = __MINSCALE*4
 	}
-	constructor() {
+	callback() {
 		let scl = 0
 		let pos = vec(0)
 		let cnt = 0
@@ -395,7 +395,7 @@ class Spin extends Perk {
 	first(){
 		this.rad = __MINSCALE*3
 	}
-	constructor() {
+	callback() {
 		let avel = this.disperce(0.5, 2)
 		for(let ent of getCanvas().ents.slice()){
 			if(!ent.isSilicate){continue}
