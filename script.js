@@ -170,7 +170,7 @@ class Water extends Entity {
 		let s = this.getScale().div(2)
 		let v = this.getPos()
 		for(let ent of this.parent.ents){
-			if(!ent.body){
+			if(!ent.body || !ent.isSilicate){
 				continue
 			}
 			if(ent.getScale().len() > 100){
@@ -183,14 +183,15 @@ class Water extends Entity {
 				let v = ent.getPos()
 				v = v.sub(this.getPos().sub(this.getScale().div(2)))
 				v = v.add(angvec(random(360)).mul(random(50)))
+				setTimeout(()=>{
+					ent.remove()
+				}, random(255, 500))
+				if(random() > 0.5){ continue }
 				this.spawnBubble(
 					v,
 					random(3, 6),
 					random(3, 5)
 				)
-				setTimeout(()=>{
-					ent.remove()
-				}, random(255, 500))
 			}
 		}
 	}
