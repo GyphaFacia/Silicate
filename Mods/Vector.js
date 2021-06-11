@@ -71,6 +71,9 @@ class Vector {
     int(){
         return vec(parseInt(this.x), parseInt(this.y)) 
     }
+    round(){
+        return vec(Math.round(this.x), Math.round(this.y)) 
+    }
 }
 
 function vec(){

@@ -329,7 +329,7 @@ p2.allPerksTest()
 
 if(1){
 	l.update = ()=>{
-		p1.perk('SpawnSome').enemyMaxDence()
+		p1.perk('SpawnBig').enemyMaxDence()
 	}
 }
 else{

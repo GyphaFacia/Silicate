@@ -186,6 +186,9 @@ class Canvas {
 			let b = event.pairs[0].bodyB.renderelt
 			
 			setTimeout(()=>{
+				if(!a || !b){
+					return null
+				}
 				if(a.isSilicate && b.isSilicate){
 					if(a.team && b.team && a.team != b.team){
 						let scla = a.getScale().x*a.getScale().x - b.getScale().x*b.getScale().x

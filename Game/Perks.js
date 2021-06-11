@@ -155,9 +155,10 @@ class Perk {
 	}
 	
 	// Ai skill position calculations
-	enemyMaxDence(){
-		let diameter = this.rad*2
-		let gridres = getRes().div(diameter).int().add(1)
+	getMaxDence(team = null, considerScale = 0){
+		team = team == null ? this.team : team
+		let rad = this.rad
+		let gridres = getRes().div(rad).round()
 		
 		let mrx = []
 		for(let x = 0; x < gridres.x; x++){
@@ -170,8 +171,8 @@ class Perk {
 		
 		for(let ent of getCanvas().ents){
 			if(!ent.isSilicate){continue}
-			if(ent.team == this.team){continue}
-			let v = ent.getPos().div(diameter).int()
+			if(ent.team != team){continue}
+			let v = ent.getPos().div(rad).round()
 			mrx[v.x][v.y] += 1
 		}
 		
@@ -180,35 +181,36 @@ class Perk {
 			for(let y = 0; y < gridres.y; y++){
 				if(mrx[x][y] > mrx[max.x][max.y]){
 					max = vec(x, y)
+					console.log(mrx[x][y]);
 				}
 			}
 		}
-		max = max.mul(diameter)
-		testCircle(max, this.rad)
-		visGrid(mrx)
+		max = max.mul(rad)
+		// testCircle(max, this.rad)
+		// visGrid(mrx)
+		return max
 	}
 }
 
 function testCircle(pos, rad = 100){
     getCanvas().ctx.beginPath()
-    getCanvas().ctx.strokeStyle = '#fff'
-    getCanvas().ctx.lineWidth = 1
+    getCanvas().ctx.strokeStyle = '#f00'
+    getCanvas().ctx.lineWidth = 5
     getCanvas().ctx.arc(pos.x, pos.y, rad, 0, 2 * Math.PI)
     getCanvas().ctx.stroke()
     getCanvas().ctx.closePath()
 }
 
-function visGrid(mrx){
+function visGrid(mrx, fill = 0.1){
 	getCanvas().ctx.lineWidth = 5
 	getCanvas().ctx.strokeStyle = '#fff0'
 	let cell = getRes().div(vec(mrx.length, mrx[0].length))
 	let max = vec(0)
 	for(let x = 0; x < mrx.length; x++){
 		for(let y = 0; y < mrx[0].length; y++){
-			let a = '#fff'+mrx[x][y]*2
-			getCanvas().ctx.fillStyle = a
+			getCanvas().ctx.fillStyle = Clr(255).setA(mrx[x][y]*fill).val()
 			getCanvas().ctx.beginPath()
-			let p = cell.mul(x, y).add(cell.div(2))
+			let p = cell.mul(x, y)
 			getCanvas().ctx.rect(p.x, p.y, cell.x, cell.y)
 			getCanvas().ctx.fill()
 			getCanvas().ctx.stroke()
