@@ -20,7 +20,7 @@ class Perk {
 		
 		this.rad = rad == null ? 100 : rad
 		this.level = level == null ? 5 : level
-		this.cooldown = cooldown == null ? 100 : rad
+		this.cooldown = cooldown == null ? 0 : rad
 		
 		this.rendered = false
 		this.active = false
@@ -59,6 +59,7 @@ class Perk {
 	}
 	
 	setCooldown(cd = null){
+		if(!this.cooldown){return null}
 		cd = cd ? cd : this.cooldown
 		this.oncooldown = time() + this.cooldown/1000
 		
@@ -152,8 +153,78 @@ class Perk {
 			}
 		}
 	}
+	
+	// Ai skill position calculations
+	enemyMaxDence(){
+		let diameter = this.rad*2
+		let gridres = getRes().div(diameter).int().add(1)
+		
+		let mrx = []
+		for(let x = 0; x < gridres.x; x++){
+			let col = []
+			for(let y = 0; y < gridres.y; y++){
+				col.push(0)
+			}
+			mrx.push(col)
+		}
+		
+		for(let ent of getCanvas().ents){
+			if(!ent.isSilicate){continue}
+			if(ent.team == this.team){continue}
+			let v = ent.getPos().div(diameter).int()
+			mrx[v.x][v.y] += 1
+		}
+		
+		let max = vec(0)
+		for(let x = 0; x < gridres.x; x++){
+			for(let y = 0; y < gridres.y; y++){
+				if(mrx[x][y] > mrx[max.x][max.y]){
+					max = vec(x, y)
+				}
+			}
+		}
+		max = max.mul(diameter)
+		testCircle(max, this.rad)
+		visGrid(mrx)
+	}
 }
 
+function testCircle(pos, rad = 100){
+    getCanvas().ctx.beginPath()
+    getCanvas().ctx.strokeStyle = '#fff'
+    getCanvas().ctx.lineWidth = 1
+    getCanvas().ctx.arc(pos.x, pos.y, rad, 0, 2 * Math.PI)
+    getCanvas().ctx.stroke()
+    getCanvas().ctx.closePath()
+}
+
+function visGrid(mrx){
+	getCanvas().ctx.lineWidth = 5
+	getCanvas().ctx.strokeStyle = '#fff0'
+	let cell = getRes().div(vec(mrx.length, mrx[0].length))
+	let max = vec(0)
+	for(let x = 0; x < mrx.length; x++){
+		for(let y = 0; y < mrx[0].length; y++){
+			let a = '#fff'+mrx[x][y]*2
+			getCanvas().ctx.fillStyle = a
+			getCanvas().ctx.beginPath()
+			let p = cell.mul(x, y).add(cell.div(2))
+			getCanvas().ctx.rect(p.x, p.y, cell.x, cell.y)
+			getCanvas().ctx.fill()
+			getCanvas().ctx.stroke()
+			getCanvas().ctx.closePath()
+		}
+	}
+}
+
+// 888                       d8b 
+// 888                       Y8P 
+// 888                           
+// 888      .d88b.  888  888 888 
+// 888     d8P  Y8b 888  888 888 
+// 888     88888888 Y88  88P 888 
+// 888     Y8b.      Y8bd8P  888 
+// 88888888 "Y8888    Y88P   888 
 class Levi extends Perk{
 	first(){
 		this.rad = __MINSCALE*5
@@ -177,6 +248,14 @@ class Levi extends Perk{
 	}
 }
 
+//  .d8888b.                                  
+// d88P  Y88b                                 
+// Y88b.                                      
+//  "Y888b.    .d88b.  88888b.d88b.   .d88b.  
+//     "Y88b. d88""88b 888 "888 "88b d8P  Y8b 
+// 	     "888 888  888 888  888  888 88888888 
+// Y88b  d88P Y88..88P 888  888  888 Y8b.     
+//  "Y8888P"   "Y88P"  888  888  888  "Y8888  
 class SpawnSome extends Perk{
 	first(){
 		this.rad = __MINSCALE*2.5
@@ -191,6 +270,17 @@ class SpawnSome extends Perk{
 	}
 }
 
+// 888888b.   d8b          
+// 888  "88b  Y8P          
+// 888  .88P               
+// 8888888K.  888  .d88b.  
+// 888  "Y88b 888 d88P"88b 
+// 888    888 888 888  888 
+// 888   d88P 888 Y88b 888 
+// 8888888P"  888  "Y88888 
+//                     888 
+//                Y8b d88P 
+//                 "Y88P"  
 class SpawnBig extends Perk{
 	first(){
 		this.rad = __MINSCALE*3
@@ -229,6 +319,17 @@ class Reproduce extends Perk{
 	}
 }
 
+//  .d8888b.           888 d8b 888    
+// d88P  Y88b          888 Y8P 888    
+// Y88b.               888     888    
+//  "Y888b.   88888b.  888 888 888888 
+// 	   "Y88b. 888 "88b 888 888 888    
+//       "888 888  888 888 888 888    
+// Y88b  d88P 888 d88P 888 888 Y88b.  
+//  "Y8888P"  88888P"  888 888  "Y888 
+//            888                     
+//			  888                     
+// 			  888                     
 class Split extends Perk{
 	first(){
 		this.rad = __MINSCALE*4.5
@@ -259,6 +360,14 @@ class Split extends Perk{
 	}
 }
 
+//  .d8888b.                                
+// d88P  Y88b                               
+// 888    888                               
+// 888        888d888 .d88b.  888  888  888 
+// 888  88888 888P"  d88""88b 888  888  888 
+// 888    888 888    888  888 888  888  888 
+// Y88b  d88P 888    Y88..88P Y88b 888 d88P 
+//  "Y8888P88 888     "Y88P"   "Y8888888P"  
 class Grow extends Perk{
 	first(){
 		this.rad = __MINSCALE*4
@@ -275,6 +384,17 @@ class Grow extends Perk{
 	}
 }
 
+// 8888888888                   888               888          
+// 888                          888               888          
+// 888                          888               888          
+// 8888888    888  888 88888b.  888  .d88b.   .d88888  .d88b.  
+// 888        `Y8bd8P' 888 "88b 888 d88""88b d88" 888 d8P  Y8b 
+// 888          X88K   888  888 888 888  888 888  888 88888888 
+// 888        .d8""8b. 888 d88P 888 Y88..88P Y88b 888 Y8b.     
+// 8888888888 888  888 88888P"  888  "Y88P"   "Y88888  "Y8888  
+//                     888                                     
+//                     888                                     
+//                     888                                     
 class Explode extends Perk {
 	first(){
 		this.rad = __MINSCALE*3.3
@@ -291,6 +411,14 @@ class Explode extends Perk {
 	}
 }
 
+// 8888888b.                         888 
+// 888   Y88b                        888 
+// 888    888                        888 
+// 888   d88P  8888b.  88888b.   .d88888 
+// 8888888P"      "88b 888 "88b d88" 888 
+// 888 T88b   .d888888 888  888 888  888 
+// 888  T88b  888  888 888  888 Y88b 888 
+// 888   T88b "Y888888 888  888  "Y88888 
 class Randomize extends Perk {
 	first(){
 		this.rad = __MINSCALE*4
@@ -318,6 +446,17 @@ class Randomize extends Perk {
 	}
 }
 
+// 888888                                 
+//   "88b                                 
+//    888                                 
+//    888 888  888 88888b.d88b.  88888b.  
+//    888 888  888 888 "888 "88b 888 "88b 
+//    888 888  888 888  888  888 888  888 
+//    88P Y88b 888 888  888  888 888 d88P 
+//    888  "Y88888 888  888  888 88888P"  
+//  .d88P                        888      
+//.d88P"                         888      
+//88P"                           888      
 class Jump extends Perk {
 	first(){
 		this.rad = __MINSCALE*5
@@ -338,6 +477,17 @@ class Jump extends Perk {
 	}
 }
 
+// .d8888b.                                  
+// d88P  Y88b                                 
+// Y88b.                                      
+// "Y888b.   888  888  888  8888b.  88888b.  
+//    "Y88b. 888  888  888     "88b 888 "88b 
+// 	 	"888 888  888  888 .d888888 888  888 
+// Y88b  d88P Y88b 888 d88P 888  888 888 d88P 
+// "Y8888P"   "Y8888888P"  "Y888888 88888P"  
+// 	  								888      
+//  								888      
+//  								888      
 class Swap extends Perk {
 	first(){
 		this.rad = __MINSCALE*10
@@ -362,6 +512,14 @@ class Swap extends Perk {
 	}
 }
 
+// 888     888          d8b                   
+// 888     888          Y8P                   
+// 888     888                                
+// 888     888 88888b.  888  .d88b.  88888b.  
+// 888     888 888 "88b 888 d88""88b 888 "88b 
+// 888     888 888  888 888 888  888 888  888 
+// Y88b. .d88P 888  888 888 Y88..88P 888  888 
+//  "Y88888P"  888  888 888  "Y88P"  888  888 
 class Union extends Perk {
 	first(){
 		this.rad = __MINSCALE*4
@@ -391,6 +549,17 @@ class Union extends Perk {
 	}
 }
 
+// .d8888b.           d8b          
+// d88P  Y88b          Y8P          
+// Y88b.                            
+// "Y888b.   88888b.  888 88888b.  
+//    "Y88b. 888 "88b 888 888 "88b 
+// 	    "888 888  888 888 888  888 
+//Y88b  d88P 888 d88P 888 888  888 
+// "Y8888P"  88888P"  888 888  888 
+//  		 888                   
+// 		     888                   
+// 		     888                   
 class Spin extends Perk {
 	first(){
 		this.rad = __MINSCALE*3
@@ -408,6 +577,17 @@ class Spin extends Perk {
 	}
 }
 
+// 888888          888                       
+//   "88b          888                       
+//    888          888                       
+//    888  .d88b.  888  888  .d88b.  888d888 
+//    888 d88""88b 888 .88P d8P  Y8b 888P"   
+//    888 888  888 888888K  88888888 888     
+//    88P Y88..88P 888 "88b Y8b.     888     
+//    888  "Y88P"  888  888  "Y8888  888     
+//  .d88P                                    
+// .d88P"                                     
+// 888P"                                       
 class Joker extends Perk{
 	first(){
 		this.rad = __MINSCALE*2.5

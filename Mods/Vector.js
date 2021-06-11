@@ -67,6 +67,10 @@ class Vector {
     ort(){
         return this.div(this.len())
     }
+    
+    int(){
+        return vec(parseInt(this.x), parseInt(this.y)) 
+    }
 }
 
 function vec(){
