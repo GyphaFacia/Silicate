@@ -199,7 +199,7 @@ class SpawnBig extends Perk{
 		let e = new this.ent()
 		e.team = this.team
 		e.setPos(cursor())
-		e.setScale(vec(this.disperce(__MINSCALE*2, __MINSCALE*5)))
+		e.setScale(vec(this.disperce(__MINSCALE*2, __MINSCALE*4)))
 	}
 }
 
@@ -408,6 +408,42 @@ class Spin extends Perk {
 	}
 }
 
+class Joker extends Perk{
+	first(){
+		this.rad = __MINSCALE*2.5
+	}
+	callback() {
+		let aClass = null
+		let bClass = null
+		let aTeam = null
+		let bTeam = null
+		
+		for(let perk of getCanvas().perks){
+			if(!aClass){
+				aClass = perk.ent
+				aTeam = perk.team
+			}
+			else if(!bClass && perk.ent != aClass){
+				bClass = perk.ent
+				bTeam = perk.team
+			}
+		}
+		
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				let toggle = ent.team == aTeam
+				let e = toggle ? new bClass() : new aClass()
+				e.team = toggle ? bTeam : aTeam
+				e.setPos(ent.getPos())
+				e.setScale(ent.getScale())
+				e.setAng(ent.getAng())
+				ent.remove()
+			}
+		}
+	}
+}
 
 
 
@@ -434,6 +470,7 @@ function perkDict(name){
 		'Split': Split,
 		'Swap': Swap,
 		'Union': Union,
+		'Joker': Joker,
 	}
 	return new dict[name]()
 }
