@@ -18,6 +18,7 @@ class Player {
 	}
 	
 	addPerk(perk){
+		console.log(perk);
 		perk.team = this.team
 		perk.ent = this.ent
 		this.perks.push(perk)
@@ -41,8 +42,8 @@ class Player {
 	}
 	
 	allPerksTest(){
-		this.addPerk(getPerk('SpawnSome'))
-		this.addPerk(getPerk('SpawnBig'))
+		this.addPerk(perkDict('SpawnSome'))
+		this.addPerk(perkDict('SpawnBig'))
 		// this.addPerk(getPerk('Levi'))
 		// this.addPerk(getPerk('Spin'))
 		// this.addPerk(getPerk('Explode'))

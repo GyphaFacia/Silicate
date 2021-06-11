@@ -7,7 +7,7 @@
 // 888       Y8b.     888     888 "88b      X88 
 // 888        "Y8888  888     888  888  88888P' 
 class Perk {
-	constructor(name, callback, ent = Silicate, rad = 100, cooldown = 1, level = 1, render = 0){
+	constructor(ent = Silicate, rad = null, cooldown = null, level = null){
 		this.parent = getCanvas()
 		this.ctx = this.parent.ctx
 		if(!this.parent.perks){
@@ -15,22 +15,22 @@ class Perk {
 		}
 		this.parent.perks.push(this)
 		
-		this.name = name
+		this.name = this.constructor.name
 		this.setEntity(ent)
-		this.setCallback(callback)
 		
-		this.rad = rad
-		this.level = level
-		this.cooldown = cooldown
+		this.rad = rad == null ? 100 : rad
+		this.level = level == null ? 5 : level
+		this.cooldown = cooldown == null ? 100 : rad
 		
 		this.rendered = false
 		this.active = false
 		this.oncooldown = 0
 		this.team = 0
 		
-		if(render){	this.render() }
+		this.first()
 	}
-	// Класс энтити с которыми работает этот перк
+	first(){}
+	callback(){}
 	setEntity(ent){this.ent = ent}
 	
 	disperce(min, max){
@@ -123,10 +123,6 @@ class Perk {
 		}
 	}
 	
-	setCallback(callback){
-		this.callback = callback
-	}
-	
 	render(){
 		this.rendered = true
 		let section = document.querySelector('.perk-section')
@@ -158,248 +154,298 @@ class Perk {
 	}
 }
 
+class Levi extends Perk{
+	first(){
+		this.rad = __MINSCALE*5
+	}
+	callback(){
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				getCanvas().engine.gravity.scale = 0
+				let mass = ent.getMass()
+				ent.setMass(0.123456789)
+				ent.setVel(ent.getPos().sub(cursor()).ort().mul(3))
+				setTimeout(()=>{
+					getCanvas().engine.gravity.scale = 0.001
+					ent.setMass(mass)
+				}, this.disperce(2000, 5000))
+			}
+		}
+	}
+}
 
+class SpawnSome extends Perk{
+	first(){
+		this.rad = __MINSCALE*2.5
+	}
+	callback(){
+		let cnt = this.disperce(1, 7)
+		for(let i = 0; i < cnt; i++){
+			let e = new this.ent()
+			e.team = this.team
+			e.setPos(cursor().add(angvecX(360/cnt*i+time(100), this.rad*(cnt > 1))))
+		}
+	}
+}
 
+class SpawnBig extends Perk{
+	first(){
+		this.rad = __MINSCALE*3
+	}
+	callback(){
+		let e = new this.ent()
+		e.team = this.team
+		e.setPos(cursor())
+		e.setScale(vec(this.disperce(__MINSCALE*2, __MINSCALE*5)))
+	}
+}
 
-
-// 8888888888                888                             
-// 888                       888                             
-// 888                       888                             
-// 8888888  8888b.   .d8888b 888888 .d88b.  888d888 888  888 
-// 888         "88b d88P"    888   d88""88b 888P"   888  888 
-// 888     .d888888 888      888   888  888 888     888  888 
-// 888     888  888 Y88b.    Y88b. Y88..88P 888     Y88b 888 
-// 888     "Y888888  "Y8888P  "Y888 "Y88P"  888      "Y88888 
-//                                                       888 
-//                                                  Y8b d88P 
-//                                                   "Y88P"  
-function getPerk(name){
-	if(name=='Levi'){
-		return new Perk('Levi', (perk)=>{
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					getCanvas().engine.gravity.scale = 0
-					let mass = ent.getMass()
-					ent.setMass(0.123456789)
-					ent.setVel(ent.getPos().sub(cursor()).ort().mul(3))
-					setTimeout(()=>{
-						getCanvas().engine.gravity.scale = 0.001
-						ent.setMass(mass)
-					}, perk.disperce(2000, 5000))
+class Reproduce extends Perk{
+	first(){
+		this.rad = __MINSCALE*4
+	}
+	callback(){
+		let i = 0
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				let e = new this.ent()
+				e.team = this.team
+				e.setScale(ent.getScale())
+				e.setPos(ent.getPos())
+				e.setColor(ent.getColor())
+				e.setOColor(ent.getOColor())
+				i++
+				if(i > 10){
+					break
 				}
 			}
-		}, Silicate, __MINSCALE*5, 1, 5)
+		}
 	}
-	
-	if(name=='SpawnSome'){
-		return new Perk('SpawnSome', (perk)=>{
-			let cnt = perk.disperce(1, 7)
-			for(let i = 0; i < cnt; i++){
-				let e = new perk.ent()
-				e.team = perk.team
-				e.setPos(cursor().add(angvecX(360/cnt*i+time(100), perk.rad*(cnt > 1))))
-			}
-		}, Silicate, __MINSCALE*2.5, 1, 5)
+}
+
+class Split extends Perk{
+	first(){
+		this.rad = __MINSCALE*4.5
 	}
-	
-	if(name=='SpawnBig'){
-		return	new Perk('SpawnBig', (perk)=>{
-			let e = new perk.ent()
-			e.team = perk.team
-			e.setPos(cursor())
-			e.setScale(vec(perk.disperce(__MINSCALE*2, __MINSCALE*5)))
-		}, Silicate, __MINSCALE*3, 1, 5)
-	}
-	
-	if(name=='Reproduce'){
-		return new Perk('Reproduce', (perk)=>{
-			let i = 0
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					let e = new perk.ent()
-					e.team = perk.team
-					e.setScale(ent.getScale())
-					e.setPos(ent.getPos())
+	callback(){
+		let areaChild = __MINSCALE*__MINSCALE*Math.PI
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				let rad = ent.getScale().x
+				let areaCur = rad*rad*Math.PI
+				let n = parseInt(areaCur/areaChild)
+				n = n > __SPAWNLIMIT*15 ? __SPAWNLIMIT*15 : n
+				for(let i = 0; i < n; i++){
+					let e = new this.ent()
+					e.team = this.team
+					e.setScale(vec(__MINSCALE))
+					e.setPos(ent.getPos().add(angvecX(360*3/n*i, rad/n*i)))
 					e.setColor(ent.getColor())
 					e.setOColor(ent.getOColor())
-					i++
-					if(i > 10){
-						break
-					}
 				}
+				
+				ent.remove()
 			}
-		}, Silicate, __MINSCALE*4.5, 1, 5)
-	}
-	
-	if(name=='Split'){
-		return new Perk('Split', (perk)=>{
-			let areaChild = __MINSCALE*__MINSCALE*Math.PI
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					let rad = ent.getScale().x
-					let areaCur = rad*rad*Math.PI
-					let n = parseInt(areaCur/areaChild)
-					n = n > __SPAWNLIMIT*15 ? __SPAWNLIMIT*15 : n
-					for(let i = 0; i < n; i++){
-						let e = new perk.ent()
-						e.team = perk.team
-						e.setScale(vec(__MINSCALE))
-						e.setPos(ent.getPos().add(angvecX(360*3/n*i, rad/n*i)))
-						e.setColor(ent.getColor())
-						e.setOColor(ent.getOColor())
-					}
-					
-					ent.remove()
-				}
-			}
-		}, Silicate, __MINSCALE*4.5, 1, 5)
-	}
-	
-	if(name=='Grow'){
-		return new Perk('Grow', (perk)=>{
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					ent.setScale(ent.getScale().add(perk.disperce(__MINSCALE/4, __MINSCALE/2)))
-				}
-			}
-		}, Silicate, __MINSCALE*4, 1, 5)
-	}
-	
-	if(name=='Explode'){
-		return new Perk('Explode', (perk)=>{
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					ent.setVel(ent.getPos().sub(cursor()).ort().mul(perk.disperce(10, 20)))
-				}
-			}
-		}, Silicate, __MINSCALE*3.3, 1, 5)
-	}
-	
-	if(name=='Randomize'){
-		return new Perk('Randomize', (perk)=>{
-			let min = getRes().x
-			let max = 0
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					if(ent.getScale().x > max){max = ent.getScale().x}
-					if(ent.getScale().x < min){min = ent.getScale().x}
-				}
-			}
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					ent.setScale(vec(random(min, max)))
-				}
-			}
-			
-		}, Silicate, __MINSCALE*4, 1, 5)
-	}
-	
-	if(name=='Jump'){
-		return new Perk('Jump', (perk)=>{
-			let i = 0
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					i += 1
-					setTimeout(()=>{
-						ent.setVel(vec(0, -20).add(randvecX(random(5))))
-					}, i * 50)
-				}
-			}
-		}, Silicate, __MINSCALE*5, 1, 5)
-	}
-	
-	if(name=='Swap'){
-		return new Perk('Swap', (perk)=>{
-			let arr = []
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					arr.push(ent)
-				}
-			}
-			
-			for (var i = 0; i < arr.length/2; i++){
-				let j = arr.length-i-1
-				let temp = arr[i].getPos()
-				arr[i].setPos(arr[j].getPos())
-				arr[j].setPos(temp)
-			}
-			
-		}, Silicate, __MINSCALE*10, 1, 5)
-	}
-	
-	if(name=='Union'){
-		return new Perk('Union', (perk)=>{
-			let scl = 0
-			let pos = vec(0)
-			let cnt = 0
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					pos = pos.add(ent.getPos())
-					scl += ent.getScale().x*ent.getScale().x
-					cnt += 1
-					ent.remove()
-				}
-			}
-			if(cnt){
-				let e = new perk.ent()
-				e.team = perk.team
-				e.setPos(pos.div(cnt))
-				scl = Math.sqrt(scl)
-				e.setScale(vec(scl))
-			}
-		}, Silicate, __MINSCALE*4, 1, 5)
-	}
-	
-	if(name=='Spin'){
-		return new Perk('Spin', (perk)=>{
-			let avel = perk.disperce(0.5, 2)
-			for(let ent of getCanvas().ents.slice()){
-				if(!ent.isSilicate){continue}
-				if(perk.team && ent.team && ent.team != perk.team){ continue }
-				let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-				if(dist < perk.rad){
-					ent.setAngVel(randelt([-avel, avel]))
-				}
-			}
-		}, Silicate, __MINSCALE*3, 1, 5)
-	}
-	
-	return new Perk('SpawnSome', (perk)=>{
-		let cnt = perk.disperce(1, 7)
-		for(let i = 0; i < cnt; i++){
-			let e = new perk.ent()
-			e.team = perk.team
-			e.setPos(cursor().add(angvecX(360/cnt*i+time(100), perk.rad*(cnt > 1))))
 		}
-	}, Silicate, __MINSCALE*2.5, 1, 5)
+	}
 }
+
+class Grow extends Perk{
+	first(){
+		this.rad = __MINSCALE*4
+	}
+	callback(){
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				ent.setScale(ent.getScale().add(this.disperce(__MINSCALE/4, __MINSCALE/2)))
+			}
+		}
+	}
+}
+
+class Explode extends Perk {
+	first(){
+		this.rad = __MINSCALE*3.3
+	}
+	constructor() {
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				ent.setVel(ent.getPos().sub(cursor()).ort().mul(this.disperce(10, 20)))
+			}
+		}
+	}
+}
+
+class Randomize extends Perk {
+	first(){
+		this.rad = __MINSCALE*4
+	}
+	constructor() {
+		let min = getRes().x
+		let max = 0
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				if(ent.getScale().x > max){max = ent.getScale().x}
+				if(ent.getScale().x < min){min = ent.getScale().x}
+			}
+		}
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				ent.setScale(vec(random(min, max)))
+			}
+		}
+	}
+}
+
+class Jump extends Perk {
+	first(){
+		this.rad = __MINSCALE*5
+	}
+	constructor() {
+		let i = 0
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				i += 1
+				setTimeout(()=>{
+					ent.setVel(vec(0, -20).add(randvecX(random(5))))
+				}, i * 50)
+			}
+		}
+	}
+}
+
+class Swap extends Perk {
+	first(){
+		this.rad = __MINSCALE*10
+	}
+	constructor() {
+		let arr = []
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				arr.push(ent)
+			}
+		}
+		
+		for (var i = 0; i < arr.length/2; i++){
+			let j = arr.length-i-1
+			let temp = arr[i].getPos()
+			arr[i].setPos(arr[j].getPos())
+			arr[j].setPos(temp)
+		}
+	}
+}
+
+class Union extends Perk {
+	first(){
+		this.rad = __MINSCALE*4
+	}
+	constructor() {
+		let scl = 0
+		let pos = vec(0)
+		let cnt = 0
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				pos = pos.add(ent.getPos())
+				scl += ent.getScale().x*ent.getScale().x
+				cnt += 1
+				ent.remove()
+			}
+		}
+		if(cnt){
+			let e = new this.ent()
+			e.team = this.team
+			e.setPos(pos.div(cnt))
+			scl = Math.sqrt(scl)
+			e.setScale(vec(scl))
+		}
+	}
+}
+
+class Spin extends Perk {
+	first(){
+		this.rad = __MINSCALE*3
+	}
+	constructor() {
+		let avel = this.disperce(0.5, 2)
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				ent.setAngVel(randelt([-avel, avel]))
+			}
+		}
+	}
+}
+
+
+
+
+
+// 8888888b.  d8b          888    
+// 888  "Y88b Y8P          888    
+// 888    888              888    
+// 888    888 888  .d8888b 888888 
+// 888    888 888 d88P"    888    
+// 888    888 888 888      888    
+// 888  .d88P 888 Y88b.    Y88b.  
+// 8888888P"  888  "Y8888P  "Y888 
+function perkDict(name){
+	let dict = {		
+		'Explode': Explode,
+		'Grow': Grow,
+		'Jump': Jump,
+		'Levi': Levi,
+		'Randomize': Randomize,
+		'Reproduce': Reproduce,
+		'SpawnBig': SpawnBig,
+		'SpawnSome': SpawnSome,
+		'Spin': Spin,
+		'Split': Split,
+		'Swap': Swap,
+		'Union': Union,
+	}
+	return new dict[name]()
+}
+
+
+
+
+
+
+
+
+
+
+
+
