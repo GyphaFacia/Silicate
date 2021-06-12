@@ -693,7 +693,7 @@ class Levi extends Perk{
 class Joker extends Perk{
 	first(){
 		this.rad = __MINSCALE*2.5
-		this.cooldown = __COOLDOWN_ELITE
+		this.cooldown = __COOLDOWN_ELITE*2
 	}
 	optimalCast(){
 		this.aiDeBuff(true)

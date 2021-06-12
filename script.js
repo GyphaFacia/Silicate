@@ -329,24 +329,69 @@ class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
 let p2 = new Player(Emerald, 2)
 p2.allPerksTest()
 
-let mode = 'pp'
+let p1mode = 'player'
+let p2mode = 'hell'
 
-if(mode == 'pb'){
-	p1.player()
-	p2.aiStart()
+switch (p1mode) {
+	case 'easy':
+		p1.botEasy()
+		break
+	case 'hard':
+		p1.botHard()
+		break
+	case 'hell':
+		p1.botHell()
+		break
+	case 'player':
+		p1.playerStart()
+		break
 }
-else if(mode == 'bb') {
-	p1.aiStart()
-	p2.aiStart()
+
+switch (p2mode) {
+	case 'easy':
+		p2.botEasy()
+		break
+	case 'hard':
+		p2.botHard()
+		break
+	case 'hell':
+		p2.botHell()
+		break
+	case 'player':
+		p2.playerStart()
+		break
 }
-else if(mode == 'pp'){
-	p1.player()
-	p2.player()
-	for(let perk of p1.perks){perk.cooldown = 0}
+
+function checkWinner(){
+	let a = 0
+	let b = 0
+	let aName, bName
+	for(let ent of getCanvas().ents){
+		if(!ent.isSilicate){ continue }
+		if(ent.team == 1){
+			a += 1 
+			aClass = ent.constructor.name
+		}
+		else{
+			b += 1
+			bClass = ent.constructor.name
+		}
+	}
+	if(!a){
+		alert(`Player ${bClass} wins`)
+		document.location.reload()
+	}
+	if(!b){
+		alert(`Player ${aClass} wins`)
+		document.location.reload()
+	}
+	if(a && b){
+		setTimeout(checkWinner, 255)
+	}
+	console.log(a,b);
 }
 
-
-
+checkWinner()
 
 
 

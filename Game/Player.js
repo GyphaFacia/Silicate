@@ -44,32 +44,52 @@ class Player {
 		this.addPerk(perkDict('SpawnSome'))
 		this.addPerk(perkDict('SpawnBig'))
 		this.addPerk(perkDict('Jump'))
-		// this.addPerk(perkDict('Joker'))
-		
+		this.addPerk(perkDict('Grow'))
+		this.addPerk(perkDict('Joker'))
 		// this.addPerk(perkDict('Reproduce'))
 		// this.addPerk(perkDict('Union'))
 		// this.addPerk(perkDict('Levi'))
 		// this.addPerk(perkDict('Spin'))
 		// this.addPerk(perkDict('Explode'))
-		this.addPerk(perkDict('Grow'))
 		// this.addPerk(perkDict('Randomize'))
 		// this.addPerk(perkDict('Split'))
 		// this.addPerk(perkDict('Swap'))
 		// this.addPerk(perkDict('Chameleon'))
 	}
 	
-	player(){
+	start(){
+		this.perks[0].applyAt(getRes().mul(0.1 + 0.8*(this.team-1), 0.1))
+		for(let perk of this.perks){
+			perk.setCooldown()
+		}
+	}
+	
+	playerStart(){
 		for(let perk of this.perks){
 			perk.render()
 		}
 		this.ai = false
+		this.start()
 		return this
 	}
 	
-	aiStart(uptimeMin = 500, uptimeMax = 1000){
+	botEasy(){
+		this.aiStart(3000, 6000)
+	}
+	
+	botHard(){
+		this.aiStart(1000, 2000)
+	}
+	
+	botHell(){
+		this.aiStart(10, 100)
+	}
+	
+	aiStart(uptimeMin = 1000, uptimeMax = 2000){
 		this.ai = true
 		this.uptimeMin = uptimeMin
 		this.uptimeMax = uptimeMax
+		this.start()
 		this.aiUpdate()
 		this.perks[0].optimalCast()
 		return this
