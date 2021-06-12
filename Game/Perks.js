@@ -153,8 +153,7 @@ class Perk {
 	}
 	
 	// Ai skill position calculations
-	getMaxDence(team = null, considerScale = 0){
-		team = team == null ? this.team : team
+	getMaxDence(team = 'my', considerScale = 0){
 		let rad = this.rad
 		let gridres = getRes().div(rad).round()
 		
@@ -169,9 +168,10 @@ class Perk {
 		
 		for(let ent of getCanvas().ents){
 			if(!ent.isSilicate){continue}
-			if(ent.team != team){continue}
+			if(ent.team != this.team && team == 'my'){continue}
+			if(ent.team == this.team && team != 'my'){continue}
 			let v = ent.getPos().div(rad).round()
-			mrx[v.x][v.y] += 1
+			mrx[v.x][v.y] += considerScale ? ent.getScale().x : 1
 		}
 		
 		let max = vec(0)
@@ -194,8 +194,23 @@ class Perk {
 	}
 	
 	optimalCast(){
-		let pos = this.getMaxDence(this.team, 0)
+		this.aiSpawn()
+	}
+	
+	aiSpawn(considerScale = false){
+		let pos = this.getMaxDence('my', considerScale)
 		pos = pos.sub(0, this.rad*3)
+		this.applyAt(pos)
+	}
+	
+	aiAttack(considerScale = false){
+		let pos = this.getMaxDence('other', considerScale)
+		pos = pos.sub(0, this.rad*5)
+		this.applyAt(pos)
+	}
+	
+	aiBuff(considerScale = false){
+		let pos = this.getMaxDence('my', considerScale)
 		this.applyAt(pos)
 	}
 }
@@ -236,6 +251,9 @@ function visGrid(mrx, fill = 0.1){
 // 888     Y8b.      Y8bd8P  888 
 // 88888888 "Y8888    Y88P   888 
 class Levi extends Perk{
+	optimalCast(){
+		this.aiBuff()
+	}
 	first(){
 		this.rad = __MINSCALE*5
 	}
@@ -267,6 +285,9 @@ class Levi extends Perk{
 // Y88b  d88P Y88..88P 888  888  888 Y8b.     
 //  "Y8888P"   "Y88P"  888  888  888  "Y8888  
 class SpawnSome extends Perk{
+	optimalCast(){
+		this.aiSpawn()
+	}
 	first(){
 		this.rad = __MINSCALE*2.5
 	}
@@ -292,6 +313,9 @@ class SpawnSome extends Perk{
 //                Y8b d88P 
 //                 "Y88P"  
 class SpawnBig extends Perk{
+	optimalCast(){
+		this.aiAttack()
+	}
 	first(){
 		this.rad = __MINSCALE*3
 	}
@@ -304,6 +328,9 @@ class SpawnBig extends Perk{
 }
 
 class Reproduce extends Perk{
+	optimalCast(){
+		this.aiBuff()
+	}
 	first(){
 		this.rad = __MINSCALE*4
 	}
@@ -341,6 +368,9 @@ class Reproduce extends Perk{
 //			  888                     
 // 			  888                     
 class Split extends Perk{
+	optimalCast(){
+		this.aiBuff(true)
+	}
 	first(){
 		this.rad = __MINSCALE*4.5
 	}
@@ -379,6 +409,9 @@ class Split extends Perk{
 // Y88b  d88P 888    Y88..88P Y88b 888 d88P 
 //  "Y8888P88 888     "Y88P"   "Y8888888P"  
 class Grow extends Perk{
+	optimalCast(){
+		this.aiBuff(true)
+	}
 	first(){
 		this.rad = __MINSCALE*4
 	}
@@ -406,6 +439,9 @@ class Grow extends Perk{
 //                     888                                     
 //                     888                                     
 class Explode extends Perk {
+	optimalCast(){
+		this.aiBuff()
+	}
 	first(){
 		this.rad = __MINSCALE*3.3
 	}
@@ -430,6 +466,9 @@ class Explode extends Perk {
 // 888  T88b  888  888 888  888 Y88b 888 
 // 888   T88b "Y888888 888  888  "Y88888 
 class Randomize extends Perk {
+	optimalCast(){
+		this.aiBuff()
+	}
 	first(){
 		this.rad = __MINSCALE*4
 	}
@@ -468,6 +507,9 @@ class Randomize extends Perk {
 //.d88P"                         888      
 //88P"                           888      
 class Jump extends Perk {
+	optimalCast(){
+		this.aiBuff()
+	}
 	first(){
 		this.rad = __MINSCALE*5
 	}
@@ -499,6 +541,9 @@ class Jump extends Perk {
 //  								888      
 //  								888      
 class Swap extends Perk {
+	optimalCast(){
+		this.aiBuff()
+	}
 	first(){
 		this.rad = __MINSCALE*10
 	}
@@ -531,6 +576,9 @@ class Swap extends Perk {
 // Y88b. .d88P 888  888 888 Y88..88P 888  888 
 //  "Y88888P"  888  888 888  "Y88P"  888  888 
 class Union extends Perk {
+	optimalCast(){
+		this.aiBuff()
+	}
 	first(){
 		this.rad = __MINSCALE*4
 	}
@@ -571,6 +619,9 @@ class Union extends Perk {
 // 		     888                   
 // 		     888                   
 class Spin extends Perk {
+	optimalCast(){
+		this.aiBuff(true)
+	}
 	first(){
 		this.rad = __MINSCALE*3
 	}
@@ -599,6 +650,9 @@ class Spin extends Perk {
 // .d88P"                                     
 // 888P"                                       
 class Joker extends Perk{
+	optimalCast(){
+		this.aiAttack(true)
+	}
 	first(){
 		this.rad = __MINSCALE*2.5
 	}
