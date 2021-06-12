@@ -316,7 +316,6 @@ setBounds()
 // let l = new Landscape(200, 255, -1.5, 1, 9, 0.1)
 let l = new Landscape(500, 255, 1.1, 1, 11, 0.01)
 l.setPos(getRes().mul(0.5, 0.85))
-
 class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
 let p1 = new Player(Ruby, 1)
 p1.player()
@@ -325,7 +324,7 @@ p1.allPerksTest()
 class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
 let p2 = new Player(Emerald, 2)
 p2.allPerksTest()
-p2.aiStart()
+p2.player()
 
 
 

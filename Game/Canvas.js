@@ -182,32 +182,34 @@ class Canvas {
 		this.Runner.run(this.runner, this.engine)
 		
 		Matter.Events.on(getCanvas().engine, 'collisionStart', function(event) {
-			let a = event.pairs[0].bodyA.renderelt
-			let b = event.pairs[0].bodyB.renderelt
-			
-			setTimeout(()=>{
-				if(!a || !b){
-					return null
-				}
-				if(a.isSilicate && b.isSilicate){
-					if(a.team && b.team && a.team != b.team){
-						let scla = a.getScale().x*a.getScale().x - b.getScale().x*b.getScale().x
-						let sclb = b.getScale().x*b.getScale().x - a.getScale().x*a.getScale().x
-						if(scla <= __MINSCALE){
-							a.remove(1)
-						}
-						else{
-							a.setScale(Math.sqrt(scla))
-						}
-						if(sclb <= __MINSCALE){
-							b.remove(1)
-						}
-						else{
-							a.setScale(Math.sqrt(scla))
+			for(let i = 0; i < event.pairs.length; i++){
+				let a = event.pairs[i].bodyA.renderelt
+				let b = event.pairs[i].bodyB.renderelt
+				
+				setTimeout(()=>{
+					if(!a || !b){
+						return null
+					}
+					if(a.isSilicate && b.isSilicate){
+						if(a.team && b.team && a.team != b.team){
+							let scla = a.getScale().x*a.getScale().x - b.getScale().x*b.getScale().x
+							let sclb = b.getScale().x*b.getScale().x - a.getScale().x*a.getScale().x
+							if(scla <= __MINSCALE){
+								a.remove(1)
+							}
+							else{
+								a.setScale(Math.sqrt(scla))
+							}
+							if(sclb <= __MINSCALE){
+								b.remove(1)
+							}
+							else{
+								a.setScale(Math.sqrt(scla))
+							}
 						}
 					}
-				}
-			}, 25)
+				}, 25)
+			}
 		})
 	}
 	stopEngine(){
