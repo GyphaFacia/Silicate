@@ -295,6 +295,7 @@ class Silicate extends Ngon{
 // Y88b  d88P Y88..88P 888  888      X88 Y88b.  
 //  "Y8888P"   "Y88P"  888  888  88888P'  "Y888 
 const __MINSCALE = 15
+const __MAXSCALE = 125
 const __SPAWNLIMIT = 20
 const __GRAVITY = vec(0, 0.001)
 const __COOLDOWN_ELITE = 10*1000 //перк может перевернуть игру
@@ -328,7 +329,7 @@ class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
 let p2 = new Player(Emerald, 2)
 p2.allPerksTest()
 
-let mode = 'pb'
+let mode = 'pp'
 
 if(mode == 'pb'){
 	p1.player()
@@ -341,6 +342,7 @@ else if(mode == 'bb') {
 else if(mode == 'pp'){
 	p1.player()
 	p2.player()
+	for(let perk of p1.perks){perk.cooldown = 0}
 }
 
 

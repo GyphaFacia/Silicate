@@ -267,40 +267,6 @@ function visGrid(mrx, fill = 0.1){
 	}
 }
 
-// 888                       d8b 
-// 888                       Y8P 
-// 888                           
-// 888      .d88b.  888  888 888 
-// 888     d8P  Y8b 888  888 888 
-// 888     88888888 Y88  88P 888 
-// 888     Y8b.      Y8bd8P  888 
-// 88888888 "Y8888    Y88P   888 
-class Levi extends Perk{
-	first(){
-		this.rad = __MINSCALE*5
-		this.cooldown = __COOLDOWN_LIGHT
-	}
-	optimalCast(){
-		this.aiBuff()
-	}
-	callback(){
-		for(let ent of getCanvas().ents.slice()){
-			if(!ent.isSilicate){continue}
-			if(this.team && ent.team && ent.team != this.team){ continue }
-			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-			if(dist < this.rad){
-				getCanvas().engine.gravity.scale = 0
-				let mass = ent.getMass()
-				ent.setMass(0.123456789)
-				ent.setVel(ent.getPos().sub(cursor()).ort().mul(3))
-				setTimeout(()=>{
-					getCanvas().engine.gravity.scale = 0.001
-					ent.setMass(mass)
-				}, this.disperce(2000, 5000))
-			}
-		}
-	}
-}
 
 //  .d8888b.                                  
 // d88P  Y88b                                 
@@ -313,7 +279,7 @@ class Levi extends Perk{
 class SpawnSome extends Perk{
 	first(){
 		this.rad = __MINSCALE*2.5
-		this.cooldown = __COOLDOWN_MID
+		this.cooldown = __COOLDOWN_HARD
 	}
 	optimalCast(){
 		this.aiSpawn()
@@ -342,7 +308,7 @@ class SpawnSome extends Perk{
 class SpawnBig extends Perk{
 	first(){
 		this.rad = __MINSCALE*3
-		this.cooldown = __COOLDOWN_HARD
+		this.cooldown = __COOLDOWN_ELITE
 	}
 	optimalCast(){
 		this.aiAttack()
@@ -452,7 +418,9 @@ class Grow extends Perk{
 			if(this.team && ent.team && ent.team != this.team){ continue }
 			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 			if(dist < this.rad){
-				ent.setScale(ent.getScale().add(this.disperce(__MINSCALE/4, __MINSCALE/2)))
+				let scl = ent.getScale().add(this.disperce(__MINSCALE/4, __MINSCALE/2)).x
+				scl = scl > __MAXSCALE ? __MAXSCALE : scl
+				ent.setScale(vec(scl))
 			}
 		}
 	}
@@ -638,6 +606,7 @@ class Union extends Perk {
 			e.team = this.team
 			e.setPos(pos.div(cnt))
 			scl = Math.sqrt(scl)
+			scl = scl > __MAXSCALE ? __MAXSCALE : scl
 			e.setScale(vec(scl))
 		}
 	}
@@ -670,6 +639,41 @@ class Spin extends Perk {
 			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 			if(dist < this.rad){
 				ent.setAngVel(randelt([-avel, avel]))
+			}
+		}
+	}
+}
+
+// 888                       d8b 
+// 888                       Y8P 
+// 888                           
+// 888      .d88b.  888  888 888 
+// 888     d8P  Y8b 888  888 888 
+// 888     88888888 Y88  88P 888 
+// 888     Y8b.      Y8bd8P  888 
+// 88888888 "Y8888    Y88P   888 
+class Levi extends Perk{
+	first(){
+		this.rad = __MINSCALE*5
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff()
+	}
+	callback(){
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				getCanvas().engine.gravity.scale = 0
+				let mass = ent.getMass()
+				ent.setMass(0.123456789)
+				ent.setVel(ent.getPos().sub(cursor()).ort().mul(3))
+				setTimeout(()=>{
+					getCanvas().engine.gravity.scale = 0.001
+					ent.setMass(mass)
+				}, this.disperce(2000, 5000))
 			}
 		}
 	}
