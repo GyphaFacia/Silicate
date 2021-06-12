@@ -39,16 +39,15 @@ body{
 	padding: 10px;
 	border-radius: 15px;
 	transition-duration: 255ms;
-	border: 5px solid black;
+	border: 5px solid #f00;
 	opacity: 0.25;
-	filter: invert(0.5) sepia(1) hue-rotate(-50deg) saturate(10);
+	filter: hue-rotate(-25deg);
 	user-select: none;
 }
 
 .perk-frame__perkimg:hover, .perk--active{
 	opacity: 1;
-	filter: invert(0.5) sepia(1) hue-rotate(-50deg) saturate(10) 
-	drop-shadow(0 5px 5px black);
+	filter: hue-rotate(-25deg) drop-shadow(0 0 5px #fdc) drop-shadow(0 0 5px #fdc) drop-shadow(0 0 5px #fdc);
 	
 }
 .perk-frame:nth-child(2n+1)>.perk-frame__perkimg:hover, .perk-frame:nth-child(2n+1)>.perk--active{
