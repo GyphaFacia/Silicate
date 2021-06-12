@@ -43,17 +43,18 @@ class Player {
 	allPerksTest(){
 		this.addPerk(perkDict('SpawnSome'))
 		this.addPerk(perkDict('SpawnBig'))
-		// this.addPerk(perkDict('Joker'))
+		this.addPerk(perkDict('Jump'))
+		this.addPerk(perkDict('Joker'))
+		// this.addPerk(perkDict('Reproduce'))
+		// this.addPerk(perkDict('Union'))
 		// this.addPerk(perkDict('Levi'))
 		// this.addPerk(perkDict('Spin'))
 		// this.addPerk(perkDict('Explode'))
 		// this.addPerk(perkDict('Grow'))
-		// this.addPerk(perkDict('Jump'))
 		// this.addPerk(perkDict('Randomize'))
-		// this.addPerk(perkDict('Reproduce'))
 		// this.addPerk(perkDict('Split'))
 		// this.addPerk(perkDict('Swap'))
-		// this.addPerk(perkDict('Union'))
+		// this.addPerk(perkDict('Chameleon'))
 	}
 	
 	player(){
@@ -64,31 +65,37 @@ class Player {
 		return this
 	}
 	
-	aiStart(uptimeMin = 1000, uptimeMax = 2000){
+	aiStart(uptimeMin = 500, uptimeMax = 1000){
 		this.ai = true
 		this.uptimeMin = uptimeMin
 		this.uptimeMax = uptimeMax
 		this.aiUpdate()
+		this.perks[0].optimalCast()
 		return this
 	}
 	
 	aiUpdate(){
-		let perks = []
-		for(let perk of this.perks){
-			perks.push(perk)
-		}
-		for(let i = 0; i < perks.length; i++){
-			let perk = randelt(perks)
-			if(perk.oncooldown){ 
-				continue 
+		try {
+			let perks = []
+			for(let perk of this.perks){
+				perks.push(perk)
 			}
-			perk.optimalCast()
-			break
+			for(let i = 0; i < perks.length; i++){
+				let perk = randelt(perks)
+				if(perk.oncooldown){ 
+					continue 
+				}
+				perk.optimalCast()
+				break
+			}
+		} catch (e) {
+			console.error(e)
+		} finally {
+			setTimeout(()=>{
+				this.aiUpdate()
+			}, randint(this.uptimeMin, this.uptimeMax))
 		}
 		
-		setTimeout(()=>{
-			this.aiUpdate()
-		}, randint(this.uptimeMin, this.uptimeMax))
 	}
 }
 

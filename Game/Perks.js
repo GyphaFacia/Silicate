@@ -29,6 +29,7 @@ class Perk {
 		
 		this.first()
 	}
+
 	first(){}
 	callback(){}
 	setEntity(ent){this.ent = ent}
@@ -87,6 +88,7 @@ class Perk {
 		this.callback(this)
 		getCanvas().cursor = bup
 		this.setCooldown()
+		testCircle(pos, this.rad)
 	}
 	
 	bind(){
@@ -171,7 +173,9 @@ class Perk {
 			if(ent.team != this.team && team == 'my'){continue}
 			if(ent.team == this.team && team != 'my'){continue}
 			let v = ent.getPos().div(rad).round()
-			mrx[v.x][v.y] += considerScale ? ent.getScale().x : 1
+			try {
+				mrx[v.x][v.y] += considerScale ? ent.getScale().x : 1
+			} catch (e) {}
 		}
 		
 		let max = vec(0)
@@ -183,7 +187,7 @@ class Perk {
 			}
 		}
 		if(!max.x && !max.y){
-			max = getRes().mul(0.5, 0.25)
+			max = getRes().mul(random(), 0.25)
 		}
 		else{
 			max = max.mul(rad)
@@ -213,15 +217,36 @@ class Perk {
 		let pos = this.getMaxDence('my', considerScale)
 		this.applyAt(pos)
 	}
+	
+	aiDeBuff(considerScale = false){
+		let pos = this.getMaxDence('other', considerScale)
+		this.applyAt(pos)
+	}
 }
 
-function testCircle(pos, rad = 100){
-    getCanvas().ctx.beginPath()
-    getCanvas().ctx.strokeStyle = '#f00'
-    getCanvas().ctx.lineWidth = 5
-    getCanvas().ctx.arc(pos.x, pos.y, rad, 0, 2 * Math.PI)
-    getCanvas().ctx.stroke()
-    getCanvas().ctx.closePath()
+function testCircle(pos, rad = 100, temporary = false){
+	if(temporary){
+		getCanvas().ctx.beginPath()
+		getCanvas().ctx.strokeStyle = '#f00'
+		getCanvas().ctx.lineWidth = 5
+		getCanvas().ctx.arc(pos.x, pos.y, rad, 0, 2 * Math.PI)
+		getCanvas().ctx.stroke()
+		getCanvas().ctx.closePath()
+	}
+	else{
+		let c = new Circle()
+		c.setPos(pos)
+		c.setScale(vec(rad))
+		c.setHollow()
+		c.setOColor(Clr(255))
+		c.setWidth(3)
+		c.update = ()=>{
+			c.setOColor(c.getOColor().modA(-0.025))
+		}
+		setTimeout(()=>{
+			c.remove()
+		}, 1000)
+	}
 }
 
 function visGrid(mrx, fill = 0.1){
@@ -651,7 +676,7 @@ class Spin extends Perk {
 // 888P"                                       
 class Joker extends Perk{
 	optimalCast(){
-		this.aiAttack(true)
+		this.aiDeBuff(true)
 	}
 	first(){
 		this.rad = __MINSCALE*2.5
@@ -689,7 +714,40 @@ class Joker extends Perk{
 	}
 }
 
-
+//  .d8888b.  888                                      888 
+// d88P  Y88b 888                                      888 
+// 888    888 888                                      888 
+// 888        88888b.   8888b.  88888b.d88b.   .d88b.  888 
+// 888        888 "88b     "88b 888 "888 "88b d8P  Y8b 888 
+// 888    888 888  888 .d888888 888  888  888 88888888 888 
+// Y88b  d88P 888  888 888  888 888  888  888 Y8b.     888 
+//  "Y8888P"  888  888 "Y888888 888  888  888  "Y8888  888 
+class Chameleon extends Perk {
+	optimalCast(){
+		this.aiBuff()
+	}
+	first(){
+		this.rad = __MINSCALE*5
+	}
+	callback() {
+		let i = 0
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				let e = ent
+				e.setColor(ent.getColor().setA(0.25))
+				e.setOColor(ent.getOColor().setA(0.25))
+				setTimeout(()=>{
+					console.log(e.getColor());
+					e.setColor(ent.getColor().setA(1))
+					e.setOColor(ent.getOColor().setA(1))
+				}, this.disperce(1000, 5000));
+			}
+		}
+	}
+}
 
 
 // 8888888b.  d8b          888    
@@ -715,6 +773,7 @@ function perkDict(name){
 		'Swap': Swap,
 		'Union': Union,
 		'Joker': Joker,
+		'Chameleon': Chameleon,
 	}
 	return new dict[name]()
 }

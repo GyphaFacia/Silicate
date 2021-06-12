@@ -318,16 +318,24 @@ let l = new Landscape(500, 255, 1.1, 1, 11, 0.01)
 l.setPos(getRes().mul(0.5, 0.85))
 class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
 let p1 = new Player(Ruby, 1)
-p1.player()
 p1.allPerksTest()
 
 class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
 let p2 = new Player(Emerald, 2)
 p2.allPerksTest()
-if(0){
+
+let mode = 'pp'
+
+if(mode == 'pb'){
+	p1.aiStart()
 	p2.aiStart()
 }
-else{
+else if(mode == 'bb') {
+	p1.aiStart()
+	p2.aiStart()
+}
+else if(mode == 'pp'){
+	p1.player()
 	p2.player()
 }
 
