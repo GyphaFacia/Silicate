@@ -10,11 +10,11 @@
 //                         Y8b d88P                  
 //                          "Y88P"           
 class Player {
-	constructor(ent, team = 0, ai = false){
+	constructor(ent, team = 0){
 		this.ent = ent
 		this.perks = []
 		this.team = team
-		this.ai = ai
+		this.ai = true
 	}
 	
 	addPerk(perk){
@@ -55,4 +55,52 @@ class Player {
 		// this.addPerk(perkDict('Swap'))
 		// this.addPerk(perkDict('Union'))
 	}
+	
+	player(){
+		for(let perk of this.perks){
+			perk.render()
+		}
+		this.ai = false
+		return this
+	}
+	
+	aiStart(uptimeMin = 1000, uptimeMax = 2000){
+		this.ai = true
+		this.uptimeMin = uptimeMin
+		this.uptimeMax = uptimeMax
+		this.aiUpdate()
+		return this
+	}
+	
+	aiUpdate(){
+		let perks = []
+		for(let perk of this.perks){
+			perks.push(perk)
+		}
+		for(let i = 0; i < perks.length; i++){
+			let perk = randelt(perks)
+			if(perk.oncooldown){ 
+				continue 
+			}
+			perk.optimalCast()
+			break
+		}
+		
+		setTimeout(()=>{
+			this.aiUpdate()
+		}, randint(this.uptimeMin, this.uptimeMax))
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -20,7 +20,7 @@ class Perk {
 		
 		this.rad = rad == null ? 100 : rad
 		this.level = level == null ? 5 : level
-		this.cooldown = cooldown == null ? 0 : rad
+		this.cooldown = cooldown == null ? 500 : rad
 		
 		this.rendered = false
 		this.active = false
@@ -63,11 +63,9 @@ class Perk {
 		cd = cd ? cd : this.cooldown
 		this.oncooldown = time() + this.cooldown/1000
 		
-		if(!this.rendered){return null}
-		
-		this.btn.classList.add('unclickable')
+		if(this.rendered){this.btn.classList.add('unclickable')}
 		setTimeout(()=>{
-			this.btn.classList.remove('unclickable')
+			if(this.rendered){this.btn.classList.remove('unclickable')}
 			this.oncooldown = 0
 		}, this.cooldown)
 	}
@@ -181,14 +179,24 @@ class Perk {
 			for(let y = 0; y < gridres.y; y++){
 				if(mrx[x][y] > mrx[max.x][max.y]){
 					max = vec(x, y)
-					console.log(mrx[x][y]);
 				}
 			}
 		}
-		max = max.mul(rad)
+		if(!max.x && !max.y){
+			max = getRes().mul(0.5, 0.1)
+		}
+		else{
+			max = max.mul(rad)
+		}
 		// testCircle(max, this.rad)
 		// visGrid(mrx)
 		return max
+	}
+	
+	optimalCast(){
+		let pos = this.getMaxDence(this.team, 0)
+		pos = pos.sub(0, this.rad*3)
+		this.applyAt(pos)
 	}
 }
 

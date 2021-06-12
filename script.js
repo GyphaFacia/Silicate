@@ -319,24 +319,13 @@ l.setPos(getRes().mul(0.5, 0.85))
 
 class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
 let p1 = new Player(Ruby, 1)
+p1.player()
 p1.allPerksTest()
 
 class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
 let p2 = new Player(Emerald, 2)
 p2.allPerksTest()
-// p2.perk('SpawnSome').applyAt(getRes().mul(0.5, 0.1))
-// p2.perk('SpawnSome').applyAt(getRes().mul(0.5, 0.1))
-
-if(1){
-	l.update = ()=>{
-		p1.perk('SpawnBig').enemyMaxDence()
-	}
-}
-else{
-	setTimeout(function () {
-		p1.perk('SpawnSome').enemyMaxDence()
-	}, 3000);
-}
+p2.aiStart()
 
 
 
