@@ -354,6 +354,7 @@ class Poly extends Entity {
 			this.points.push(point)
 		}
 		this.setInset(0)
+		this.offy = 0
 	}
 	
 	setInset(inset){this.inset = inset}
@@ -377,7 +378,7 @@ class Poly extends Entity {
 		let b2 = this.boundsMax()
 
 		let v = b1
-		let offset = b2.sub(b1).mul(0, 1).sub(0, this.getInset()*2)
+		let offset = b2.sub(b1).mul(0, 1).sub(0, this.getInset()*2+this.offy)
 		v = v.sub(offset)
 		
 		this.ctx.translate(v.x, v.y)

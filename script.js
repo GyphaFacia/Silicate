@@ -238,7 +238,7 @@ class Water extends Entity {
 // 	    "888 888 888 888 888      .d888888 888   88888888 
 // Y88b  d88P 888 888 888 Y88b.    888  888 Y88b. Y8b.     
 //  "Y8888P"  888 888 888  "Y8888P "Y888888  "Y888 "Y8888  
-function shatter(ent, flakescl = 7, maxcnt = 50, life = 500){
+function shatter(ent, flakescl = __MINSCALE/3, maxcnt = 50, life = 500){
 	let rad = ent.getScale().x
 	let square = rad*rad
 	let n = square / flakescl / flakescl
@@ -294,7 +294,7 @@ class Silicate extends Ngon{
 // 888    888 888  888 888  888 "Y8888b. 888    
 // Y88b  d88P Y88..88P 888  888      X88 Y88b.  
 //  "Y8888P"   "Y88P"  888  888  88888P'  "Y888 
-const __MINSCALE = 15
+const __MINSCALE = 10
 const __MAXSCALE = 125
 const __SPAWNLIMIT = 20
 const __GRAVITY = vec(0, 0.001)
@@ -319,8 +319,9 @@ setBounds()
 // w.setPos(getRes().mul(0.5, 1.45))
 // w.setScale(getRes().mul(1.35))
 // let l = new Landscape(200, 255, -1.5, 1, 9, 0.1)
-let l = new Landscape(500, 255, 1.1, 1, 11, 0.01)
+let l = new Landscape(255, 125, 1.5, 1, 11, 0.1, 7, 0.1)
 l.setPos(getRes().mul(0.5, 0.85))
+l.offy = -15
 
 class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
 let p1 = new Player(Ruby, 1)
@@ -334,9 +335,9 @@ class Gold extends Silicate{second(){this.setColor(Clr(255, 225, 0))}}
 let p3 = new Player(Gold, 3)
 p3.allPerksTest()
 
-p1.botEasy()
-p2.botEasy()
-p3.player()
+p1.botHard()
+p2.botHard()
+p3.botHell()
 
 
 
