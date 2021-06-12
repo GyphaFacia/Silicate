@@ -9,21 +9,29 @@
 function setBounds(width = 500, outline = 0){
 	let e
 	e = new Entity().addBody()
+	e.setOColor(Clr(0,0,0,0))
+	e.setHollow()
 	e.setStatic()
 	e.setPos(getRes().mul(0.5, 1).add(0, width/2 - outline))
 	e.setScale(getRes().mul(2, 0).add(0, width))
 	
 	e = new Entity().addBody()
+	e.setOColor(Clr(0,0,0,0))
+	e.setHollow()
 	e.setStatic()
 	e.setPos(getRes().mul(0.5, 0).add(0, -width/2 + outline))
 	e.setScale(getRes().mul(2, 0).add(0, width))
 	
 	e = new Entity().addBody()
+	e.setOColor(Clr(0,0,0,0))
+	e.setHollow()
 	e.setStatic()
 	e.setPos(getRes().mul(0, 0.5).add(-width/2 + outline, 0))
 	e.setScale(getRes().mul(0, 2).add(width, 0))
 	
 	e = new Entity().addBody()
+	e.setOColor(Clr(0,0,0,0))
+	e.setHollow()
 	e.setStatic()
 	e.setPos(getRes().mul(1, 0.5).add(width/2 - outline, 0))
 	e.setScale(getRes().mul(0, 2).add(width, 0))
@@ -335,13 +343,24 @@ class Gold extends Silicate{second(){this.setColor(Clr(255, 225, 0))}}
 let p3 = new Player(Gold, 3)
 p3.allPerksTest()
 
-p1.botHard()
-p2.botHard()
-p3.botHell()
+p1.botEasy()
+p2.botEasy()
+p3.player()
 
-
-
-
+let gameStartTime = time()
+let timeLabel = addElement('game-timer', 'body')
+setInterval(()=>{
+	let sec = time() - gameStartTime
+	sec = parseInt(sec)
+	min = parseInt(sec/60)
+	sec -= min * 60
+	sec = sec + ''
+	min = min + ''
+	sec = sec.length == 1 ? '0' + sec : sec
+	min = min.length == 1 ? '0' + min : min
+	timeLabel.innerText = `${min}:${sec}`
+	
+}, 100)
 
 
 

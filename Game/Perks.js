@@ -286,7 +286,7 @@ function visGrid(mrx, fill = 0.1){
 class SpawnSome extends Perk{
 	first(){
 		this.rad = __MINSCALE*2.5
-		this.cooldown = __COOLDOWN_HARD
+		this.cooldown = __COOLDOWN_ELITE
 	}
 	optimalCast(){
 		this.aiSpawn()

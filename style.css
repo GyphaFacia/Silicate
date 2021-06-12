@@ -7,6 +7,13 @@ body{
 	overflow: hidden;
 }
 
+.canvas-game{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .unclickable{
 	pointer-events: none;
 }
@@ -64,6 +71,31 @@ body{
 	border-radius: 15px;
 	position: absolute;
 }
+
+.game-timer{
+	position: absolute;
+	top: 30px;
+	left: 50%;
+	transform: translate(-50%, 0);
+	padding: 10px;
+	border-radius: 1vh;
+	color: #f05;
+	font-size: 55px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: none;
+	border: 5px solid #f05;
+	opacity: 0.5;
+}
+
+
+
+
+
+
+
+
 
 
 

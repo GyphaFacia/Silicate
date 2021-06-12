@@ -26,7 +26,7 @@ function strokeOrFill(e){
 
 class Entity {
 	constructor() {
-		this.parent = document.querySelector('.canvasJent').parent
+		this.parent = document.querySelector('.canvas-game').parent
 		this.ctx = this.parent.ctx
 		
 		this.id = this.parent.entsInc

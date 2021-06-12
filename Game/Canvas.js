@@ -8,7 +8,7 @@
 //  "Y8888P"  "Y888888 888  888   Y88P   "Y888888  88888P' 
 function getCanvas(){
 	if(!window.canvas){
-		window.canvas = document.querySelector('.canvasJent').parent
+		window.canvas = document.querySelector('.canvas-game').parent
 	}
 	return window.canvas
 }
@@ -101,15 +101,7 @@ class Canvas {
 	}
 	
 	createCanvas(){
-		let c = addElement('canvasJent', 'body', 'canvas')
-		c.applyCss(`
-			position: absolute
-			top: 50%
-			left: 50%
-			transform: translate(-50%, -50%)
-			box-shadow: 0 0 0 3px #aaa
-		`)
-		
+		let c = addElement('canvas-game', 'body', 'canvas')		
 		return c
 	}
 	
@@ -132,7 +124,7 @@ class Canvas {
 		`)
 	}
 	setFullscreen(){
-		this.setRes(vec(parseInt(window.innerWidth-50), parseInt(window.innerHeight-50)))
+		this.setRes(vec(parseInt(window.innerWidth), parseInt(window.innerHeight)))
 	}
 	getRes(){return vec(this.canvas.width, this.canvas.height)}
 	
@@ -159,7 +151,17 @@ class Canvas {
 				p.draw()
 			}
 		}
+		this.showCursor()
 	}
+	
+	showCursor(){
+		this.ctx.fillStyle = '#777e'
+		this.ctx.beginPath()
+		this.ctx.arc(cursor().x, cursor().y, 10, 0, 2*Math.PI)
+		this.ctx.closePath()
+		this.ctx.fill()
+	}
+	
 	clearCanvas(){
 		this.ctx.fillStyle = 'rgba(0,0,0,0.1)'
 		this.ctx.filter = 'none'
