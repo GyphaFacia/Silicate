@@ -343,7 +343,7 @@ class Gold extends Silicate{second(){this.setColor(Clr(255, 225, 0))}}
 let p3 = new Player(Gold, 3)
 p3.allPerksTest()
 
-p1.botEasy()
+p1.botHard()
 p2.botEasy()
 p3.player()
 
@@ -378,9 +378,7 @@ setInterval(()=>{
 		let cnt = arr[team][0]
 		let clr = arr[team][1]
 		if(!cnt){ continue }
-		// let cnt = pair[0]
-		// let clr = pair[1]
-		html += `<span style="color: ${clr}">${cnt}</span>`
+		html += `<span class = "teams-tab__team" style="color: ${clr}">${cnt}</span>`
 	}
 	teamsTab.innerHTML = html
 	

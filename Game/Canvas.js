@@ -196,17 +196,17 @@ class Canvas {
 						if(a.team && b.team && a.team != b.team){
 							let scla = a.getScale().x*a.getScale().x - b.getScale().x*b.getScale().x
 							let sclb = b.getScale().x*b.getScale().x - a.getScale().x*a.getScale().x
-							if(scla <= __MINSCALE){
+							if(scla <= __MINSCALE*__MINSCALE){
 								a.remove(1)
 							}
 							else{
 								a.setScale(Math.sqrt(scla))
 							}
-							if(sclb <= __MINSCALE){
+							if(sclb <= __MINSCALE*__MINSCALE){
 								b.remove(1)
 							}
 							else{
-								a.setScale(Math.sqrt(scla))
+								b.setScale(Math.sqrt(sclb))
 							}
 						}
 					}
