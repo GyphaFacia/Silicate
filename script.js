@@ -347,8 +347,10 @@ p1.botEasy()
 p2.botEasy()
 p3.player()
 
+let teamsTab = addElement('teams-tab', 'body')
+
 let gameStartTime = time()
-let timeLabel = addElement('game-timer', 'body')
+let timeTab = addElement('timer-tab', 'body')
 setInterval(()=>{
 	let sec = time() - gameStartTime
 	sec = parseInt(sec)
@@ -358,7 +360,29 @@ setInterval(()=>{
 	min = min + ''
 	sec = sec.length == 1 ? '0' + sec : sec
 	min = min.length == 1 ? '0' + min : min
-	timeLabel.innerText = `${min}:${sec}`
+	timeTab.innerText = `${min}:${sec}`
+	
+	let arr = []
+	for(let ply of getCanvas().players){
+		arr[ply.team] = []
+		arr[ply.team][0] = 0
+		arr[ply.team][1] = '#fff'
+	}
+	for(let ent of getCanvas().ents){
+		if(!ent.isSilicate){ continue }
+		arr[ent.team][0] += 1
+		arr[ent.team][1] = ent.getColor().val()
+	}
+	let html = ''
+	for(let team in arr){
+		let cnt = arr[team][0]
+		let clr = arr[team][1]
+		if(!cnt){ continue }
+		// let cnt = pair[0]
+		// let clr = pair[1]
+		html += `<span style="color: ${clr}">${cnt}</span>`
+	}
+	teamsTab.innerHTML = html
 	
 }, 100)
 

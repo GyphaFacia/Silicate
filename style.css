@@ -72,21 +72,37 @@ body{
 	position: absolute;
 }
 
-.game-timer{
+.timer-tab, .teams-tab{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	pointer-events: none;
+	user-select: none;
+}
+
+.timer-tab{
 	position: absolute;
 	top: 30px;
 	left: 50%;
 	transform: translate(-50%, 0);
 	padding: 10px;
 	border-radius: 1vh;
-	color: #f05;
 	font-size: 55px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	pointer-events: none;
-	border: 5px solid #f05;
+	
 	opacity: 0.5;
+	border: 5px solid #f05;
+	color: #f05;
+}
+
+.teams-tab{
+	position: absolute;
+	left: 30px;
+	top: 30px;
+	border-radius: 1vh;
+	color: #f05;
+	font-size: 33px;
+	justify-content: flex-start;
 }
 
 
