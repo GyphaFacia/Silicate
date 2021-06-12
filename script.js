@@ -324,7 +324,12 @@ p1.allPerksTest()
 class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
 let p2 = new Player(Emerald, 2)
 p2.allPerksTest()
-p2.player()
+if(0){
+	p2.aiStart()
+}
+else{
+	p2.player()
+}
 
 
 

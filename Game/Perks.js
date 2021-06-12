@@ -183,7 +183,7 @@ class Perk {
 			}
 		}
 		if(!max.x && !max.y){
-			max = getRes().mul(0.5, 0.1)
+			max = getRes().mul(0.5, 0.25)
 		}
 		else{
 			max = max.mul(rad)
