@@ -297,6 +297,10 @@ class Silicate extends Ngon{
 const __MINSCALE = 15
 const __SPAWNLIMIT = 20
 const __GRAVITY = vec(0, 0.001)
+const __COOLDOWN_ELITE = 10*1000 //перк может перевернуть игру
+const __COOLDOWN_HARD = 7*1000 // сильный перк
+const __COOLDOWN_MID = 5*1000 // средний перкы
+const __COOLDOWN_LIGHT = 3*1000 // слабый перк
 
 // 888b     d888          d8b          
 // 8888b   d8888          Y8P          
@@ -324,10 +328,10 @@ class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
 let p2 = new Player(Emerald, 2)
 p2.allPerksTest()
 
-let mode = 'bb'
+let mode = 'pb'
 
 if(mode == 'pb'){
-	p1.aiStart()
+	p1.player()
 	p2.aiStart()
 }
 else if(mode == 'bb') {

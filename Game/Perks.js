@@ -276,11 +276,12 @@ function visGrid(mrx, fill = 0.1){
 // 888     Y8b.      Y8bd8P  888 
 // 88888888 "Y8888    Y88P   888 
 class Levi extends Perk{
-	optimalCast(){
-		this.aiBuff()
-	}
 	first(){
 		this.rad = __MINSCALE*5
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff()
 	}
 	callback(){
 		for(let ent of getCanvas().ents.slice()){
@@ -310,11 +311,12 @@ class Levi extends Perk{
 // Y88b  d88P Y88..88P 888  888  888 Y8b.     
 //  "Y8888P"   "Y88P"  888  888  888  "Y8888  
 class SpawnSome extends Perk{
-	optimalCast(){
-		this.aiSpawn()
-	}
 	first(){
 		this.rad = __MINSCALE*2.5
+		this.cooldown = __COOLDOWN_MID
+	}
+	optimalCast(){
+		this.aiSpawn()
 	}
 	callback(){
 		let cnt = this.disperce(1, 7)
@@ -338,11 +340,12 @@ class SpawnSome extends Perk{
 //                Y8b d88P 
 //                 "Y88P"  
 class SpawnBig extends Perk{
-	optimalCast(){
-		this.aiAttack()
-	}
 	first(){
 		this.rad = __MINSCALE*3
+		this.cooldown = __COOLDOWN_HARD
+	}
+	optimalCast(){
+		this.aiAttack()
 	}
 	callback(){
 		let e = new this.ent()
@@ -353,11 +356,12 @@ class SpawnBig extends Perk{
 }
 
 class Reproduce extends Perk{
-	optimalCast(){
-		this.aiBuff()
-	}
 	first(){
 		this.rad = __MINSCALE*4
+		this.cooldown = __COOLDOWN_HARD
+	}
+	optimalCast(){
+		this.aiBuff()
 	}
 	callback(){
 		let i = 0
@@ -393,11 +397,12 @@ class Reproduce extends Perk{
 //			  888                     
 // 			  888                     
 class Split extends Perk{
-	optimalCast(){
-		this.aiBuff(true)
-	}
 	first(){
 		this.rad = __MINSCALE*4.5
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff(true)
 	}
 	callback(){
 		let areaChild = __MINSCALE*__MINSCALE*Math.PI
@@ -434,11 +439,12 @@ class Split extends Perk{
 // Y88b  d88P 888    Y88..88P Y88b 888 d88P 
 //  "Y8888P88 888     "Y88P"   "Y8888888P"  
 class Grow extends Perk{
-	optimalCast(){
-		this.aiBuff(true)
-	}
 	first(){
 		this.rad = __MINSCALE*4
+		this.cooldown = __COOLDOWN_HARD
+	}
+	optimalCast(){
+		this.aiBuff(true)
 	}
 	callback(){
 		for(let ent of getCanvas().ents.slice()){
@@ -464,11 +470,12 @@ class Grow extends Perk{
 //                     888                                     
 //                     888                                     
 class Explode extends Perk {
-	optimalCast(){
-		this.aiBuff()
-	}
 	first(){
 		this.rad = __MINSCALE*3.3
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff()
 	}
 	callback() {
 		for(let ent of getCanvas().ents.slice()){
@@ -491,11 +498,12 @@ class Explode extends Perk {
 // 888  T88b  888  888 888  888 Y88b 888 
 // 888   T88b "Y888888 888  888  "Y88888 
 class Randomize extends Perk {
-	optimalCast(){
-		this.aiBuff()
-	}
 	first(){
 		this.rad = __MINSCALE*4
+		this.cooldown = __COOLDOWN_HARD
+	}
+	optimalCast(){
+		this.aiBuff()
 	}
 	callback() {
 		let min = getRes().x
@@ -532,11 +540,12 @@ class Randomize extends Perk {
 //.d88P"                         888      
 //88P"                           888      
 class Jump extends Perk {
-	optimalCast(){
-		this.aiBuff()
-	}
 	first(){
 		this.rad = __MINSCALE*5
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff()
 	}
 	callback() {
 		let i = 0
@@ -566,11 +575,12 @@ class Jump extends Perk {
 //  								888      
 //  								888      
 class Swap extends Perk {
-	optimalCast(){
-		this.aiBuff()
-	}
 	first(){
 		this.rad = __MINSCALE*10
+		this.cooldown = __COOLDOWN_MID
+	}
+	optimalCast(){
+		this.aiBuff()
 	}
 	callback() {
 		let arr = []
@@ -601,11 +611,12 @@ class Swap extends Perk {
 // Y88b. .d88P 888  888 888 Y88..88P 888  888 
 //  "Y88888P"  888  888 888  "Y88P"  888  888 
 class Union extends Perk {
-	optimalCast(){
-		this.aiBuff()
-	}
 	first(){
 		this.rad = __MINSCALE*4
+		this.cooldown = __COOLDOWN_HARD
+	}
+	optimalCast(){
+		this.aiBuff()
 	}
 	callback() {
 		let scl = 0
@@ -644,11 +655,12 @@ class Union extends Perk {
 // 		     888                   
 // 		     888                   
 class Spin extends Perk {
-	optimalCast(){
-		this.aiBuff(true)
-	}
 	first(){
 		this.rad = __MINSCALE*3
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff(true)
 	}
 	callback() {
 		let avel = this.disperce(0.5, 2)
@@ -675,11 +687,12 @@ class Spin extends Perk {
 // .d88P"                                     
 // 888P"                                       
 class Joker extends Perk{
-	optimalCast(){
-		this.aiDeBuff(true)
-	}
 	first(){
 		this.rad = __MINSCALE*2.5
+		this.cooldown = __COOLDOWN_ELITE
+	}
+	optimalCast(){
+		this.aiDeBuff(true)
 	}
 	callback() {
 		let aClass = null
@@ -723,11 +736,12 @@ class Joker extends Perk{
 // Y88b  d88P 888  888 888  888 888  888  888 Y8b.     888 
 //  "Y8888P"  888  888 "Y888888 888  888  888  "Y8888  888 
 class Chameleon extends Perk {
-	optimalCast(){
-		this.aiBuff()
-	}
 	first(){
 		this.rad = __MINSCALE*5
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff()
 	}
 	callback() {
 		let i = 0
