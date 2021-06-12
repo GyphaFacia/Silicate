@@ -105,9 +105,11 @@ class Perk {
 		}
 		
 		document.onkeyup = (e)=>{
-			for(let i = 0; i < getCanvas().perks.length; i++){
-				let perk = getCanvas().perks[i]
+			let perks = getCanvas().perks.filter(perk => perk.team == this.team)
+			for(let i = 0; i < perks.length; i++){
+				let perk = perks[i]
 				if(parseInt(e.key)-1 == i){
+					console.log(perk.player)
 					perk.pick()
 					getCanvas().canvas.onclick = (e)=>{
 						perk.apply()
@@ -699,29 +701,12 @@ class Joker extends Perk{
 		this.aiDeBuff(true)
 	}
 	callback() {
-		let aClass = null
-		let bClass = null
-		let aTeam = null
-		let bTeam = null
-		
-		for(let perk of getCanvas().perks){
-			if(!aClass){
-				aClass = perk.ent
-				aTeam = perk.team
-			}
-			else if(!bClass && perk.ent != aClass){
-				bClass = perk.ent
-				bTeam = perk.team
-			}
-		}
-		
 		for(let ent of getCanvas().ents.slice()){
 			if(!ent.isSilicate){continue}
 			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 			if(dist < this.rad){
-				let toggle = ent.team == aTeam
-				let e = toggle ? new bClass() : new aClass()
-				e.team = toggle ? bTeam : aTeam
+				let e = new this.ent()
+				e.team = this.team
 				e.setPos(ent.getPos())
 				e.setScale(ent.getScale())
 				e.setAng(ent.getAng())

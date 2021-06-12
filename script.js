@@ -321,6 +321,7 @@ setBounds()
 // let l = new Landscape(200, 255, -1.5, 1, 9, 0.1)
 let l = new Landscape(500, 255, 1.1, 1, 11, 0.01)
 l.setPos(getRes().mul(0.5, 0.85))
+
 class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
 let p1 = new Player(Ruby, 1)
 p1.allPerksTest()
@@ -329,70 +330,13 @@ class Emerald extends Silicate{second(){this.setColor(HslClr(85, 100, 50))}}
 let p2 = new Player(Emerald, 2)
 p2.allPerksTest()
 
-let p1mode = 'player'
-let p2mode = 'hell'
+class Gold extends Silicate{second(){this.setColor(Clr(255, 225, 0))}}
+let p3 = new Player(Gold, 3)
+p3.allPerksTest()
 
-switch (p1mode) {
-	case 'easy':
-		p1.botEasy()
-		break
-	case 'hard':
-		p1.botHard()
-		break
-	case 'hell':
-		p1.botHell()
-		break
-	case 'player':
-		p1.playerStart()
-		break
-}
-
-switch (p2mode) {
-	case 'easy':
-		p2.botEasy()
-		break
-	case 'hard':
-		p2.botHard()
-		break
-	case 'hell':
-		p2.botHell()
-		break
-	case 'player':
-		p2.playerStart()
-		break
-}
-
-function checkWinner(){
-	let a = 0
-	let b = 0
-	let aName, bName
-	for(let ent of getCanvas().ents){
-		if(!ent.isSilicate){ continue }
-		if(ent.team == 1){
-			a += 1 
-			aClass = ent.constructor.name
-		}
-		else{
-			b += 1
-			bClass = ent.constructor.name
-		}
-	}
-	if(!a){
-		alert(`Player ${bClass} wins`)
-		document.location.reload()
-	}
-	if(!b){
-		alert(`Player ${aClass} wins`)
-		document.location.reload()
-	}
-	if(a && b){
-		setTimeout(checkWinner, 255)
-	}
-	console.log(a,b);
-}
-
-checkWinner()
-
+p1.botEasy()
+p2.playerStart()
+p3.botEasy()
 
 
 

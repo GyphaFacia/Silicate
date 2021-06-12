@@ -15,15 +15,20 @@ class Player {
 		this.perks = []
 		this.team = team
 		this.ai = true
+		this.lost = false
+		
+		this.parent = getCanvas()
+		if(!this.parent.players){
+			this.parent.players = []
+		}
+		this.parent.players.push(this)
 	}
 	
 	addPerk(perk){
 		perk.team = this.team
 		perk.ent = this.ent
 		this.perks.push(perk)
-		if(!this.ai){
-			perk.render()
-		}
+		perk.player = this
 		return perk
 	}
 	
@@ -45,7 +50,7 @@ class Player {
 		this.addPerk(perkDict('SpawnBig'))
 		this.addPerk(perkDict('Jump'))
 		this.addPerk(perkDict('Grow'))
-		this.addPerk(perkDict('Joker'))
+		// this.addPerk(perkDict('Joker'))
 		// this.addPerk(perkDict('Reproduce'))
 		// this.addPerk(perkDict('Union'))
 		// this.addPerk(perkDict('Levi'))
@@ -58,7 +63,14 @@ class Player {
 	}
 	
 	start(){
-		this.perks[0].applyAt(getRes().mul(0.1 + 0.8*(this.team-1), 0.1))
+		let x = 0.5
+		for (let i = 0; i < this.parent.players.length; i++) {
+			if(this.parent.players[i] == this){
+				x = i + 0.5
+			}
+		}
+		x = x / this.parent.players.length
+		this.perks[0].applyAt(getRes().mul(x, 0.1))
 		for(let perk of this.perks){
 			perk.setCooldown()
 		}
@@ -112,11 +124,15 @@ class Player {
 		} catch (e) {
 			console.error(e)
 		} finally {
-			setTimeout(()=>{
+			this.tout = setTimeout(()=>{
 				this.aiUpdate()
 			}, randint(this.uptimeMin, this.uptimeMax))
 		}
 		
+	}
+	
+	checkLost(){
+		for(let i = 0)
 	}
 }
 
