@@ -234,7 +234,7 @@ function testCircle(pos, rad = 100, temporary = false){
 		getCanvas().ctx.closePath()
 	}
 	else{
-		let c = new Circle()
+		let c = new DashedCircle()
 		c.setPos(pos)
 		c.setScale(vec(rad))
 		c.setHollow()

@@ -248,6 +248,37 @@ class Circle extends Entity {
 
 
 
+// 8888888b.                    888                    888 
+// 888  "Y88b                   888                    888 
+// 888    888                   888                    888 
+// 888    888  8888b.  .d8888b  88888b.   .d88b.   .d88888 
+// 888    888     "88b 88K      888 "88b d8P  Y8b d88" 888 
+// 888    888 .d888888 "Y8888b. 888  888 88888888 888  888 
+// 888  .d88P 888  888      X88 888  888 Y8b.     Y88b 888 
+// 8888888P"  "Y888888  88888P' 888  888  "Y8888   "Y88888 
+class DashedCircle extends Circle {
+	first(){
+		this.dashes = 7
+		this.setWidth(3)
+	}
+	draw(){
+		this.ctx.strokeStyle = 'white'
+		this.ctx.lineWidth = 5
+		let ang = 0
+		let n = this.dashes
+		for(let i = 0; i < n; i++){
+			this.drawStart()
+			this.ctx.arc(0, 0, this.getScale().x, ang, ang+Math.PI/n)
+			this.drawEnd()
+			ang += 2*Math.PI/n
+		}
+	}
+}
+
+
+
+
+
 // 888b    888                            
 // 8888b   888                            
 // 88888b  888                            
