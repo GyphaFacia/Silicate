@@ -42,6 +42,10 @@ class Perk {
 		if(this.oncooldown){
 			return false
 		}
+		if(!this.player.cnt()){
+			this.setCooldown()
+			return false
+		}
 		
 		for(let perk of getCanvas().perks){
 			perk.cancel()
@@ -138,7 +142,9 @@ class Perk {
 	
 	draw(){
 		if(this.rendered){
-			let clipY = this.oncooldown ? (this.oncooldown - time())*1000/this.cooldown*10 : 10
+			let clipY = this.oncooldown ? (this.oncooldown - time())*1000/this.cooldown : 0
+			clipY = 1 - clipY
+			clipY *= 10
 			this.cdoverlay.style.clip = `rect(${clipY}vh, auto, 10vh, auto)`
 		}
 		

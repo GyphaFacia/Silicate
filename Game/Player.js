@@ -15,7 +15,6 @@ class Player {
 		this.perks = []
 		this.team = team
 		this.ai = true
-		this.lost = false
 		
 		this.parent = getCanvas()
 		if(!this.parent.players){
@@ -50,7 +49,7 @@ class Player {
 		this.addPerk(perkDict('SpawnBig'))
 		this.addPerk(perkDict('Jump'))
 		this.addPerk(perkDict('Grow'))
-		// this.addPerk(perkDict('Joker'))
+		this.addPerk(perkDict('Joker'))
 		// this.addPerk(perkDict('Reproduce'))
 		// this.addPerk(perkDict('Union'))
 		// this.addPerk(perkDict('Levi'))
@@ -108,6 +107,10 @@ class Player {
 	}
 	
 	aiUpdate(){
+		if(!this.cnt()){
+			return null
+		}
+		
 		try {
 			let perks = []
 			for(let perk of this.perks){
@@ -131,8 +134,15 @@ class Player {
 		
 	}
 	
-	checkLost(){
-		for(let i = 0)
+	cnt(){
+		let cnt = 0
+		for(let ent of getCanvas().ents){
+			if(!ent.isSilicate){ continue }
+			if(ent.team == this.team){
+				cnt += 1
+			}
+		}
+		return cnt
 	}
 }
 
