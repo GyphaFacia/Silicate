@@ -84,18 +84,6 @@ class Player {
 		return this
 	}
 	
-	botEasy(){
-		this.aiStart(3000, 6000)
-	}
-	
-	botHard(){
-		this.aiStart(1000, 2000)
-	}
-	
-	botHell(){
-		this.aiStart(10, 100)
-	}
-	
 	aiStart(uptimeMin = 1000, uptimeMax = 2000){
 		this.ai = true
 		this.uptimeMin = uptimeMin
@@ -107,22 +95,21 @@ class Player {
 	}
 	
 	aiUpdate(){
-		if(!this.cnt()){
-			return null
-		}
 		
 		try {
-			let perks = []
-			for(let perk of this.perks){
-				perks.push(perk)
-			}
-			for(let i = 0; i < perks.length; i++){
-				let perk = randelt(perks)
-				if(perk.oncooldown){ 
-					continue 
+			if(this.gameOn()){
+				let perks = []
+				for(let perk of this.perks){
+					perks.push(perk)
 				}
-				perk.optimalCast()
-				break
+				for(let i = 0; i < perks.length; i++){
+					let perk = randelt(perks)
+					if(perk.oncooldown){ 
+						continue 
+					}
+					perk.optimalCast()
+					break
+				}
 			}
 		} catch (e) {
 			console.error(e)
@@ -134,15 +121,35 @@ class Player {
 		
 	}
 	
-	cnt(){
-		let cnt = 0
+	gameOn(){
+		let me = 0
+		let other = 0
 		for(let ent of getCanvas().ents){
 			if(!ent.isSilicate){ continue }
 			if(ent.team == this.team){
-				cnt += 1
+				me += 1
+			}
+			else{
+				other += 1 
 			}
 		}
-		return cnt
+		return me*other
+	}
+	
+	player(){
+		this.playerStart()
+	}
+	
+	botEasy(){
+		this.aiStart(3000, 6000)
+	}
+	
+	botHard(){
+		this.aiStart(1000, 2000)
+	}
+	
+	botHell(){
+		this.aiStart(10, 100)
 	}
 }
 

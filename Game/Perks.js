@@ -42,7 +42,7 @@ class Perk {
 		if(this.oncooldown){
 			return false
 		}
-		if(!this.player.cnt()){
+		if(!this.player.gameOn()){
 			this.setCooldown()
 			return false
 		}
@@ -113,7 +113,6 @@ class Perk {
 			for(let i = 0; i < perks.length; i++){
 				let perk = perks[i]
 				if(parseInt(e.key)-1 == i){
-					console.log(perk.player)
 					perk.pick()
 					getCanvas().canvas.onclick = (e)=>{
 						perk.apply()
@@ -749,7 +748,6 @@ class Chameleon extends Perk {
 				e.setColor(ent.getColor().setA(0.25))
 				e.setOColor(ent.getOColor().setA(0.25))
 				setTimeout(()=>{
-					console.log(e.getColor());
 					e.setColor(ent.getColor().setA(1))
 					e.setOColor(ent.getOColor().setA(1))
 				}, this.disperce(1000, 5000));

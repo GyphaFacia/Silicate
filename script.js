@@ -335,8 +335,8 @@ let p3 = new Player(Gold, 3)
 p3.allPerksTest()
 
 p1.botEasy()
-p2.playerStart()
-p3.botEasy()
+p2.botEasy()
+p3.player()
 
 
 
