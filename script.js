@@ -282,13 +282,12 @@ class Water extends Entity {
 // 	    "888 888 888 888 888      .d888888 888   88888888 
 // Y88b  d88P 888 888 888 Y88b.    888  888 Y88b. Y8b.     
 //  "Y8888P"  888 888 888  "Y8888P "Y888888  "Y888 "Y8888  
-function shatter(ent, flakescl = __MINSCALE/3, maxcnt = 50, life = 500){
-	maxcnt = maxcnt * 
+function shatter(ent, flakescl = __MINSCALE/3, maxcnt = 33, life = 500){
 	let rad = ent.getScale().x
 	let square = rad*rad
 	let n = square / flakescl / flakescl
 	n = n > maxcnt ? maxcnt : n
-	for(let i = 0; i < n; i++){
+	for(let i = 0; i < n * perf(); i++){
 		let p = new Ngon(randint(4, 6)).addBody()
 		p.setPos(ent.getPos())
 		p.setWidth(1)

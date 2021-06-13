@@ -22,7 +22,7 @@ class Player {
 		}
 		this.parent.players.push(this)
 		
-		setInterval(()=>{this.update()}, 1000)
+		setInterval(()=>{this.update()}, 3000)
 	}
 	
 	update(){
@@ -39,6 +39,7 @@ class Player {
 	}
 	
 	passiveReproduction(ent){
+		if(!perf()){return null}
 		let e = new this.ent()
 		e.team = this.team
 		e.setPos(ent.getPos().add(randvecX(ent.getScale().x/2)))
@@ -46,6 +47,7 @@ class Player {
 		e.setAng(ent.getAng())
 		e.setColor(ent.getColor())
 		e.setOColor(ent.getOColor())
+		e.setVel(vec(random(-0.25, 0.25), -1).mul(10))
 	}
 	
 	addPerk(perk){
@@ -97,6 +99,7 @@ class Player {
 		x = x / this.parent.players.length
 		this.perks[0].applyAt(getRes().mul(x, 0.1))
 		for(let perk of this.perks){
+			// perk.cooldown = 10
 			perk.setCooldown()
 		}
 	}

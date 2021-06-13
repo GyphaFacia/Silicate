@@ -29,9 +29,16 @@ function mousedown(){
 	return getCanvas().mousedown
 }
 
-function perf(percent = 100, max = 700){
-	let load = getCanvas().ents.length / max * 100
-	return load > percent
+function load(max = 500){
+	let load = getCanvas().ents.length / max
+	return load
+}
+
+function perf(max = 500){
+	let res = 1 - load(max)
+	res = res < 0 ? 0 : res
+	res = res > 1 ? 1 : res
+	return res
 }
 
 class Canvas {

@@ -181,7 +181,9 @@ class Perk {
 			if(ent.team == this.team && team != 'my'){continue}
 			let v = ent.getPos().div(rad).round()
 			try {
-				mrx[v.x][v.y] += considerScale ? ent.getScale().x : 1
+				let addition = considerScale ? ent.getScale().x : 1
+				addition *= random()
+				mrx[v.x][v.y] += addition
 			} catch (e) {}
 		}
 		
