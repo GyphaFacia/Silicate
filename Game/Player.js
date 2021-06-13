@@ -47,9 +47,11 @@ class Player {
 	allPerksTest(){
 		this.addPerk(perkDict('SpawnSome'))
 		this.addPerk(perkDict('SpawnBig'))
-		this.addPerk(perkDict('Jump'))
+		this.addPerk(perkDict('Left'))
+		this.addPerk(perkDict('Right'))
 		this.addPerk(perkDict('Grow'))
 		this.addPerk(perkDict('Joker'))
+		// this.addPerk(perkDict('Jump'))
 		// this.addPerk(perkDict('Reproduce'))
 		// this.addPerk(perkDict('Union'))
 		// this.addPerk(perkDict('Levi'))

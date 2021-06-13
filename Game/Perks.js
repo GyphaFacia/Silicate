@@ -756,6 +756,48 @@ class Chameleon extends Perk {
 	}
 }
 
+class Right extends Perk {
+	first(){
+		this.rad = __MINSCALE*4
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff()
+	}
+	callback() {
+		let i = 0
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				ent.applyForce(vec(this.disperce(0.05, 0.1), 0.01).mul(ent.getMass()))
+			}
+		}
+	}
+}
+
+class Left extends Perk {
+	first(){
+		this.rad = __MINSCALE*4
+		this.cooldown = __COOLDOWN_LIGHT
+	}
+	optimalCast(){
+		this.aiBuff()
+	}
+	callback() {
+		let i = 0
+		for(let ent of getCanvas().ents.slice()){
+			if(!ent.isSilicate){continue}
+			if(this.team && ent.team && ent.team != this.team){ continue }
+			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
+			if(dist < this.rad){
+				ent.applyForce(vec(-this.disperce(0.05, 0.1), 0.01).mul(ent.getMass()))
+			}
+		}
+	}
+}
+
 
 // 8888888b.  d8b          888    
 // 888  "Y88b Y8P          888    
@@ -765,7 +807,7 @@ class Chameleon extends Perk {
 // 888    888 888 888      888    
 // 888  .d88P 888 Y88b.    Y88b.  
 // 8888888P"  888  "Y8888P  "Y888 
-function perkDict(name){
+function allPerks(){
 	let dict = {		
 		'Explode': Explode,
 		'Grow': Grow,
@@ -781,8 +823,14 @@ function perkDict(name){
 		'Union': Union,
 		'Joker': Joker,
 		'Chameleon': Chameleon,
+		'Left': Left,
+		'Right': Right,
 	}
-	return new dict[name]()
+	return dict
+}
+
+function perkDict(name){
+	return new (allPerks()[name])()
 }
 
 
