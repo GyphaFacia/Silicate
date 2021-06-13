@@ -99,7 +99,9 @@ class Player {
 		x = x / this.parent.players.length
 		this.perks[0].applyAt(getRes().mul(x, 0.1))
 		for(let perk of this.perks){
-			// perk.cooldown = 10
+			if(__TESTMODE){
+				perk.cooldown = 100
+			}
 			perk.setCooldown()
 		}
 	}

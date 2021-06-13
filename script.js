@@ -108,8 +108,8 @@ class Landscape extends Poly {
 		this.setStatic()
 		// this.setColor(HslClr(75, 20, 70))
 		// this.setOColor(HslClr(75, 75, 50))
-		this.setColor(HslClr(45, 40, 80, 0.9))
-		this.setOColor(HslClr(45, 40, 60))
+		this.setColor(HslClr(45, 40, 60))
+		this.setOColor(HslClr(45, 40, 70))
 		this.setWidth(5)
 	}
 	update(){
@@ -130,6 +130,26 @@ class Landscape extends Poly {
 			}
 		}
 		return [v.y < checkPos.y, v]
+	}
+	
+	
+	draw(){
+		let v = this.points
+		this.drawStart()
+		this.ctx.moveTo(v[0].x, v[0].y)
+		for (let i = 1; i <= v.length - 1; i ++) {
+			this.ctx.lineTo(v[i].x, v[i].y)
+		}
+		var gradient = this.ctx.createLinearGradient(0, getCenter().y, 0, getRes().y)
+		gradient.addColorStop(0.25, this.getColor().val())
+		gradient.addColorStop(0.75, '#000')
+		this.ctx.lineWidth = this.getWidth()
+		this.ctx.fillStyle = gradient
+		this.ctx.strokeStyle = this.getOColor().val()
+		this.ctx.fill()
+		this.ctx.stroke()
+		this.ctx.closePath()
+		this.ctx.restore()
 	}
 }
 
@@ -346,6 +366,8 @@ const __COOLDOWN_ELITE = 10*1000 // элитный перк
 const __COOLDOWN_HARD = 7*1000 // сильный перк
 const __COOLDOWN_MID = 5*1000 // средний перкы
 const __COOLDOWN_LIGHT = 3*1000 // слабый перк
+
+const __TESTMODE = false
 
 // 888b     d888          d8b          
 // 8888b   d8888          Y8P          
