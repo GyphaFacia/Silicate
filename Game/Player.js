@@ -96,7 +96,7 @@ class Player {
 	
 	aiUpdate(){
 		try {
-			if(this.gameOn()){
+			if(this.gameOn() && !document.hidden){
 				let perks = []
 				for(let perk of this.perks){
 					perks.push(perk)

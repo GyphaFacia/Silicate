@@ -139,6 +139,7 @@ class Canvas {
 	}
 	
 	draw(){
+		if(document.hidden){ return null }
 		this.clearCanvas()
 		this.update()
 		for(let ent of this.ents){

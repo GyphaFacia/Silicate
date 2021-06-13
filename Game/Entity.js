@@ -349,7 +349,7 @@ class Ngon extends Entity {
 // 			    				 "Y88P"  
 class Cimg extends Entity{
 	first(){
-		this.setImg()
+		this.setImg(arguments[0])
 	}
 	setImg(img){
 		let image = new Image(800, 800)
