@@ -292,11 +292,11 @@ class SpawnSome extends Perk{
 		this.aiSpawn()
 	}
 	callback(){
-		let cnt = this.disperce(1, 12)
+		let cnt = this.disperce(1, 6)
 		for(let i = 0; i < cnt; i++){
 			let e = new this.ent()
 			e.team = this.team
-			e.setPos(cursor().add(angvecX(360/cnt*i+time(100), this.rad*(cnt > 1))))
+			e.setPos(cursor().add(angvecX(360/cnt*i, this.rad*(cnt > 1))))
 		}
 	}
 }

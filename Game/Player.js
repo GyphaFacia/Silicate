@@ -47,7 +47,7 @@ class Player {
 	allPerksTest(){
 		this.addPerk(perkDict('SpawnSome'))
 		this.addPerk(perkDict('SpawnBig'))
-		this.addPerk(perkDict('Explode'))
+		// this.addPerk(perkDict('Explode'))
 		this.addPerk(perkDict('Grow'))
 		this.addPerk(perkDict('Joker'))
 		// this.addPerk(perkDict('Jump'))

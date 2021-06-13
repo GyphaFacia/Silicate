@@ -52,6 +52,22 @@ function setBounds(width = 500, outline = 0){
 class Landscape extends Poly {
 	addThisToCanvas(){
 		this.parent.addEnt(this, -1)
+		
+	}
+	
+	getCurvePoints(){
+		if(!this.curvePoints){
+			this.curvePoints = []
+			for(let body of this.body.parts){
+				for(let point of body.vertices){
+					let v = vec(point.x, point.y)
+					if(v.y < getRes().y){
+						this.curvePoints.push(v)
+					}
+				}
+			}
+		}
+		return this.curvePoints
 	}
 	
 	first(n = 200, wave = 255, ...args){
@@ -76,6 +92,7 @@ class Landscape extends Poly {
 		
 		this.points.push(vec(0, res.y))
 		this.points.push(vec(0, res.y/2))
+		
 		for(let i = 0; i < n; i++){
 			let offy = harmony(i/n, ...args)*wave
 			let v = vec(res.x*i/n, res.y/2 - offy)
@@ -91,9 +108,30 @@ class Landscape extends Poly {
 		this.setStatic()
 		// this.setColor(HslClr(75, 20, 70))
 		// this.setOColor(HslClr(75, 75, 50))
-		this.setColor(HslClr(45, 40, 80))
+		this.setColor(HslClr(45, 40, 80, 0.9))
 		this.setOColor(HslClr(45, 40, 60))
 		this.setWidth(5)
+	}
+	update(){
+		for(let ent of getCanvas().ents){
+			if(!ent.isSilicate){ continue }
+			let pair = this.pointInMe(ent.getPos())
+			let oob = pair[0]
+			let fix = pair[1]
+			if(oob){
+				ent.setPos(fix.sub(ent.getScale().mul(0, 1)))
+			}
+		}
+	}
+	
+	pointInMe(checkPos){
+		let v = vec(0)
+		for(let point of this.getCurvePoints()){
+			if(Math.abs(point.x - checkPos.x) < Math.abs(v.x - checkPos.x)){
+				v = point
+			}
+		}
+		return [v.y < checkPos.y, v]
 	}
 }
 
