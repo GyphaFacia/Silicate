@@ -27,6 +27,9 @@ class Perk {
 		this.oncooldown = 0
 		this.team = 0
 		
+		this.castpos = vec(0)
+		this.castscale = 0
+		
 		this.first()
 	}
 
@@ -36,6 +39,28 @@ class Perk {
 	
 	disperce(min, max){
 		return min + (max - min)/4*(this.level - 1)
+	}
+	
+	castDrawStart(){
+		this.castpos = cursor()
+		this.castscale = this.rad
+	}
+	castDraw(){
+		if(!this.castscale){ return null }
+		this.castscale -= 2
+		this.castscale = this.castscale <= 0 ? 0 : this.castscale
+		
+		let rad = this.rad - this.castscale
+		rad *= 2
+		
+		this.ctx.lineWidth = 5
+		let n = 3
+		for(let i = 0; i < n; i++){
+			this.ctx.strokeStyle = '#fff' + parseInt(7/n*(n-i))
+			this.ctx.beginPath()
+			this.ctx.arc(this.castpos.x, this.castpos.y, rad/n*(i+1), 0, 2*Math.PI)
+			this.ctx.stroke()
+		}
 	}
 	
 	pick(){
@@ -80,16 +105,17 @@ class Perk {
 			this.cancel()
 			this.callback(this)
 			this.setCooldown()
+			this.castDrawStart()
 		}
 	}
 	
-	// Для интерфейсов врагов. Применить скилл в точке
 	applyAt(pos = null){
 		if(this.oncooldown){ return null }
 		pos = pos == null ? getRes().mul(0.5, 0.1) : pos
 		let bup = cursor()
 		getCanvas().cursor = pos
 		this.callback(this)
+		this.castDrawStart()
 		getCanvas().cursor = bup
 		this.setCooldown()
 		testCircle(pos, this.rad)
@@ -159,6 +185,8 @@ class Perk {
 				ang += 2*Math.PI/n
 			}
 		}
+		
+		this.castDraw()
 	}
 	
 	// Ai skill position calculations
