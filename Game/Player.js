@@ -95,7 +95,6 @@ class Player {
 	}
 	
 	aiUpdate(){
-		
 		try {
 			if(this.gameOn()){
 				let perks = []
@@ -149,7 +148,7 @@ class Player {
 	}
 	
 	botHell(){
-		this.aiStart(10, 100)
+		this.aiStart(255, 255)
 	}
 }
 

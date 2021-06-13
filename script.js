@@ -291,6 +291,39 @@ class Silicate extends Ngon{
 }
 
 
+class Moon extends Cimg {
+	first(){
+		// this.setScale(vec(getRes().y/10))
+		// this.setColor(Clr(231, 232, 171).modL(5))
+		// this.setOColor(Clr(125))
+		// this.setWidth(5)
+		// this.setFilter('blur(5px)')
+		this.setImg('./src/img/moon.png')
+		this.setScale(vec(255))
+		this.setFilter(`
+			saturate(10)
+			brightness(0.6)
+			contrast(1.5) 
+			hue-rotate(-45deg)
+			blur(2px)
+			brightness(0.5)
+			drop-shadow(0 0 15px crimson)
+			drop-shadow(0 0 100px black)
+			drop-shadow(0 0 100px black)
+		`)
+	}
+	
+	update(){
+		let rad = getRes().len()/4
+		let ang = time(10)%360
+		let pos1 = getCenter().add(angvecX(ang, rad))
+		let pos2 = getCenter().add(getRes().mul(0.5).mul(angvec(ang)))
+		let pos = pos1.mul(0.25).add(pos2.mul(0.75))
+		this.setPos(pos)
+		this.setAng(ang)
+	}
+}
+
 
 
 
@@ -306,7 +339,7 @@ const __MINSCALE = 10
 const __MAXSCALE = 125
 const __SPAWNLIMIT = 20
 const __GRAVITY = vec(0, 0.001)
-const __COOLDOWN_ELITE = 10*1000 //перк может перевернуть игру
+const __COOLDOWN_ELITE = 10*1000 // элитный перк
 const __COOLDOWN_HARD = 7*1000 // сильный перк
 const __COOLDOWN_MID = 5*1000 // средний перкы
 const __COOLDOWN_LIGHT = 3*1000 // слабый перк
@@ -328,8 +361,10 @@ setBounds()
 // w.setScale(getRes().mul(1.35))
 // let l = new Landscape(200, 255, -1.5, 1, 9, 0.1)
 let l = new Landscape(255, 125, 1.5, 1, 11, 0.1, 7, 0.1)
-l.setPos(getRes().mul(0.5, 0.85))
+l.setPos(getRes().mul(0.5, 1))
 l.offy = -15
+
+let m = new Moon()
 
 class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
 let p1 = new Player(Ruby, 1)
@@ -343,7 +378,7 @@ class Gold extends Silicate{second(){this.setColor(Clr(255, 225, 0))}}
 let p3 = new Player(Gold, 3)
 p3.allPerksTest()
 
-p1.botHard()
+p1.botEasy()
 p2.botEasy()
 p3.player()
 

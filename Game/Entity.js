@@ -336,6 +336,43 @@ class Ngon extends Entity {
 
 
 
+//  .d8888b.  d8b                        
+// d88P  Y88b Y8P                        
+// 888    888                            
+// 888        888 88888b.d88b.   .d88b.  
+// 888        888 888 "888 "88b d88P"88b 
+// 888    888 888 888  888  888 888  888 
+// Y88b  d88P 888 888  888  888 Y88b 888 
+//  "Y8888P"  888 888  888  888  "Y88888 
+// 	     							 888 
+// 		    					Y8b d88P 
+// 			    				 "Y88P"  
+class Cimg extends Entity{
+	first(){
+		this.setImg()
+	}
+	setImg(img){
+		let image = new Image(800, 800)
+		image.src = img
+		this.img = image
+	}
+	getImg(){return this.img}
+	
+	draw(){
+		let w = this.getImg().naturalWidth
+		let h = this.getImg().naturalHeight
+		let ratio = w>h ? w/h : h/w
+		w = this.getScale().x
+		h = this.getScale().y
+		w /= ratio
+		this.drawStart()
+		this.ctx.drawImage(this.img, -w/2, -h/2, w, h)
+		this.drawEnd()
+	}
+}
+
+
+
 // 8888888b.          888          
 // 888   Y88b         888          
 // 888    888         888          

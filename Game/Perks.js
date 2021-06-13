@@ -292,7 +292,7 @@ class SpawnSome extends Perk{
 		this.aiSpawn()
 	}
 	callback(){
-		let cnt = this.disperce(1, 7)
+		let cnt = this.disperce(1, 12)
 		for(let i = 0; i < cnt; i++){
 			let e = new this.ent()
 			e.team = this.team
