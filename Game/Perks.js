@@ -823,8 +823,6 @@ function allPerks(){
 		'Union': Union,
 		'Joker': Joker,
 		'Chameleon': Chameleon,
-		'Left': Left,
-		'Right': Right,
 	}
 	return dict
 }
