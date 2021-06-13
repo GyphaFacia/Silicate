@@ -291,39 +291,6 @@ class Silicate extends Ngon{
 }
 
 
-class Moon extends Cimg {
-	first(){
-		// this.setScale(vec(getRes().y/10))
-		// this.setColor(Clr(231, 232, 171).modL(5))
-		// this.setOColor(Clr(125))
-		// this.setWidth(5)
-		// this.setFilter('blur(5px)')
-		this.setImg('./src/img/moon.png')
-		this.setScale(vec(255))
-		this.setFilter(`
-			saturate(10)
-			brightness(0.6)
-			contrast(1.5) 
-			hue-rotate(-45deg)
-			blur(2px)
-			brightness(0.5)
-			drop-shadow(0 0 15px crimson)
-			drop-shadow(0 0 100px black)
-			drop-shadow(0 0 100px black)
-		`)
-	}
-	
-	update(){
-		let rad = getRes().len()/4
-		let ang = time(10)%360
-		let pos1 = getCenter().add(angvecX(ang, rad))
-		let pos2 = getCenter().add(getRes().mul(0.5).mul(angvec(ang)))
-		let pos = pos1.mul(0.25).add(pos2.mul(0.75))
-		this.setPos(pos)
-		this.setAng(ang)
-	}
-}
-
 
 
 
@@ -363,8 +330,6 @@ setBounds()
 let l = new Landscape(255, 125, 1.5, 1, 11, 0.1, 7, 0.1)
 l.setPos(getRes().mul(0.5, 1))
 l.offy = -15
-
-let m = new Moon()
 
 class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
 let p1 = new Player(Ruby, 1)
