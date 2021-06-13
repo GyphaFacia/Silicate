@@ -362,10 +362,17 @@ setBounds()
 // let w = new Water()
 // w.setPos(getRes().mul(0.5, 1.45))
 // w.setScale(getRes().mul(1.35))
-// let l = new Landscape(200, 255, -1.5, 1, 9, 0.1)
+
 let l = new Landscape(255, 125, 1.5, 1, 11, 0.1, 7, 0.1)
 l.setPos(getRes().mul(0.5, 1))
 l.offy = -15
+
+// let floor = new Entity()
+// floor.addBody()
+// floor.setStatic()
+// floor.setPos(getRes().mul(0.5, 1))
+// floor.setScale(getRes().mul(1, 0.5))
+
 
 class Ruby extends Silicate{second(){this.setColor(HslClr(-20, 100, 50))}}
 let p1 = new Player(Ruby, 1)

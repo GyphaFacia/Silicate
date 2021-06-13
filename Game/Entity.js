@@ -304,7 +304,7 @@ class Ngon extends Entity {
 			this.updatebody = ()=>{}
 		}
 		let pos = this.getPos()
-		let rad = this.getScale().x - this.getWidth()/2
+		let rad = this.getScale().x
 		this.body = this.parent.Bodies.polygon(pos.x, pos.y, this.getSides(), rad)
 		this.parent.Composite.add(this.parent.engine.world, this.body)
 		this.body.renderelt = this
