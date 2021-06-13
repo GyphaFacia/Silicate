@@ -176,6 +176,10 @@ class Player {
 		this.aiStart(3000, 6000)
 	}
 	
+	botMed(){
+		this.aiStart(2000, 4000)
+	}
+	
 	botHard(){
 		this.aiStart(1000, 2000)
 	}

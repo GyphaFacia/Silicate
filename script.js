@@ -386,8 +386,8 @@ class Gold extends Silicate{second(){this.setColor(Clr(255, 225, 0))}}
 let p3 = new Player(Gold, 3)
 p3.allPerksTest()
 
-p1.botHard()
-p2.botHard()
+p1.botMed()
+p2.botEasy()
 p3.player()
 
 let teamsTab = addElement('teams-tab', 'body')

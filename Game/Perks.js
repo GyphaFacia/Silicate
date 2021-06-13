@@ -212,13 +212,13 @@ class Perk {
 	
 	aiSpawn(considerScale = false){
 		let pos = this.getMaxDence('my', considerScale)
-		pos = pos.sub(0, this.rad*3)
+		pos = pos.mul(1, 0).add(this.rad*2)
 		this.applyAt(pos)
 	}
 	
 	aiAttack(considerScale = false){
 		let pos = this.getMaxDence('other', considerScale)
-		pos = pos.sub(0, this.rad*5)
+		pos = pos.mul(1, 0).add(this.rad*2)
 		this.applyAt(pos)
 	}
 	
