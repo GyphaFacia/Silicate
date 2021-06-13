@@ -47,9 +47,11 @@ class Player {
 	allPerksTest(){
 		this.addPerk(perkDict('SpawnSome'))
 		this.addPerk(perkDict('SpawnBig'))
-		// this.addPerk(perkDict('Explode'))
+		this.addPerk(perkDict('Swap'))
 		this.addPerk(perkDict('Grow'))
+		this.addPerk(perkDict('Kill'))
 		this.addPerk(perkDict('Joker'))
+		// this.addPerk(perkDict('Explode'))
 		// this.addPerk(perkDict('Jump'))
 		// this.addPerk(perkDict('Reproduce'))
 		// this.addPerk(perkDict('Union'))
@@ -57,7 +59,6 @@ class Player {
 		// this.addPerk(perkDict('Spin'))
 		// this.addPerk(perkDict('Randomize'))
 		// this.addPerk(perkDict('Split'))
-		// this.addPerk(perkDict('Swap'))
 		// this.addPerk(perkDict('Chameleon'))
 	}
 	

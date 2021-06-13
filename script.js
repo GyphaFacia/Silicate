@@ -115,9 +115,7 @@ class Landscape extends Poly {
 	update(){
 		for(let ent of getCanvas().ents){
 			if(!ent.isSilicate){ continue }
-			let pair = this.pointInMe(ent.getPos())
-			let oob = pair[0]
-			let fix = pair[1]
+			let [oob, fix] = this.pointInMe(ent.getPos())
 			if(oob){
 				ent.setPos(fix.sub(ent.getScale().mul(0, 1)))
 			}

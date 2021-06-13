@@ -564,15 +564,10 @@ class Swap extends Perk {
 			if(this.team && ent.team && ent.team != this.team){ continue }
 			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 			if(dist < this.rad){
-				arr.push(ent)
+				let spos = ent.getPos().sub(cursor())
+				spos = spos.mul(-2, 0)
+				ent.setPos(ent.getPos().add(spos))
 			}
-		}
-		
-		for (var i = 0; i < arr.length/2; i++){
-			let j = arr.length-i-1
-			let temp = arr[i].getPos()
-			arr[i].setPos(arr[j].getPos())
-			arr[j].setPos(temp)
 		}
 	}
 }
@@ -756,43 +751,30 @@ class Chameleon extends Perk {
 	}
 }
 
-class Right extends Perk {
+// 888    d8P  d8b 888 888 
+// 888   d8P   Y8P 888 888 
+// 888  d8P        888 888 
+// 888d88K     888 888 888 
+// 8888888b    888 888 888 
+// 888  Y88b   888 888 888 
+// 888   Y88b  888 888 888 
+// 888    Y88b 888 888 888 
+class Kill extends Perk {
 	first(){
-		this.rad = __MINSCALE*4
-		this.cooldown = __COOLDOWN_LIGHT
+		this.rad = __MINSCALE*1.5
+		this.cooldown = __COOLDOWN_ELITE*2
 	}
 	optimalCast(){
-		this.aiBuff()
+		this.aiDeBuff()
 	}
 	callback() {
 		let i = 0
 		for(let ent of getCanvas().ents.slice()){
 			if(!ent.isSilicate){continue}
-			if(this.team && ent.team && ent.team != this.team){ continue }
+			if(this.team && ent.team && ent.team == this.team){ continue }
 			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
 			if(dist < this.rad){
-				ent.applyForce(vec(this.disperce(0.05, 0.1), 0.01).mul(ent.getMass()))
-			}
-		}
-	}
-}
-
-class Left extends Perk {
-	first(){
-		this.rad = __MINSCALE*4
-		this.cooldown = __COOLDOWN_LIGHT
-	}
-	optimalCast(){
-		this.aiBuff()
-	}
-	callback() {
-		let i = 0
-		for(let ent of getCanvas().ents.slice()){
-			if(!ent.isSilicate){continue}
-			if(this.team && ent.team && ent.team != this.team){ continue }
-			let dist = ent.getPos().dist(cursor()) - ent.getScale().x
-			if(dist < this.rad){
-				ent.applyForce(vec(-this.disperce(0.05, 0.1), 0.01).mul(ent.getMass()))
+				ent.remove()
 			}
 		}
 	}
@@ -823,6 +805,7 @@ function allPerks(){
 		'Union': Union,
 		'Joker': Joker,
 		'Chameleon': Chameleon,
+		'Kill': Kill,
 	}
 	return dict
 }
