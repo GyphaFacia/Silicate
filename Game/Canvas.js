@@ -29,8 +29,9 @@ function mousedown(){
 	return getCanvas().mousedown
 }
 
-function wheel(){
-	return getCanvas().wheel
+function perf(percent = 100, max = 700){
+	let load = getCanvas().ents.length / max * 100
+	return load > percent
 }
 
 class Canvas {

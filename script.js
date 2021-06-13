@@ -283,6 +283,7 @@ class Water extends Entity {
 // Y88b  d88P 888 888 888 Y88b.    888  888 Y88b. Y8b.     
 //  "Y8888P"  888 888 888  "Y8888P "Y888888  "Y888 "Y8888  
 function shatter(ent, flakescl = __MINSCALE/3, maxcnt = 50, life = 500){
+	maxcnt = maxcnt * 
 	let rad = ent.getScale().x
 	let square = rad*rad
 	let n = square / flakescl / flakescl
@@ -323,7 +324,7 @@ class Silicate extends Ngon{
 	
 	last(){
 		shatter(this)
-	}
+	}	
 }
 
 

@@ -21,6 +21,31 @@ class Player {
 			this.parent.players = []
 		}
 		this.parent.players.push(this)
+		
+		setInterval(()=>{this.update()}, 1000)
+	}
+	
+	update(){
+		if(!this.gameOn()){	return null	}
+		let cnt = 0
+		for(let ent of getCanvas().ents){
+			if(random()<0.9){ continue }
+			if(!ent.isSilicate){ continue }
+			if(ent.team != this.team){ continue }
+			this.passiveReproduction(ent)
+			cnt += 1
+			if(cnt > __SPAWNLIMIT/2){break}
+		}
+	}
+	
+	passiveReproduction(ent){
+		let e = new this.ent()
+		e.team = this.team
+		e.setPos(ent.getPos().add(randvecX(ent.getScale().x/2)))
+		e.setScale(ent.getScale())
+		e.setAng(ent.getAng())
+		e.setColor(ent.getColor())
+		e.setOColor(ent.getOColor())
 	}
 	
 	addPerk(perk){
@@ -47,11 +72,11 @@ class Player {
 	allPerksTest(){
 		this.addPerk(perkDict('SpawnSome'))
 		this.addPerk(perkDict('SpawnBig'))
-		this.addPerk(perkDict('Swap'))
+		this.addPerk(perkDict('Explode'))
 		this.addPerk(perkDict('Grow'))
-		this.addPerk(perkDict('Kill'))
-		this.addPerk(perkDict('Joker'))
-		// this.addPerk(perkDict('Explode'))
+		// this.addPerk(perkDict('Swap'))
+		// this.addPerk(perkDict('Joker'))
+		// this.addPerk(perkDict('Kill'))
 		// this.addPerk(perkDict('Jump'))
 		// this.addPerk(perkDict('Reproduce'))
 		// this.addPerk(perkDict('Union'))
@@ -133,7 +158,11 @@ class Player {
 				other += 1 
 			}
 		}
-		return me*other
+		let res = me*other
+		if(!res){
+			this.update = ()=>{}
+		}
+		return res
 	}
 	
 	player(){
