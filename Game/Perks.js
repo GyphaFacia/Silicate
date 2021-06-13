@@ -43,15 +43,14 @@ class Perk {
 	
 	castDrawStart(){
 		this.castpos = cursor()
-		this.castscale = this.rad
+		this.castscale = 1
 	}
 	castDraw(){
 		if(!this.castscale){ return null }
-		this.castscale -= 2
+		this.castscale -= 0.05
 		this.castscale = this.castscale <= 0 ? 0 : this.castscale
 		
-		let rad = this.rad - this.castscale
-		rad *= 2
+		let rad = (1 - this.castscale) * 50
 		
 		this.ctx.lineWidth = 5
 		let n = 3
@@ -118,7 +117,7 @@ class Perk {
 		this.castDrawStart()
 		getCanvas().cursor = bup
 		this.setCooldown()
-		testCircle(pos, this.rad)
+		// testCircle(pos, this.rad)
 	}
 	
 	bind(){

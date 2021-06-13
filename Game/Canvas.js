@@ -176,11 +176,11 @@ class Canvas {
 		this.ctx.filter = 'none'
 		if(this.clearAll){
 			let gradient = this.ctx.createLinearGradient(0, 0, 0, getRes().y)
-			gradient.addColorStop(0, '#501')
-			gradient.addColorStop(1, '#000')
+			gradient.addColorStop(0.5, '#39004d')
+			gradient.addColorStop(1, '#ff6200')
 			this.ctx.fillStyle = gradient
 			this.ctx.fillRect(0, 0, this.getRes().x, this.getRes().y)
-			// this.ctx.clearRect(0, 0, this.getRes().x, this.getRes().y)
+			this.ctx.clearRect(0, 0, this.getRes().x, this.getRes().y)
 		}
 		else{
 			this.ctx.fillRect(0, 0, this.getRes().x, this.getRes().y)

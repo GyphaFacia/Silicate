@@ -387,7 +387,7 @@ let p3 = new Player(Gold, 3)
 p3.allPerksTest()
 
 p1.botMed()
-p2.botEasy()
+p2.botMed()
 p3.player()
 
 let teamsTab = addElement('teams-tab', 'body')
@@ -395,16 +395,6 @@ let teamsTab = addElement('teams-tab', 'body')
 let gameStartTime = time()
 let timeTab = addElement('timer-tab', 'body')
 setInterval(()=>{
-	let sec = time() - gameStartTime
-	sec = parseInt(sec)
-	min = parseInt(sec/60)
-	sec -= min * 60
-	sec = sec + ''
-	min = min + ''
-	sec = sec.length == 1 ? '0' + sec : sec
-	min = min.length == 1 ? '0' + min : min
-	timeTab.innerText = `${min}:${sec}`
-	
 	let arr = []
 	for(let ply of getCanvas().players){
 		arr[ply.team] = []
@@ -417,13 +407,27 @@ setInterval(()=>{
 		arr[ent.team][1] = ent.getColor().val()
 	}
 	let html = ''
+	let teams = 0
 	for(let team in arr){
 		let cnt = arr[team][0]
 		let clr = arr[team][1]
 		if(!cnt){ continue }
+		teams += 1
 		html += `<span class = "teams-tab__team" style="color: ${clr}">${cnt}</span>`
 	}
 	teamsTab.innerHTML = html
+	
+	if(teams > 1){
+		let sec = time() - gameStartTime
+		sec = parseInt(sec)
+		min = parseInt(sec/60)
+		sec -= min * 60
+		sec = sec + ''
+		min = min + ''
+		sec = sec.length == 1 ? '0' + sec : sec
+		min = min.length == 1 ? '0' + min : min
+		timeTab.innerText = `${min}:${sec}`
+	}
 	
 }, 100)
 
