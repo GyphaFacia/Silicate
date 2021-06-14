@@ -408,9 +408,9 @@ class Gold extends Silicate{second(){this.setColor(Clr(255, 225, 0))}}
 let p3 = new Player(Gold, 3)
 p3.allPerksTest()
 
-p1.botMed()
-p2.botMed()
-p3.player()
+p1.botHell()
+p2.botHell()
+p3.botHell()
 
 let teamsTab = addElement('teams-tab', 'body')
 
@@ -450,7 +450,6 @@ setInterval(()=>{
 		min = min.length == 1 ? '0' + min : min
 		timeTab.innerText = `${min}:${sec}`
 	}
-	
 }, 100)
 
 
