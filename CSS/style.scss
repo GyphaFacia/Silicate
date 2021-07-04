@@ -1,0 +1,106 @@
+// 8888888b.                            888    
+// 888   Y88b                           888    
+// 888    888                           888    
+// 888   d88P .d88b.  .d8888b   .d88b.  888888 
+// 8888888P" d8P  Y8b 88K      d8P  Y8b 888    
+// 888 T88b  88888888 "Y8888b. 88888888 888    
+// 888  T88b Y8b.          X88 Y8b.     Y88b.  
+// 888   T88b "Y8888   88888P'  "Y8888   "Y888 
+*{
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+*,*:before,*:after{
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+
+nav,footer,header,aside{display: block;}
+
+html,body{
+	height: 100%;
+	width: 100%;
+	font-size: 100%;
+	line-height: 1;
+	font-size: 14px;
+	-ms-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+input,button,textarea{font-family:inherit;}
+
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
+
+
+
+
+
+// 888b     d888          d8b          
+// 8888b   d8888          Y8P          
+// 88888b.d88888                       
+// 888Y88888P888  8888b.  888 88888b.  
+// 888 Y888P 888     "88b 888 888 "88b 
+// 888  Y8P  888 .d888888 888 888  888 
+// 888   "   888 888  888 888 888  888 
+// 888       888 "Y888888 888 888  888 
+@mixin flex($orientation:row) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: $orientation;
+}
+
+@mixin center($position: absolute){
+	position: $position;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);	
+}
+
+@mixin imageScale($x:200px, $y:$x, $fit:contain){
+	width: $x;
+	height: $y;
+	object-fit: $fit;
+}
+
+@mixin neomorph($offi:3px, $offo:3px, $voli:10px, $volo:10px, $clrl:#fff5, $clrd:#000a){
+	$offim: -$offi;
+	$offom: -$offo;
+	
+	box-shadow: 
+	$offom $offom $volo $clrd,
+	$offo $offo $volo $clrl,
+	
+	$offim $offim $voli $clrd inset,
+	$offi $offi $voli $clrl inset,
+	;
+}
+
+$clr_bg1 : #333;
+$clr_bg2 : #444;
+
+$hue_txt: 15;
+$clr_txt1: hsl($hue_txt, 100%, 75%);
+$clr_txt2: hsl($hue_txt, 70%, 85%);
+
+*{
+	color: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	background-color: #0000;
+}
+
+
+
