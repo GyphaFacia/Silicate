@@ -1,41 +1,23 @@
 class Entity {
-    constructor() {
-        ENTITIES.push(this)
+    constructor(host = ENTITIES){
+        this.host = host
+        this.host.push(this)
         this.r = Math.random()
-        
         this.addBody()
+        
+        this.first()
+        this.second()
     }
     
     get name(){return this.constructor.name}
     
-    addBody(){
-        this.body = Matter.Bodies.rectangle(0, 0, 1, 1)
-        this.scale = 1
-		Composite.add(engine.world, this.body)
-        this.updateVerts()
-		return this
-    }
+    beforeDraw(){}
+    afterDraw(){}
+    first(){}
+    second(){}
+    last(){}
     
-    updateVerts(){
-        this.verts = []
-        for(let vert of this.body.vertices){
-            this.verts.push(vec(vert).sub(this.body.position))
-        }
-        
-        console.log(this.verts);
-    }
-    
-    updateBody(){
-		if(!this.body){
-			return null
-		}
-		this.pos = vec(this.body.position)
-		this.ang = this.body.angle / Math.PI * 180
-		// if(this.getMass() != 0.123456789 && !this.parent.engine.gravity.scale){
-		// 	this.applyForce(__GRAVITY.mul(this.getMass()))
-		// }
-	}
-    
+    // Draw
     drawStart(){
 		ctx.save()
 		ctx.beginPath()
@@ -54,7 +36,7 @@ class Entity {
         this.drawStart()
         
         ctx.moveTo(...this.verts[0].$)
-        for (var i = 1; i < this.verts.length; i++) {
+        for (let i = 1; i < this.verts.length; i++) {
             ctx.lineTo(...this.verts[i].$)
         }
         
@@ -63,12 +45,13 @@ class Entity {
     
     fill(){
         ctx.fillStyle = this.color ? this.color.hex : 'transparent'
-        ctx.lineWidth = this.lwidth ? this.lwidth : 0
+        ctx.lineWidth = this.width ? this.width : 0
         ctx.strokeStyle = this.ocolor ? this.ocolor.hex : 'transparent'
         ctx.stroke()
         ctx.fill()
     }
     
+    // Pos Ang Scale
     setPos(){
 		this.pos = vec(...arguments)
 		if(this.body){
@@ -93,8 +76,129 @@ class Entity {
     getPos(){return this.pos}
 	getScale(){return this.scale}
     getAng(){return this.ang}
+    
+    // Body
+    addBody(){
+        this.body = Matter.Bodies.rectangle(0, 0, 1, 1)
+        this.scale = 1
+		Composite.add(engine.world, this.body)
+        this.updateVerts()
+		return this
+    }
+    
+    removeBody(){
+		if(!this.body){
+			return null
+		}
+		Matter.World.remove(engine.world, this.body)
+		Composite.remove(engine.world, this.body)
+	}
+    
+    updateVerts(){
+        this.verts = []
+        for(let vert of this.body.vertices){
+            this.verts.push(vec(vert).sub(this.body.position))
+        }
+    }
+    
+    updateBody(){
+		if(!this.body){
+			return null
+		}
+		this.pos = vec(this.body.position)
+		this.ang = this.body.angle / Math.PI * 180
+		// if(this.getMass() != 0.123456789 && !this.parent.engine.gravity.scale){
+		// 	this.applyForce(__GRAVITY.mul(this.getMass()))
+		// }
+	}
+    
+    setStatic(isStatic = true){
+		Matter.Body.setStatic(this.body, isStatic)
+	}
+	setAngVel(angvel = 0){
+		Matter.Body.setAngularVelocity(this.body, angvel)
+	}
+	setVel(){
+		let vel = vec(...arguments)
+		Matter.Body.setVelocity(this.body, vel)
+	}
+	setMass(mass = 0.5){
+		Matter.Body.setMass(this.body, mass)
+	}
+	applyForce(){
+		Matter.Body.applyForce(this.body, this.pos, vec(...arguments))
+	}
+    
+    isStatic(){return this.body.isStatic}
+	getAngVel(){return this.body.angularVelocity}
+	getVel(){return this.body.velocity}
+	getMass(){return this.body.mass}
+    
+    // remove
+    remove(wlast = false){
+		if(wlast){
+			this.last()
+		}
+		this.removeBody()
+        
+        for(let i = 0; i < this.host.length; i++){
+            if(this.host[i].r == this.r){
+                this.host.splice(i, 1)
+                break
+            }
+        }
+	}
 }
 
+// 8888888b.                   888    
+// 888   Y88b                  888    
+// 888    888                  888    
+// 888   d88P .d88b.   .d8888b 888888 
+// 8888888P" d8P  Y8b d88P"    888    
+// 888 T88b  88888888 888      888    
+// 888  T88b Y8b.     Y88b.    Y88b.  
+// 888   T88b "Y8888   "Y8888P  "Y888 
+class Rect extends Entity {
+    first(){
+        this.setPos(getCenter())
+        this.setScale(random(75, 125))
+        this.setAng(random(360))
+        this.color = Hsl(random(360), 100, 95)
+        this.width = 0
+    }
+}
+
+//  .d8888b.  d8b                 888          
+// d88P  Y88b Y8P                 888          
+// 888    888                     888          
+// 888        888 888d888 .d8888b 888  .d88b.  
+// 888        888 888P"  d88P"    888 d8P  Y8b 
+// 888    888 888 888    888      888 88888888 
+// Y88b  d88P 888 888    Y88b.    888 Y8b.     
+//  "Y8888P"  888 888     "Y8888P 888  "Y8888  
+class Circle extends Entity{
+    first(){
+        this.setPos(getCenter())
+        this.setScale(random(75, 125))
+        this.setAng(random(360))
+        this.color = Hsl(random(360), 100, 95, 0.5)
+        this.width = 0
+    }
+    
+    addBody(){
+		this.body = Bodies.circle(0, 0, 1)
+        this.scale = 1
+		Composite.add(engine.world, this.body)
+        this.updateVerts()
+		return this
+	}
+    
+    draw(){
+        this.drawStart()
+        ctx.arc(0, 0, this.getScale().x*0.965, 0, 2*pi())
+        this.drawEnd()
+    }
+}
 
 
 
