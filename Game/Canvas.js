@@ -14,10 +14,6 @@ function canvasInit(){
     
     document.onmousemove = (e)=>{window.mousePos = vec(e.clientX, e.clientY)}
     window.mousePos = getCenter()
-    
-    document.onmousedown = (e)=>{window.mouseClick = true}
-    document.onmouseup = (e)=>{window.mouseClick = false}
-    window.mouseDown = false
 }
 
 function engineInit(){
@@ -37,7 +33,7 @@ function clearCanvas(){
 }
 
 function gameLoop(){
-    setInterval(function () {
+    setInterval(()=>{
         clearCanvas()
         gameTick()
     }, 25);
