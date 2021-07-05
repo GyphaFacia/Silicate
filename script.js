@@ -1,20 +1,24 @@
 function setBounds(width = 500){
-    let t = new Entity()
+    class Bounds extends Entity{
+        assignHost(){this.host = MAP}
+    }
+    
+    let t = new Bounds()
     t.setPos(getRes().mul(0.5, 0).sub(0, width/2))
     t.setScale(getRes().mul(1, 0).add(0, width))
     t.setStatic()
     
-    let b = new Entity()
+    let b = new Bounds()
     b.setPos(getRes().mul(0.5, 1).add(0, width/2))
     b.setScale(getRes().mul(1, 0).add(0, width))
     b.setStatic()
     
-    let r = new Entity()
+    let r = new Bounds()
     r.setPos(getRes().mul(1, 0.5).add(width/2, 0))
     r.setScale(getRes().mul(0, 1).add(width, 0))
     r.setStatic()
     
-    let l = new Entity()
+    let l = new Bounds()
     l.setPos(getRes().mul(0, 0.5).sub(width/2, 0))
     l.setScale(getRes().mul(0, 1).sub(width, 0))
     l.setStatic()
@@ -46,9 +50,9 @@ function hills(){
         background: linear-gradient(to top, #350 25%, hsl(45, 100%, 90%))
     `)
     
-    e.afterDraw = function(){
-        let verts = this.verts.slice()
-        verts = verts.map((v)=>v.add(this.body.position))
+    e.pushUp = setInterval(()=>{
+        let verts = e.verts.slice()
+        verts = verts.map((v)=>v.add(e.body.position))
         for(let ent of ENTITIES){
             let v = verts[0]
             let x = ent.getPos().x
@@ -58,10 +62,10 @@ function hills(){
                 }
             }
             if(v.y < ent.getPos().y){
-                ent.setPos(verts[0].sub(0, 100))
+                ent.setPos(v.sub(0, 5))
             }
         }
-    }
+    }, 255)
     
     return e
 }
@@ -74,6 +78,16 @@ function gameTick(){
             ent.draw()
             ent.afterDraw()
         }
+    }
+    
+    if(window.mouseClick){
+        for(let i = 0; i < 1; i++){
+            let e = new Rect()
+            e.setPos(cursor())
+            e.setScale(random(15, 25))
+            e.color = Hsl(random(360), 100, 50)
+        }
+        console.log(ENTITIES.length);
     }
 }
 
