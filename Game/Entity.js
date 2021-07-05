@@ -1,11 +1,22 @@
+// 8888888888          888    d8b 888             
+// 888                 888    Y8P 888             
+// 888                 888        888             
+// 8888888    88888b.  888888 888 888888 888  888 
+// 888        888 "88b 888    888 888    888  888 
+// 888        888  888 888    888 888    888  888 
+// 888        888  888 Y88b.  888 Y88b.  Y88b 888 
+// 8888888888 888  888  "Y888 888  "Y888  "Y88888 
+//                                            888 
+//                                       Y8b d88P 
+//                                        "Y88P"  
 class Entity {
-    constructor(host = ENTITIES){
-        this.host = host
+    constructor(){
+        this.host = ENTITIES
         this.host.push(this)
         this.r = Math.random()
-        this.addBody()
         
         this.first()
+        this.addBody()
         this.second()
     }
     
@@ -150,6 +161,10 @@ class Entity {
 	}
 }
 
+
+
+
+
 // 8888888b.                   888    
 // 888   Y88b                  888    
 // 888    888                  888    
@@ -159,7 +174,7 @@ class Entity {
 // 888  T88b Y8b.     Y88b.    Y88b.  
 // 888   T88b "Y8888   "Y8888P  "Y888 
 class Rect extends Entity {
-    first(){
+    second(){
         this.setPos(getCenter())
         this.setScale(random(75, 125))
         this.setAng(random(360))
@@ -167,6 +182,10 @@ class Rect extends Entity {
         this.width = 0
     }
 }
+
+
+
+
 
 //  .d8888b.  d8b                 888          
 // d88P  Y88b Y8P                 888          
@@ -177,7 +196,7 @@ class Rect extends Entity {
 // Y88b  d88P 888 888    Y88b.    888 Y8b.     
 //  "Y8888P"  888 888     "Y8888P 888  "Y8888  
 class Circle extends Entity{
-    first(){
+    second(){
         this.setPos(getCenter())
         this.setScale(random(75, 125))
         this.setAng(random(360))
@@ -200,6 +219,42 @@ class Circle extends Entity{
     }
 }
 
+
+
+
+
+// 888b    888                            
+// 8888b   888                            
+// 88888b  888                            
+// 888Y88b 888  .d88b.   .d88b.  88888b.  
+// 888 Y88b888 d88P"88b d88""88b 888 "88b 
+// 888  Y88888 888  888 888  888 888  888 
+// 888   Y8888 Y88b 888 Y88..88P 888  888 
+// 888    Y888  "Y88888  "Y88P"  888  888 
+//                  888                   
+//             Y8b d88P                   
+//              "Y88P"                    
+class Ngon extends Entity {
+	first(){
+		this.sides = arguments.length ? arguments[0] : 5
+	}
+    
+    second(){
+        this.setPos(getCenter())
+        this.setScale(random(75, 125))
+        this.setAng(random(360))
+        this.color = Hsl(random(360), 100, 95, 0.5)
+        this.width = 0
+    }
+	
+	addBody(){
+        this.body = Matter.Bodies.polygon(0, 0, this.sides, 1)
+        this.scale = 1
+		Composite.add(engine.world, this.body)
+        this.updateVerts()
+		return this
+	}
+}
 
 
 

@@ -42,7 +42,7 @@ gameStart()
 
 let e
 for(let i = 0; i < 25; i++) {
-    e = new Circle()
+    e = new Ngon()
 }
 
 
