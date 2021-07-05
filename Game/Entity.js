@@ -11,16 +11,17 @@
 //                                        "Y88P"  
 class Entity {
     constructor(){
-        this.host = ENTITIES
+        this.assignHost()
         this.host.push(this)
         this.r = Math.random()
         
-        this.first()
+        this.first(...arguments)
         this.addBody()
-        this.second()
+        this.second(...arguments)
     }
     
     get name(){return this.constructor.name}
+    assignHost(host = ENTITIES){this.host = host}
     
     beforeDraw(){}
     afterDraw(){}
@@ -174,13 +175,6 @@ class Entity {
 // 888  T88b Y8b.     Y88b.    Y88b.  
 // 888   T88b "Y8888   "Y8888P  "Y888 
 class Rect extends Entity {
-    second(){
-        this.setPos(getCenter())
-        this.setScale(random(75, 125))
-        this.setAng(random(360))
-        this.color = Hsl(random(360), 100, 95)
-        this.width = 0
-    }
 }
 
 
@@ -196,14 +190,6 @@ class Rect extends Entity {
 // Y88b  d88P 888 888    Y88b.    888 Y8b.     
 //  "Y8888P"  888 888     "Y8888P 888  "Y8888  
 class Circle extends Entity{
-    second(){
-        this.setPos(getCenter())
-        this.setScale(random(75, 125))
-        this.setAng(random(360))
-        this.color = Hsl(random(360), 100, 95, 0.5)
-        this.width = 0
-    }
-    
     addBody(){
 		this.body = Bodies.circle(0, 0, 1)
         this.scale = 1
@@ -238,14 +224,6 @@ class Ngon extends Entity {
 	first(){
 		this.sides = arguments.length ? arguments[0] : 5
 	}
-    
-    second(){
-        this.setPos(getCenter())
-        this.setScale(random(75, 125))
-        this.setAng(random(360))
-        this.color = Hsl(random(360), 100, 95, 0.5)
-        this.width = 0
-    }
 	
 	addBody(){
         this.body = Matter.Bodies.polygon(0, 0, this.sides, 1)
@@ -256,6 +234,102 @@ class Ngon extends Entity {
 	}
 }
 
+
+
+
+
+//  .d8888b.  d8b                        
+// d88P  Y88b Y8P                        
+// 888    888                            
+// 888        888 88888b.d88b.   .d88b.  
+// 888        888 888 "888 "88b d88P"88b 
+// 888    888 888 888  888  888 888  888 
+// Y88b  d88P 888 888  888  888 Y88b 888 
+//  "Y8888P"  888 888  888  888  "Y88888 
+// 	     							 888 
+// 		    					Y8b d88P 
+// 			    				 "Y88P"  
+class Cimg extends Entity{
+	first(){
+		this.setImg(arguments[0])
+        console.log(arguments[0]);
+	}
+	setImg(img){
+		let image = new Image(800, 800)
+		image.src = img
+		this.img = image
+	}
+	getImg(){return this.img}
+	
+	draw(){
+		let w = this.getImg().naturalWidth
+		let h = this.getImg().naturalHeight
+        
+		let ratio = w>h ? w/h : h/w
+		w = this.getScale().x
+		h = this.getScale().y
+		w /= ratio
+        
+		this.drawStart()
+		ctx.drawImage(this.img, -w/2, -h/2, w, h)
+		this.drawEnd()
+	}
+}
+
+
+
+
+// 8888888b.          888          
+// 888   Y88b         888          
+// 888    888         888          
+// 888   d88P .d88b.  888 888  888 
+// 8888888P" d88""88b 888 888  888 
+// 888       888  888 888 888  888 
+// 888       Y88..88P 888 Y88b 888 
+// 888        "Y88P"  888  "Y88888 
+//                             888 
+//                        Y8b d88P 
+//                         "Y88P"  
+class Poly extends Entity {
+    assignHost(){this.host = MAP}
+    
+	first(){
+		this.points = []
+		for(let point of arguments){
+			this.points.push(point)
+		}
+	}
+	
+	addBody(){
+		this.body = Matter.Bodies.fromVertices(0, 0, this.points, [])
+		Composite.add(engine.world, this.body)
+        this.scale = 1
+        this.updateVerts()
+		return this
+	}
+    
+    updateVerts(){
+        this.verts = []
+        
+        for(let body of this.body.parts){
+            for(let vert of body.vertices){
+                this.verts.push(vec(vert).sub(this.body.position))
+            }
+        }
+        
+        this.verts.sort((v1, v2)=>{
+            return v1.x > v2.x ? 1 : -1
+        })
+    }
+    
+    draw(){
+        this.drawStart()
+        for(let v of this.verts){
+            ctx.lineTo(...vec(v).$)
+        }
+        this.drawEnd()
+    }
+}
 
 
 
