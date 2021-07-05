@@ -1,5 +1,6 @@
 function gameTick(){
     for(let ent of ENTITIES){
+        ent.updateBody()
         ent.draw()
     }
 }
@@ -16,11 +17,9 @@ function gameStart(){
 var ENTITIES = []
 gameStart()
 
-
-
-
-
-
+let e = new Entity()
+e.setPos(getCenter())
+e.setScale(100)
 
 
 
