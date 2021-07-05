@@ -1,9 +1,11 @@
 function gameTick(){
-    
+    for(let ent of ENTITIES){
+        ent.draw()
+    }
 }
 
 function gameStart(){
-    console.clear()
+    // console.clear()
     
     canvasInit()
     engineInit()
@@ -11,10 +13,8 @@ function gameStart(){
     gameLoop()
 }
 
-setTimeout(()=>{gameStart()}, 100)
-
-
-
+var ENTITIES = []
+gameStart()
 
 
 
