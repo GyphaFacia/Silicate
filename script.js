@@ -20,6 +20,52 @@ function setBounds(width = 500){
     l.setStatic()
 }
 
+function hills(){
+    let points = []
+    points.push(getRes().mul(0, 1))
+    
+    let n = 255
+    
+    for(let i = 0; i < n; i++){
+        let v = vec(i/n * getRes().x, getRes().y*0.5 + sin(-90*6/n*i)*100)
+        v = v.add(random(3), sin(90*15/n*i)*75)
+        points.push(v)
+    }
+    
+    points.push(getRes().mul(1, 1))
+    
+    let e = new Poly(points)
+    e.color = Hsl(69, 35, 66)
+    e.ocolor = Hsl(69, 35, 25)
+    e.width = 10
+    e.setPos(getRes().mul(0.5, 1))
+    e.setScale(1.1)
+    e.setStatic()
+    
+    document.body.applyCss(`
+        background: linear-gradient(to top, #350 25%, hsl(45, 100%, 90%))
+    `)
+    
+    e.afterDraw = function(){
+        let verts = this.verts.slice()
+        verts = verts.map((v)=>v.add(this.body.position))
+        for(let ent of ENTITIES){
+            let v = verts[0]
+            let x = ent.getPos().x
+            for (let i = 1; i < verts.length; i++) {
+                if(Math.abs(x - verts[i].x) < Math.abs(x - v.x)){
+                    v = verts[i]
+                }
+            }
+            if(v.y < ent.getPos().y){
+                ent.setPos(verts[0].sub(0, 100))
+            }
+        }
+    }
+    
+    return e
+}
+
 function gameTick(){
     for(let host of [MAP, ENTITIES]){
         for(let ent of host){
@@ -37,55 +83,13 @@ function gameStart(){
     
     gameLoop()
     setBounds()
+    hills()
 }
 
 var ENTITIES = []
 var MAP = []
 gameStart()
 
-function hills(){
-    let points = []
-    points.push(getRes().mul(0, 1))
-    
-    let n = 255
-    
-    for(let i = 0; i < n; i++){
-        let v = vec(i/n * getRes().x, getRes().y*0.5 + sin(-90*6/n*i)*100)
-        v = v.add(random(3), sin(90*15/n*i)*75)
-        points.push(v)
-    }
-    
-    points.push(getRes().mul(1, 1))
-    
-    let e = new Poly(points)
-    e.color = Hsl(35, 35, 66)
-    e.ocolor = Hsl(35, 35, 25)
-    e.width = 15
-    e.setPos(getRes().mul(0.5, 1))
-    e.setScale(1.1)
-    e.setStatic()
-    
-    document.body.applyCss(`
-        background: linear-gradient(to top, #503 25%, hsl(45, 100%, 90%))
-    `)
-    
-    e.afterDraw = function(){
-        for(let ent of ENTITIES){
-            
-        }
-    }
-    
-    return e
-}
-
-hills()
-
-for(let i = 0; i < 125; i++){
-    let e = new Circle()
-    e.setScale(10)
-    e.setPos(getRes().mul(i/125, 0.1))
-    e.color = Clr(255)
-}
 
 
 

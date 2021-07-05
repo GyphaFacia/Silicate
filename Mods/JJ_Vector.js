@@ -56,6 +56,8 @@ class Vector {
         return v1.add(v2)
     }
     
+    dist(other){return this.sub(other).len}
+    
     get len(){return Math.sqrt(this.x*this.x + this.y*this.y)}
     get ort(){return this.div(this.len)}
 }
