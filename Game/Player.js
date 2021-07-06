@@ -32,6 +32,23 @@ class Player {
     getOthers(){
         return ENTITIES.slice().filter(e => e.team != this.team)
     }
+    
+    testAllPerks(){
+        this.addPerk(SpawnSome)
+        this.addPerk(SpawnBig)
+        this.addPerk(Explode)
+        this.addPerk(Grow)
+        this.addPerk(Joker)
+        this.addPerk(Jump)
+        this.addPerk(Kill)
+        this.addPerk(Levi)
+        this.addPerk(Randomize)
+        this.addPerk(Reproduce)
+        this.addPerk(Spin)
+        this.addPerk(Split)
+        this.addPerk(Swap)
+        this.addPerk(Union)
+    }
 }
 
 
@@ -40,18 +57,8 @@ class Ply extends Player{
         this.team = 1
         
         this.addPerk(SpawnSome)
-        this.addPerk(SpawnBig)
-        // this.addPerk(Explode)
         this.addPerk(Grow)
-        // this.addPerk(Joker)
-        // this.addPerk(Kill)
-        // this.addPerk(Jump)
-        // this.addPerk(Levi)
-        // this.addPerk(Randomize)
         this.addPerk(Reproduce)
-        // this.addPerk(Spin)
-        // this.addPerk(Split)
-        // this.addPerk(Swap)
         this.addPerk(Union)
         
         

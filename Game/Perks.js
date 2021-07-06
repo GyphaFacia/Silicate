@@ -163,8 +163,8 @@ class SpawnSome extends Perk {
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 40
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -177,8 +177,8 @@ class SpawnBig extends Perk {
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 40
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -192,8 +192,8 @@ class Explode extends Perk{
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 60
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -207,8 +207,8 @@ class Grow extends Perk {
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 60
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -227,8 +227,8 @@ class Joker extends Perk{
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 33
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -246,8 +246,8 @@ class Jump extends Perk{
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 50
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -265,8 +265,8 @@ class Kill extends Perk{
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 66
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -293,8 +293,8 @@ class Levi extends Perk{
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 66
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -316,8 +316,8 @@ class Randomize extends Perk {
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 60
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -336,8 +336,8 @@ class Reproduce extends Perk {
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 60
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -353,8 +353,8 @@ class Spin extends Perk {
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 60
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -380,8 +380,8 @@ class Split extends Perk {
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 60
-        this.cooldown = 50
+        this.rad = 100
+        this.cooldown = 500
     }
 }
 
@@ -399,7 +399,7 @@ class Swap extends Perk {
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 50
+        this.cooldown = 500
     }
 }
 
@@ -422,7 +422,7 @@ class Union extends Perk {
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 50
+        this.cooldown = 500
     }
 } 
 

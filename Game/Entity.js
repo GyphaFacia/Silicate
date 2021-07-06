@@ -112,11 +112,12 @@ class Entity {
         }
         
         ctx.beginPath()
-        ctx.filter = 'none'
         ctx.fillStyle = Hsl(15, 100, 95).hex
         ctx.arc(...pos.$, scl.x/1.75, 0, 2*pi())
         ctx.fill()
         
+        
+        pos = pos.add(cursor().sub(pos).ort.mul(scl.x/15))
         
         ctx.beginPath()
         ctx.fillStyle = Hsl(irisClr, 100, 25).hex
@@ -128,16 +129,16 @@ class Entity {
         ctx.arc(...pos.$, scl.x/2.5, 0, 2*pi())
         ctx.fill()
         
-        let look = cursor().sub(pos).ort.mul(scl.x/17)
+        pos = pos.add(cursor().sub(pos).ort.mul(scl.x/20))
         
         ctx.beginPath()
         ctx.fillStyle = '#000'
-        ctx.arc(...pos.add(look).$, scl.x/3, 0, 2*pi())
+        ctx.arc(...pos.$, scl.x/3, 0, 2*pi())
         ctx.fill()
         
         ctx.beginPath()
         ctx.fillStyle = '#fffe'
-        ctx.arc(...pos.sub(scl.x*0.1).add(look).$, scl.x/7, 0, 2*pi())
+        ctx.arc(...pos.sub(scl.x*0.1).$, scl.x/7, 0, 2*pi())
         ctx.fill()
     }
     
@@ -240,7 +241,7 @@ class Entity {
 	}
     
     // misc
-    scaleTo(sclTo, smooth = 50){
+    scaleTo(sclTo, smooth = 33){
         clearInterval(this.grow)
         this.grow = setInterval(()=>{
             let scl = this.getScale()
@@ -258,7 +259,7 @@ class Entity {
         }, 2000);
     }
     
-    moveTo(posTo, smooth = 50){
+    moveTo(posTo, smooth = 33){
         clearInterval(this.move)
         this.move = setInterval(()=>{
             let pos = this.getPos()

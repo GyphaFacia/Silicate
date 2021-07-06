@@ -29,6 +29,7 @@ gameStart()
 
 let ply = new Ply()
 ply.spawnSilicate(getRes().mul(0.15, 0.5))
+ENTITIES[0].setScale(200)
 
 let bot = new Bot()
 bot.spawnSilicate(getRes().mul(0.85, 0.5))
