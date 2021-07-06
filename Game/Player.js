@@ -7,6 +7,9 @@ class Player {
         this.second()
     }
     
+    get perks(){return PERKS.filter(perk => perk.team == this.team)}
+    set perks(n){}
+    
     first(){}
     second(){}
     
@@ -80,6 +83,29 @@ class Ply extends Player{
 class Bot extends Player{
     first(){
         this.team = arguments[0]
+        
+        this.addPerk(SpawnSome)
+        this.addPerk(Grow)
+        this.addPerk(Reproduce)
+        this.addPerk(Union)
+        
+        this.think()
+    }
+    
+    think(){
+        let perks = this.perks
+        for(let i = 0; i < perks.length; i++){
+            let perk = randelt(perks)
+            if(perk.cd){
+                continue
+            }
+            perk.optimalCast()
+            break
+        }
+        
+        setTimeout(()=>{
+            this.think()
+        }, random(500, 2000))
     }
     
     spawnSilicate(pos = getCenter()){

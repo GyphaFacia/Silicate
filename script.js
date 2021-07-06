@@ -33,10 +33,10 @@ var PERKS = []
 gameStart()
 
 let ply = new Ply(1)
+ply.spawnSilicate(getRes().mul(0.15, 0.5))
 
-let bot = new Ply(2)
-
-
+let bot = new Bot(2)
+bot.spawnSilicate(getRes().mul(0.85, 0.5))
 
 
 

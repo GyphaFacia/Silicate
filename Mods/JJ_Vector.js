@@ -60,6 +60,10 @@ class Vector {
     
     get len(){return Math.sqrt(this.x*this.x + this.y*this.y)}
     get ort(){return this.div(this.len)}
+    
+    round(){
+        return vec(Math.round(this.x), Math.round(this.y))
+    }
 }
 
 function vec(){
