@@ -260,7 +260,7 @@ class Jump extends Perk{
 
 class Kill extends Perk{
     callback(){
-        for(let ent of this.alliesInRad()){
+        for(let ent of this.enemiesInRad()){
             setTimeout(()=>{
                 if(random() > this.disperce(0.9, 0.5)){
                     ent.remove()
@@ -277,7 +277,70 @@ class Kill extends Perk{
     }
 }
 
+class Levi extends Perk{
+    callback(){
+        for(let ent of this.alliesInRad()){
+            let mass = ent.getMass()
+            ent.setMass(0.123456789)
+            setTimeout(()=>{
+                ent.setVel(random(-1, 1), -random(5))
+            }, random(1000))
+            
+            setTimeout(()=>{
+                ent.setMass(mass)
+            }, this.disperce(3000, 5000))
+        }
+        console.log(engine.gravity.scale);
+        engine.gravity.scale = 0
+        setTimeout(()=>{
+            engine.gravity.scale = 0.001
+        }, this.disperce(3000, 5000))
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 66
+        this.cooldown = 50
+    }
+}
 
+class Randomize extends Perk {
+    callback(){
+        let arr = this.alliesInRad()
+        let min = arr[0].getScale().x
+        let max = arr[0].getScale().x
+        for(let ent of arr){
+            if(ent.getScale().x > max){max = ent.getScale().x}
+            if(ent.getScale().x < min){min = ent.getScale().x}
+        }
+        
+        for(let ent of arr){
+            let sclTo = vec(random(min, max))
+            clearInterval(ent.grow)
+            ent.grow = setInterval(()=>{
+                let scl = ent.getScale()
+                scl = scl.add(sclTo.sub(scl).div(50))
+                ent.setScale(scl)
+                if(scl.sub(sclTo).len < 0.5){
+                    ent.setScale(sclTo)
+                    clearInterval(ent.grow)
+                }
+            }, 10)
+            
+            setTimeout(()=>{
+                clearInterval(ent.grow)
+            }, 1000)
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 60
+        this.cooldown = 50
+    }
+}
 
 
 

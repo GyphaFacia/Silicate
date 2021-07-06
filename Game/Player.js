@@ -40,12 +40,16 @@ class Ply extends Player{
         this.team = 1
         
         this.addPerk(SpawnSome)
-        // this.addPerk(SpawnBig)
+        this.addPerk(SpawnBig)
         // this.addPerk(Explode)
         this.addPerk(Grow)
         // this.addPerk(Joker)
-        this.addPerk(Kill)
+        // this.addPerk(Kill)
         // this.addPerk(Jump)
+        this.addPerk(Levi)
+        // this.addPerk(Randomize)
+        this.addPerk(Randomize)
+        
         
         this.render()
         for(let perk of this.perks){

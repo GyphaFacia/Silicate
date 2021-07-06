@@ -197,9 +197,9 @@ class Entity {
 		}
 		this.pos = vec(this.body.position)
 		this.ang = this.body.angle / Math.PI * 180
-		// if(this.getMass() != 0.123456789 && !this.parent.engine.gravity.scale){
-		// 	this.applyForce(__GRAVITY.mul(this.getMass()))
-		// }
+		if(this.getMass() != 0.123456789 && !engine.gravity.scale){
+			this.applyForce(vec(0, 0.001).mul(this.getMass()))
+		}
 	}
     
     setStatic(isStatic = true){
