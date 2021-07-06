@@ -134,6 +134,12 @@ body{
 }
 
 .perk{
+	position: relative;
+	transition-duration: 255ms;
+	opacity: 0.33;
+}
+
+.perk-img{
 	width: 100px;
 	height: 100px;
 	object-fit: contain;
@@ -141,10 +147,18 @@ body{
 	padding: 25px;
 	border-radius: 15px;
 	cursor: pointer;
-	transition-duration: 255ms;
 	
 	filter:	saturate(0) brightness(10);
-	opacity: 0.5;
+}
+
+.perk-clip{
+	background-color: #000c;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 15px;
 }
 
 .perk:not(:last-child){

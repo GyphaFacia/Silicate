@@ -27,10 +27,10 @@ class Perk {
     set active(act){
         if(this.ico){
             if(act){
-                this.ico.classList.add('perk--active')
+                this.btn.classList.add('perk--active')
             }
             else{
-                this.ico.classList.remove('perk--active')
+                this.btn.classList.remove('perk--active')
             }
         }
         this._active = act
@@ -54,6 +54,8 @@ class Perk {
             this.active = false
             this.callback()
             console.log('applied');
+            
+            this.cd = time()
         }
     }
     
@@ -69,8 +71,14 @@ class Perk {
     }
     
     render(){
-        this.ico = document.querySelector('.perks').addElement('perk', 'img')
+        let sect = document.querySelector('.perks')
+
+        this.btn = sect.addElement('perk', 'div')
+        
+        this.ico = this.btn.addElement('perk-img', 'img')
         this.ico.src = `./src/Perks/${this.name}.svg` 
+        
+        this.clip = this.btn.addElement('perk-clip', 'div')
         
         this.bind()
     }
@@ -108,7 +116,25 @@ class Perk {
 		}
     }
     
+    handleClip(){
+        if(!this.btn){return null}
+        if(this.cd){
+            let perc = (time() - this.cd)/this.cooldown*1000
+            if(perc > 1){this.cd = 0}
+            
+            let clipY = perc
+            clipY *= 100
+            console.log(clipY);
+            this.clip.style.clip = `rect(${clipY}px, auto, 100px, auto)`
+        }
+        else{
+            this.clip.style.clip = `rect(${100}px, auto, 100px, auto)`
+        }
+    }
+    
     draw(){
+        this.handleClip()
+        
         if(!this.active){ return null }
         
         let n = 3
