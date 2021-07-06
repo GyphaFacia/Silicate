@@ -116,6 +116,61 @@ body{
 	height: 100vh;
 }
 
+.perks{
+	@include flex;
+	
+	width: 100vw;
+	
+	position: fixed;
+	z-index: 9999;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	
+	padding: 15px;
+}
+
+.perk{
+	width: 100px;
+	height: 100px;
+	object-fit: contain;
+	border: 5px solid red;
+	padding: 15px;
+	border-radius: 15px;
+	cursor: pointer;
+	transition-duration: 255ms;
+	
+	filter:	saturate(0) brightness(10);
+	opacity: 0.5;
+}
+
+.perk:not(:last-child){
+	margin-right: 25px;
+}
+
+.perk:hover, .perk:active{
+	opacity: 1;
+	transform: rotate(-15deg) scale(1.1) translateY(-25%);
+	filter: 
+	saturate(0) brightness(10)
+	drop-shadow(0 0 5px white)
+	;
+}
+
+.perk:hover:nth-child(2n), .perk:active:nth-child(2n){
+	transform: rotate(15deg) scale(1.1) translateY(-25%);
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
