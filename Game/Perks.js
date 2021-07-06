@@ -193,7 +193,7 @@ class Explode extends Perk{
 class Grow extends Perk {
     callback(){
         for(let ent of this.alliesInRad()){
-            let sclTo = ent.getScale().add(this.disperce(3, 5))
+            let sclTo = ent.getScale().add(this.disperce(5, 10))
             clearInterval(ent.grow)
             ent.grow = setInterval(()=>{
                 let scl = ent.getScale()
@@ -234,7 +234,26 @@ class Joker extends Perk{
     get level(){return this._level}
     set level(lvl){
         this._level = lvl
-        this.rad = 60
+        this.rad = 33
+        this.cooldown = 50
+    }
+}
+
+class Jump extends Perk{
+    callback(){
+        let i = 0
+        for(let ent of this.alliesInRad()){
+            i++
+            setTimeout(()=>{
+                ent.setVel(random(-1, 1)*2, -random(this.disperce(15, 25)))
+            }, i*50)
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 50
         this.cooldown = 50
     }
 }
