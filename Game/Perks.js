@@ -193,21 +193,7 @@ class Explode extends Perk{
 class Grow extends Perk {
     callback(){
         for(let ent of this.alliesInRad()){
-            let sclTo = ent.getScale().add(this.disperce(5, 10))
-            clearInterval(ent.grow)
-            ent.grow = setInterval(()=>{
-                let scl = ent.getScale()
-                scl = scl.add(sclTo.sub(scl).div(50))
-                ent.setScale(scl)
-                if(scl.sub(sclTo).len < 0.5){
-                    ent.setScale(sclTo)
-                    clearInterval(ent.grow)
-                }
-            }, 10)
-            
-            setTimeout(()=>{
-                clearInterval(ent.grow)
-            }, 1000)
+            ent.scaleTo(ent.getScale().add(this.disperce(5, 10)))
         }
     }
     
@@ -316,21 +302,7 @@ class Randomize extends Perk {
         }
         
         for(let ent of arr){
-            let sclTo = vec(random(min, max))
-            clearInterval(ent.grow)
-            ent.grow = setInterval(()=>{
-                let scl = ent.getScale()
-                scl = scl.add(sclTo.sub(scl).div(50))
-                ent.setScale(scl)
-                if(scl.sub(sclTo).len < 0.5){
-                    ent.setScale(sclTo)
-                    clearInterval(ent.grow)
-                }
-            }, 10)
-            
-            setTimeout(()=>{
-                clearInterval(ent.grow)
-            }, 1000)
+            ent.scaleTo(vec(random(min, max)))
         }
     }
     
@@ -342,6 +314,26 @@ class Randomize extends Perk {
     }
 }
 
+class Reproduce extends Perk {
+    callback(){
+        
+        for(let ent of this.alliesInRad()){
+            let sclTo = ent.getScale()
+            let child = this.ply.spawnSilicate()
+            child.setScale(1)
+            child.setPos(ent.getPos())
+            
+            child.scaleTo(ent.getScale())
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 60
+        this.cooldown = 50
+    }
+}
 
 
 

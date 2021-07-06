@@ -238,6 +238,25 @@ class Entity {
             }
         }
 	}
+    
+    // misc
+    scaleTo(sclTo){
+        clearInterval(this.grow)
+        this.grow = setInterval(()=>{
+            let scl = this.getScale()
+            scl = scl.add(sclTo.sub(scl).div(50))
+            this.setScale(scl)
+            if(scl.sub(sclTo).len < 0.5){
+                this.setScale(sclTo)
+                clearInterval(this.grow)
+            }
+            
+        }, 10)
+        
+        setTimeout(()=>{
+            clearInterval(this.grow)
+        }, 2000);
+    }
 }
 
 

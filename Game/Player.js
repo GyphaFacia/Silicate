@@ -48,7 +48,7 @@ class Ply extends Player{
         // this.addPerk(Jump)
         this.addPerk(Levi)
         // this.addPerk(Randomize)
-        this.addPerk(Randomize)
+        this.addPerk(Reproduce)
         
         
         this.render()
