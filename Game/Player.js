@@ -105,7 +105,7 @@ class Bot extends Player{
         
         setTimeout(()=>{
             this.think()
-        }, random(500, 2000))
+        }, random(1000, 2000))
     }
     
     spawnSilicate(pos = getCenter()){

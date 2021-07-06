@@ -32,6 +32,8 @@ class Perk {
     }
     
     get name(){return this.constructor.name}
+    
+    get active(){return this._active}
     set active(act){
         if(this.ico){
             if(act){
@@ -44,7 +46,6 @@ class Perk {
         this._active = act
     }
     
-    get active(){return this._active}
     
     callback(){}
     
@@ -61,7 +62,7 @@ class Perk {
         if(this.active){
             this.active = false
             this.callback()
-            console.log('applied');
+            console.log(`applied ${this.constructor.name} at ${cursor().round().str}`);
             
             this.cd = time()
         }
@@ -198,7 +199,7 @@ class Perk {
 		}
 		
 		for(let ent of ENTITIES){
-			if(!ent.isSilicate){continue}
+			// if(!ent.isSilicate){continue}
 			if(ent.team != this.team && team == 'my'){continue}
 			if(ent.team == this.team && team != 'my'){continue}
 			let v = ent.getPos().div(rad).round()
@@ -277,6 +278,8 @@ class SpawnSome extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    
+    optimalCast(){this.aiSpawn()}
 }
 
 // 888888b.   d8b          
@@ -302,6 +305,7 @@ class SpawnBig extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiAttack(1)}
 }
 
 // 8888888888                   888               888          
@@ -328,6 +332,7 @@ class Explode extends Perk{
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff()}
 }
 
 //  .d8888b.                                
@@ -351,6 +356,7 @@ class Grow extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff(1)}
 }
 
 // 888888          888                       
@@ -382,6 +388,7 @@ class Joker extends Perk{
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiDeBuff(1)}
 }
 
 // 888888                                 
@@ -412,6 +419,7 @@ class Jump extends Perk{
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff()}
 }
 
 // 888    d8P  d8b 888 888 
@@ -439,6 +447,7 @@ class Kill extends Perk{
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiDeBuff(1)}
 }
 
 // 888                       d8b 
@@ -474,6 +483,7 @@ class Levi extends Perk{
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff()}
 }
 
 // 8888888b.                         888 
@@ -505,6 +515,7 @@ class Randomize extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff()}
 }
 
 // 8888888b.                                   
@@ -538,6 +549,7 @@ class Reproduce extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff(1)}
 }
 
 //  .d8888b.           d8b          
@@ -566,6 +578,7 @@ class Spin extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff(1)}
 }
 
 //  .d8888b.           888 d8b 888    
@@ -604,6 +617,7 @@ class Split extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff(1)}
 }
 
 //  .d8888b.                                  
@@ -633,6 +647,7 @@ class Swap extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff()}
 }
 
 // 888     888          d8b                   
@@ -664,6 +679,7 @@ class Union extends Perk {
         this.rad = 100
         this.cooldown = 500
     }
+    optimalCast(){this.aiBuff()}
 } 
 
 
