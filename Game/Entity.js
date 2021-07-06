@@ -345,8 +345,10 @@ class Poly extends Entity {
 		return this
 	}
     
-    updateVerts(curv = 5){
+    updateVerts(curv = 3){
         this.verts = []
+        
+        curv = getRes().x/1500*curv
         
         for(let body of this.body.parts){
             for(let vert of body.vertices){

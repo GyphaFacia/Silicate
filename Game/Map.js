@@ -32,7 +32,7 @@ function setBounds(width = 500){
 
 function hills(){
     let points = []
-    points.push(getRes().mul(0, 1))
+    points.push(getRes().mul(0, 1).sub(5))
     
     let n = 255
     
@@ -42,7 +42,7 @@ function hills(){
         points.push(v)
     }
     
-    points.push(getRes().mul(1, 1))
+    points.push(getRes().mul(1, 1).add(5))
     
     let e = new Poly(points)
     e.color = Hsl(45, 15, 25)

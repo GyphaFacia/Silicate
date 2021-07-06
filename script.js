@@ -8,6 +8,9 @@ function gameTick(){
         }
     }
     
+    for(let perk of PERKS){
+        perk.draw()
+    }
 }
 
 function gameStart(){
@@ -21,13 +24,15 @@ function gameStart(){
 
 var ENTITIES = []
 var MAP = []
+var PERKS = []
 gameStart()
 
-let ply = new Player()
+let ply = new Ply()
 ply.spawnSilicate(getRes().mul(0.15, 0.5))
+ply.render()
 
-let bot = new Player()
-ply.spawnSilicate(getRes().mul(0.85, 0.5)).color = Clr(255, 200, 0)
+let bot = new Bot()
+bot.spawnSilicate(getRes().mul(0.85, 0.5))
 
 
 
