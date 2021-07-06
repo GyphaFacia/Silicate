@@ -5,6 +5,37 @@ function getRes(){return vec(cnv.width, cnv.height)}
 function getCenter(){return getRes().div(2)}
 function cursor(){return window.mousePos}
 
+function collisionsInit(){
+    Matter.Events.on(engine, 'collisionStart', function(event) {
+        for(let i = 0; i < event.pairs.length; i++){
+            let a = event.pairs[i].bodyA.renderelt
+            let b = event.pairs[i].bodyB.renderelt
+            
+            setTimeout(()=>{
+                if(!a || !b){
+                    return null
+                }
+                if(a.team && b.team && a.team != b.team){
+                    let scla = a.getScale().x*a.getScale().x - b.getScale().x*b.getScale().x
+                    let sclb = b.getScale().x*b.getScale().x - a.getScale().x*a.getScale().x
+                    if(scla <= __MINSCALE*__MINSCALE){
+                        a.remove(1)
+                    }
+                    else{
+                        a.setScale(Math.sqrt(scla))
+                    }
+                    if(sclb <= __MINSCALE*__MINSCALE){
+                        b.remove(1)
+                    }
+                    else{
+                        b.setScale(Math.sqrt(sclb))
+                    }
+                }
+            }, 25)
+        }
+    })
+}
+
 function canvasInit(){
     cnv = document.body.addElement('game_canvas', 'canvas')
     cnv.width = window.innerWidth

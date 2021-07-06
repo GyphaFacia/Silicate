@@ -53,7 +53,8 @@ function hills(){
     e.setStatic()
     
     document.body.applyCss(`
-        background: radial-gradient(circle at 50% 200%, hsl(15, 100%, 75%), hsl(280, 50%, 20%))
+        // background: radial-gradient(circle at 50% 200%, hsl(15, 100%, 75%), hsl(280, 50%, 20%))
+        background: linear-gradient(to top, hsl(334, 65%, 80%) 25%, hsl(212, 66%, 90%));
     `)
     
     e.pushUp = setInterval(()=>{

@@ -103,7 +103,8 @@ class Perk {
 		}
         
         document.onkeyup = (e)=>{
-            let perks = PERKS.filter(perk => perk.team == this.team)
+            // let perks = PERKS.filter(perk => perk.team == this.team)
+            let perks = PERKS
 			for(let i = 0; i < perks.length; i++){
 				let perk = perks[i]
 				if(parseInt(e.key)-1 == i){
@@ -124,7 +125,6 @@ class Perk {
             
             let clipY = perc
             clipY *= 100
-            console.log(clipY);
             this.clip.style.clip = `rect(${clipY}px, auto, 100px, auto)`
         }
         else{
@@ -309,7 +309,6 @@ class Levi extends Perk{
                 ent.setMass(mass)
             }, this.disperce(3000, 5000))
         }
-        console.log(engine.gravity.scale);
         engine.gravity.scale = 0
         setTimeout(()=>{
             engine.gravity.scale = 0.001
@@ -386,7 +385,7 @@ class Spin extends Perk {
 
 class Split extends Perk {
     callback(){
-        let areaSmall = 10*10*pi()
+        let areaSmall = __MINSCALE*__MINSCALE*pi()
         for(let ent of this.alliesInRad()){
             let area = ent.getScale().x
             area = area*area*pi()/2
@@ -397,7 +396,7 @@ class Split extends Perk {
                 v = v.mul(ent.getScale().x/n*i)
                 v = v.add(ent.getPos())
                 child.setPos(v)
-                child.setScale(10)
+                child.setScale(__MINSCALE)
             }
             ent.remove()
         }

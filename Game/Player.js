@@ -3,7 +3,7 @@ class Player {
         this.team = team
         this.perks = []
         
-        this.first()
+        this.first(...arguments)
         this.second()
     }
     
@@ -54,7 +54,7 @@ class Player {
 
 class Ply extends Player{
     first(){
-        this.team = 1
+        this.team = arguments[0]
         
         this.addPerk(SpawnSome)
         this.addPerk(Grow)
@@ -70,7 +70,7 @@ class Ply extends Player{
     
     spawnSilicate(pos = getCenter()){
         let e = new Silly()
-        e.setScale(10)
+        e.setScale(__MINSCALE)
         e.setPos(pos)
         e.team = this.team
         return e
@@ -79,12 +79,12 @@ class Ply extends Player{
 
 class Bot extends Player{
     first(){
-        this.team = 2
+        this.team = arguments[0]
     }
     
     spawnSilicate(pos = getCenter()){
         let e = new Silly()
-        e.setScale(10)
+        e.setScale(__MINSCALE)
         e.setPos(pos)
         e.team = this.team
         e.color = Hsl(69, 100, 40)

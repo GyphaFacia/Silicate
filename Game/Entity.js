@@ -17,6 +17,7 @@ class Entity {
         
         this.first(...arguments)
         this.addBody()
+        this.body.renderelt = this
         this.second(...arguments)
     }
     

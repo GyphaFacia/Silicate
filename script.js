@@ -16,23 +16,25 @@ function gameTick(){
 function gameStart(){
     canvasInit()
     engineInit()
+    collisionsInit()
     
     gameLoop()
     setBounds()
     hills()
 }
 
+const __MINSCALE = 10
+const __MAXSCALE = 255
+
 var ENTITIES = []
 var MAP = []
 var PERKS = []
+
 gameStart()
 
-let ply = new Ply()
-ply.spawnSilicate(getRes().mul(0.15, 0.5))
-ENTITIES[0].setScale(200)
+let ply = new Ply(1)
 
-let bot = new Bot()
-bot.spawnSilicate(getRes().mul(0.85, 0.5))
+let bot = new Ply(2)
 
 
 
