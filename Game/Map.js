@@ -67,8 +67,8 @@ function hills(){
                     v = verts[i]
                 }
             }
-            if(v.y < ent.getPos().y){
-                ent.setPos(ent.getPos().x, v.y)
+            if(v.y + ent.getScale().y*2 < ent.getPos().y){
+                ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)
             }
         }
     }, 255)

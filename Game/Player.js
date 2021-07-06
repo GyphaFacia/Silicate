@@ -38,10 +38,11 @@ class Player {
 class Ply extends Player{
     first(){
         this.addPerk(SpawnSome)
-        this.addPerk(SpawnSome)
-        this.addPerk(SpawnSome)
-        this.addPerk(SpawnSome)
+        this.addPerk(SpawnBig)
         this.render()
+        for(let perk of this.perks){
+            perk.level = 5
+        }
     }
     
     spawnSilicate(pos = getCenter()){
@@ -55,10 +56,6 @@ class Ply extends Player{
 
 class Bot extends Player{
     first(){
-        this.addPerk(SpawnSome)
-        this.addPerk(SpawnSome)
-        this.addPerk(SpawnSome)
-        this.addPerk(SpawnSome)
     }
     
     spawnSilicate(pos = getCenter()){
@@ -66,7 +63,7 @@ class Bot extends Player{
         e.setScale(10)
         e.setPos(pos)
         e.team = this.team
-        e.color = Clr(125, 0, 0)
+        e.color = Hsl(69, 100, 40)
         return e
     }
 }

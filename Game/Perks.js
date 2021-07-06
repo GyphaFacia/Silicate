@@ -1,17 +1,27 @@
 class Perk {
-    constructor() {
+    constructor(lvl = 1){
         PERKS.push(this)
-        this.team = 0
-        this.cooldow = 1000
         this.active = false
+        
+        this.team = 0
+        this.cooldown = 500
         this.rad = 100
+        
+        this.level = lvl
         
         this.first()
         this.second()
     }
     
+    get level(){return this._level}
+    set level(lvl){this._level = lvl}
+    
     first(){}
     second(){}
+    
+    disperce(min = 5, max = 10){
+        return parseInt(min + (max - min)/4*(this.level - 1))
+    }
     
     get name(){return this.constructor.name}
     set active(act){
@@ -41,6 +51,7 @@ class Perk {
     }
     apply(){
         this.active = false
+        this.callback()
         console.log('applied');
     }
     
@@ -107,7 +118,7 @@ class Perk {
                 ctx.beginPath()
                 let ang1 = 2*pi()/n*i + time(2)%(2*pi())*(j ? 1 : -1)
                 let ang2 = ang1 + 2*pi()/n*0.75
-                ctx.arc(...cursor().$, this.rad * (j ? 1 : 0.9), ang1, ang2)
+                ctx.arc(...cursor().$, this.rad - (j ? 0 : 10), ang1, ang2)
                 ctx.stroke()
             }
         }
@@ -116,10 +127,34 @@ class Perk {
 
 class SpawnSome extends Perk {
     callback(){
-        this.ply.spawnSilicate()
+        let n = this.disperce(3, 6)
+        let rad = n * 5
+        for(let i = 0; i < n; i++){
+            let pos = cursor().add(sin(360/n*i)*rad, cos(360/n*i)*rad)
+            let e = this.ply.spawnSilicate(pos)
+        }
     }
     
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 40
+        this.cooldown = 50
+    }
+}
+
+class SpawnBig extends Perk {
+    callback(){
+        let e = this.ply.spawnSilicate(cursor())
+        e.setScale(e.getScale().mul(this.disperce(2, 4)))
+    }
     
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 40
+        this.cooldown = 50
+    }
 }
 
 
