@@ -240,11 +240,11 @@ class Entity {
 	}
     
     // misc
-    scaleTo(sclTo){
+    scaleTo(sclTo, smooth = 50){
         clearInterval(this.grow)
         this.grow = setInterval(()=>{
             let scl = this.getScale()
-            scl = scl.add(sclTo.sub(scl).div(50))
+            scl = scl.add(sclTo.sub(scl).div(smooth))
             this.setScale(scl)
             if(scl.sub(sclTo).len < 0.5){
                 this.setScale(sclTo)
@@ -255,6 +255,24 @@ class Entity {
         
         setTimeout(()=>{
             clearInterval(this.grow)
+        }, 2000);
+    }
+    
+    moveTo(posTo, smooth = 50){
+        clearInterval(this.move)
+        this.move = setInterval(()=>{
+            let pos = this.getPos()
+            pos = pos.add(posTo.sub(pos).div(smooth))
+            this.setPos(pos)
+            if(pos.sub(posTo).len < 25){
+                this.setPos(posTo)
+                clearInterval(this.move)
+            }
+            
+        }, 1)
+        
+        setTimeout(()=>{
+            clearInterval(this.move)
         }, 2000);
     }
 }

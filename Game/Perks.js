@@ -141,6 +141,13 @@ class Perk {
         )
         return arr
     }
+    
+    allInRad(){
+        let arr = ENTITIES.filter(
+            ent => ent.getPos().sub(cursor()).len < this.rad + ent.getScale().x
+        )
+        return arr
+    }
 }
 
 class SpawnSome extends Perk {
@@ -316,7 +323,6 @@ class Randomize extends Perk {
 
 class Reproduce extends Perk {
     callback(){
-        
         for(let ent of this.alliesInRad()){
             let sclTo = ent.getScale()
             let child = this.ply.spawnSilicate()
@@ -335,6 +341,90 @@ class Reproduce extends Perk {
     }
 }
 
+class Spin extends Perk {
+    callback(){
+        for(let ent of this.alliesInRad()){
+            setTimeout(()=>{
+                ent.setAngVel(this.disperce(3, 5) * randelt([1, -1]))
+            }, random(100))
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 60
+        this.cooldown = 50
+    }
+}
+
+class Split extends Perk {
+    callback(){
+        let areaSmall = 10*10*pi()
+        for(let ent of this.alliesInRad()){
+            let area = ent.getScale().x
+            area = area*area*pi()/2
+            let n = area / areaSmall
+            for(let i = 0; i < n; i++){
+                let child = this.ply.spawnSilicate()
+                let v = vec(sin(360*3/n*i), cos(360*3/n*i))
+                v = v.mul(ent.getScale().x/n*i)
+                v = v.add(ent.getPos())
+                child.setPos(v)
+                child.setScale(10)
+            }
+            ent.remove()
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 60
+        this.cooldown = 50
+    }
+}
+
+class Swap extends Perk {
+    callback(){
+        for(let ent of this.alliesInRad()){
+            let v = cursor().sub(ent.getPos()).mul(2, 0)
+            v = ent.getPos().add(v)
+            // ent.setPos(v)
+            ent.moveTo(v)
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 100
+        this.cooldown = 50
+    }
+}
+
+class Union extends Perk {
+    callback(){
+        let area = 0
+        let pos = vec()
+        let cnt = this.alliesInRad().length
+        for(let ent of this.alliesInRad()){
+            area += ent.getScale().x * ent.getScale().x
+            pos = pos.add(ent.getPos())
+            ent.remove()
+        }
+        pos = pos.div(cnt)        
+        let union = this.ply.spawnSilicate(pos)
+        union.setScale(Math.sqrt(area))
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 100
+        this.cooldown = 50
+    }
+} 
 
 
 
