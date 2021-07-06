@@ -258,6 +258,24 @@ class Jump extends Perk{
     }
 }
 
+class Kill extends Perk{
+    callback(){
+        for(let ent of this.alliesInRad()){
+            setTimeout(()=>{
+                if(random() > this.disperce(0.9, 0.5)){
+                    ent.remove()
+                }
+            }, random(1000))
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 66
+        this.cooldown = 50
+    }
+}
 
 
 

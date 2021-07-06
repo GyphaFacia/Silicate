@@ -44,7 +44,8 @@ class Ply extends Player{
         // this.addPerk(Explode)
         this.addPerk(Grow)
         // this.addPerk(Joker)
-        this.addPerk(Jump)
+        this.addPerk(Kill)
+        // this.addPerk(Jump)
         
         this.render()
         for(let perk of this.perks){
