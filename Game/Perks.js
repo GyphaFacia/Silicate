@@ -50,9 +50,11 @@ class Perk {
         console.log('canceled');
     }
     apply(){
-        this.active = false
-        this.callback()
-        console.log('applied');
+        if(this.active){
+            this.active = false
+            this.callback()
+            console.log('applied');
+        }
     }
     
     applyAt(){
@@ -93,7 +95,7 @@ class Perk {
 		}
         
         document.onkeyup = (e)=>{
-            let perks = PERKS.slice().filter(perk => perk.team == this.team)
+            let perks = PERKS.filter(perk => perk.team == this.team)
 			for(let i = 0; i < perks.length; i++){
 				let perk = perks[i]
 				if(parseInt(e.key)-1 == i){
@@ -122,6 +124,22 @@ class Perk {
                 ctx.stroke()
             }
         }
+    }
+    
+    alliesInRad(){
+        let arr = ENTITIES.filter(ent => ent.team == this.team)
+        arr = arr.filter(
+            ent => ent.getPos().sub(cursor()).len < this.rad + ent.getScale().x
+        )
+        return arr
+    }
+    
+    enemiesInRad(){
+        let arr = ENTITIES.filter(ent => ent.team != this.team)
+        arr = arr.filter(
+            ent => ent.getPos().sub(cursor()).len < this.rad + ent.getScale().x
+        )
+        return arr
     }
 }
 
@@ -157,7 +175,49 @@ class SpawnBig extends Perk {
     }
 }
 
+class Explode extends Perk{
+    callback(){
+        for(let ent of this.alliesInRad()){
+            ent.setVel(ent.getPos().sub(cursor()).ort.mul(this.disperce(10, 20)))
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 60
+        this.cooldown = 50
+    }
+}
 
+class Grow extends Perk {
+    callback(){
+        for(let ent of this.alliesInRad()){
+            let sclTo = ent.getScale().add(this.disperce(3, 5))
+            clearInterval(ent.grow)
+            ent.grow = setInterval(()=>{
+                let scl = ent.getScale()
+                scl = scl.add(sclTo.sub(scl).div(50))
+                ent.setScale(scl)
+                if(scl.sub(sclTo).len < 0.5){
+                    ent.setScale(sclTo)
+                    clearInterval(ent.grow)
+                }
+            }, 10)
+            
+            setTimeout(()=>{
+                clearInterval(ent.grow)
+            }, 1000)
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 60
+        this.cooldown = 50
+    }
+}
 
 
 
