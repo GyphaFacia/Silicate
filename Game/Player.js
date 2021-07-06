@@ -37,10 +37,13 @@ class Player {
 
 class Ply extends Player{
     first(){
+        this.team = 1
+        
         this.addPerk(SpawnSome)
         this.addPerk(SpawnBig)
         this.addPerk(Explode)
         this.addPerk(Grow)
+        this.addPerk(Joker)
         this.render()
         for(let perk of this.perks){
             perk.level = 5
@@ -58,6 +61,7 @@ class Ply extends Player{
 
 class Bot extends Player{
     first(){
+        this.team = 2
     }
     
     spawnSilicate(pos = getCenter()){

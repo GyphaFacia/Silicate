@@ -219,6 +219,26 @@ class Grow extends Perk {
     }
 }
 
+class Joker extends Perk{
+    callback(){
+        for(let ent of this.enemiesInRad()){
+            let e = this.ply.spawnSilicate(cursor())
+            e.setPos(ent.getPos())
+            e.setScale(ent.getScale())
+            e.setAng(ent.getAng())
+            e.setVel(ent.getVel())
+            ent.remove()
+        }
+    }
+    
+    get level(){return this._level}
+    set level(lvl){
+        this._level = lvl
+        this.rad = 60
+        this.cooldown = 50
+    }
+}
+
 
 
 
