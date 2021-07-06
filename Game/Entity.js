@@ -63,6 +63,84 @@ class Entity {
         ctx.fill()
     }
     
+    drawCircle(pos = getCenter(), rad = 25, clr = Clr(255,255,255,0.5), w = 1){
+        ctx.beginPath()
+        ctx.strokeStyle = clr.hex
+        ctx.lineWidth = w
+        ctx.arc(...pos.$, rad, 0, 2*pi())
+        ctx.closePath()
+        ctx.stroke()
+    }
+    
+    drawLine(v1 = getCenter(), v2 = this.getPos(), clr = Clr(255,255,255,0.5), w = 1){
+        ctx.beginPath()
+        ctx.strokeStyle = clr.hex
+        ctx.lineWidth = w
+        ctx.moveTo(...v1.$)
+        ctx.lineTo(...v2.$)
+        ctx.stroke()
+    }
+    
+    drawImage(src){
+        if(!this.img || this.img.src != src){
+            this.img = new Image(800, 800)
+            this.img.src = src
+        }
+        
+        let w = this.img.naturalWidth
+		let h = this.img.naturalHeight
+        
+		let ratio = w>h ? w/h : h/w
+		w = this.getScale().x
+		h = this.getScale().y
+		w /= ratio
+        
+		this.drawStart()
+		ctx.drawImage(this.img, -w/2, -h/2, w, h)
+		this.drawEnd()
+    }
+    
+    drawEye(irisClr = 69, sclMul = null, posOffset = null){
+        let pos = this.getPos()
+        let scl = this.getScale()
+        
+        if(sclMul){
+            scl = scl.mul(sclMul)
+        }
+        if(posOffset){
+            pos = pos.add(posOffset)
+        }
+        
+        ctx.beginPath()
+        ctx.filter = 'none'
+        ctx.fillStyle = Hsl(15, 100, 95).hex
+        ctx.arc(...pos.$, scl.x/1.75, 0, 2*pi())
+        ctx.fill()
+        
+        
+        ctx.beginPath()
+        ctx.fillStyle = Hsl(irisClr, 100, 25).hex
+        ctx.arc(...pos.$, scl.x/2.25, 0, 2*pi())
+        ctx.fill()
+        
+        ctx.beginPath()
+        ctx.fillStyle = Hsl(irisClr, 100, 35).hex
+        ctx.arc(...pos.$, scl.x/2.5, 0, 2*pi())
+        ctx.fill()
+        
+        let look = cursor().sub(pos).ort.mul(scl.x/17)
+        
+        ctx.beginPath()
+        ctx.fillStyle = '#000'
+        ctx.arc(...pos.add(look).$, scl.x/3, 0, 2*pi())
+        ctx.fill()
+        
+        ctx.beginPath()
+        ctx.fillStyle = '#fffe'
+        ctx.arc(...pos.sub(scl.x*0.1).add(look).$, scl.x/7, 0, 2*pi())
+        ctx.fill()
+    }
+    
     // Pos Ang Scale
     setPos(){
 		this.pos = vec(...arguments)
@@ -238,47 +316,6 @@ class Ngon extends Entity {
 
 
 
-//  .d8888b.  d8b                        
-// d88P  Y88b Y8P                        
-// 888    888                            
-// 888        888 88888b.d88b.   .d88b.  
-// 888        888 888 "888 "88b d88P"88b 
-// 888    888 888 888  888  888 888  888 
-// Y88b  d88P 888 888  888  888 Y88b 888 
-//  "Y8888P"  888 888  888  888  "Y88888 
-// 	     							 888 
-// 		    					Y8b d88P 
-// 			    				 "Y88P"  
-class Cimg extends Entity{
-	first(){
-		this.setImg(arguments[0])
-        console.log(arguments[0]);
-	}
-	setImg(img){
-		let image = new Image(800, 800)
-		image.src = img
-		this.img = image
-	}
-	getImg(){return this.img}
-	
-	draw(){
-		let w = this.getImg().naturalWidth
-		let h = this.getImg().naturalHeight
-        
-		let ratio = w>h ? w/h : h/w
-		w = this.getScale().x
-		h = this.getScale().y
-		w /= ratio
-        
-		this.drawStart()
-		ctx.drawImage(this.img, -w/2, -h/2, w, h)
-		this.drawEnd()
-	}
-}
-
-
-
-
 // 8888888b.          888          
 // 888   Y88b         888          
 // 888    888         888          
@@ -308,12 +345,16 @@ class Poly extends Entity {
 		return this
 	}
     
-    updateVerts(){
+    updateVerts(curv = 5){
         this.verts = []
         
         for(let body of this.body.parts){
             for(let vert of body.vertices){
-                this.verts.push(vec(vert).sub(this.body.position))
+                let v = vec(vert).sub(this.body.position)
+                if(v.y < getRes().y){
+                    v = v.add(random(-1, 1)*curv, random(-1, 1)*curv)
+                }
+                this.verts.push(v)
             }
         }
         

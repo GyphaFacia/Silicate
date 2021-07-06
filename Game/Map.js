@@ -38,22 +38,22 @@ function hills(){
     
     for(let i = 0; i < n; i++){
         let v = vec(i/n * getRes().x, getRes().y*0.5 + sin(-90*6/n*i)*100)
-        v = v.add(random(3), sin(90*15/n*i)*75)
+        v = v.add(0, sin(90*15/n*i)*75)
         points.push(v)
     }
     
     points.push(getRes().mul(1, 1))
     
     let e = new Poly(points)
-    e.color = Hsl(69, 35, 66)
+    e.color = Hsl(45, 15, 50)
     e.ocolor = Hsl(69, 35, 25)
-    e.width = 10
+    e.width = 15
     e.setPos(getRes().mul(0.5, 1))
     e.setScale(1.1)
     e.setStatic()
     
     document.body.applyCss(`
-        background: linear-gradient(to top, #350 25%, hsl(45, 100%, 90%))
+        background: radial-gradient(circle at 50% 200%, hsl(45, 100%, 80%), hsl(280, 50%, 20%))
     `)
     
     e.pushUp = setInterval(()=>{
@@ -68,7 +68,7 @@ function hills(){
                 }
             }
             if(v.y < ent.getPos().y){
-                ent.setPos(v.sub(0, 5))
+                ent.setPos(ent.getPos().x, v.y)
             }
         }
     }, 255)
