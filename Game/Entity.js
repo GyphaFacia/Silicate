@@ -351,9 +351,7 @@ class Poly extends Entity {
         for(let body of this.body.parts){
             for(let vert of body.vertices){
                 let v = vec(vert).sub(this.body.position)
-                if(v.y < getRes().y){
-                    v = v.add(random(-1, 1)*curv, random(-1, 1)*curv)
-                }
+                v = v.add(random(-1, 1)*curv, random(-1, 1)*curv)
                 this.verts.push(v)
             }
         }

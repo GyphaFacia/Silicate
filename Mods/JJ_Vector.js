@@ -66,7 +66,10 @@ function vec(){
     return new Vector(...arguments)
 }
 
-
+function randvec(len = 1){
+    let ang = random(360)
+    return vec(sin(ang), cos(ang)).mul(random(len))
+}
 
 
 
