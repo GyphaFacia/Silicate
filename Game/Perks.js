@@ -50,6 +50,8 @@ class Perk {
     callback(){}
     
     pick(){
+        if(PAUSED){return null}
+        
         for(let perk of PERKS){perk.cancel()}
         this.active = true
         console.log('picked');
@@ -109,6 +111,10 @@ class Perk {
 		}
         
         document.onkeyup = (e)=>{
+            if(e.key === "Escape") {
+                handlePause()
+            }
+            
             let perks = PERKS.filter(perk => perk.team == this.team)
 			for(let i = 0; i < perks.length; i++){
 				let perk = perks[i]

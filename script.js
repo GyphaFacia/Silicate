@@ -2,15 +2,40 @@ function gameTick(){
     for(let host of [MAP, ENTITIES, CRISPS]){
         for(let ent of host){
             ent.updateBody()
-            ent.beforeDraw()
+            if(!PAUSED){ent.beforeDraw()}
             ent.draw()
-            ent.afterDraw()
+            if(!PAUSED){ent.afterDraw()}
         }
     }
     
     for(let perk of PERKS){
-        perk.draw()
+        if(!PAUSED){perk.draw()}
     }
+}
+
+function handlePause(){
+    PAUSED = !PAUSED
+    if(PAUSED){
+        pausebutton.classList.add('pause-button--paused')
+    }
+    else{
+        pausebutton.classList.remove('pause-button--paused')
+    }
+    for(let perk of PERKS){
+        perk.cancel()
+    }
+    for(let host of [MAP, ENTITIES, CRISPS]){
+        for(let ent of host){
+            let static = PAUSED ? true : ent.stat
+            ent.stat = ent.isStatic()
+            Matter.Body.setStatic(ent.body, static)
+        }
+    }
+}
+
+let pausebutton = document.querySelector('.pause-button')
+pausebutton.onclick = ()=>{
+    handlePause()
 }
 
 function gameStart(){
@@ -26,6 +51,8 @@ function gameStart(){
 const __MINSCALE = 10
 const __MAXSCALE = 255
 const __MAXCRISPS = 300
+
+let PAUSED = false
 
 var ENTITIES = []
 var MAP = []

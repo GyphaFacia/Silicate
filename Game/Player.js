@@ -93,14 +93,16 @@ class Bot extends Player{
     }
     
     think(){
-        let perks = this.perks
-        for(let i = 0; i < perks.length; i++){
-            let perk = randelt(perks)
-            if(perk.cd){
-                continue
+        if(!PAUSED){
+            let perks = this.perks
+            for(let i = 0; i < perks.length; i++){
+                let perk = randelt(perks)
+                if(perk.cd){
+                    continue
+                }
+                perk.optimalCast()
+                break
             }
-            perk.optimalCast()
-            break
         }
         
         setTimeout(()=>{
