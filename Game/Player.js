@@ -72,9 +72,7 @@ class Ply extends Player{
     }
     
     spawnSilicate(pos = getCenter()){
-        setTimeout(()=>{
-            playSound(`pop`, random(0.1, 0.25), random(0.25, 0.75))
-        }, random(500))
+        playSound('pop', random(0.1, 0.25), random(0.5, 2), random(255))
         let e = new Silly()
         e.setScale(__MINSCALE)
         e.setPos(pos)

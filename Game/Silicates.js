@@ -34,6 +34,7 @@ class Silly extends Ngon {
     }
     
     last(){
+        playSound('click', random(0.1, 0.25), random(0.25, 0.75), random(255))
         let area = this.getScale().x
         area = area*area*pi()
         let n = area / 100
