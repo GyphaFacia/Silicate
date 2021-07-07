@@ -73,10 +73,7 @@ class Perk {
         window.mousePos = pos
         this.active = true
         this.apply()
-        
-        setTimeout(()=>{
-            window.mousePos = cursorBackup
-        }, 0)
+        window.mousePos = cursorBackup
     }
     
     render(){

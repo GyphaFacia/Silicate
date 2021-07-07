@@ -1,4 +1,6 @@
 class Crisp extends Ngon {
+    assignHost(){this.host = CRISPS}
+    
     first(ent){
         this.sides = randint(3, 6)
         this.color = ent.color
@@ -35,12 +37,17 @@ class Silly extends Ngon {
         let area = this.getScale().x
         area = area*area*pi()
         let n = area / 100
+        n = n > __MAXCRISPS ? __MAXCRISPS : n
         for(let i = 0; i < n; i++){
-            let c = new Crisp(this)
-            let v = vec(sin(720/n*i), cos(720/n*i))
-            v = v.mul(i/n*this.getScale().x)
-            v = v.add(this.getPos())
-            c.setPos(v)
+            setTimeout(()=>{
+                if(CRISPS.length > __MAXCRISPS){return null}
+                let c = new Crisp(this)
+                let v = vec(sin(360*10/n*i), cos(720/n*i))
+                v = v.mul((1 - i/n)*this.getScale().x)
+                v = v.add(this.getPos())
+                v = v.add(random(-5, 5), random(-5, 5))
+                c.setPos(v)
+            }, i*2)
         }
     }
 }

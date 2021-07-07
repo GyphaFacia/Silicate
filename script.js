@@ -1,5 +1,5 @@
 function gameTick(){
-    for(let host of [MAP, ENTITIES]){
+    for(let host of [MAP, ENTITIES, CRISPS]){
         for(let ent of host){
             ent.updateBody()
             ent.beforeDraw()
@@ -25,10 +25,12 @@ function gameStart(){
 
 const __MINSCALE = 10
 const __MAXSCALE = 255
+const __MAXCRISPS = 300
 
 var ENTITIES = []
 var MAP = []
 var PERKS = []
+var CRISPS = []
 
 gameStart()
 
