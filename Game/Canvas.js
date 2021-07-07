@@ -70,6 +70,18 @@ function gameLoop(){
     }, 25);
 }
 
+function playSound(src, volume = 0.1, pitch = 1){
+    let sound = document.createElement('audio')
+    sound.src = `./src/Sounds/${src}.mp3`
+    sound.removeAttribute('controls')
+    
+    sound.volume = volume
+    sound.mozPreservesPitch = false;
+    sound.playbackRate  = pitch
+    
+    sound.play()
+    sound.remove()
+}
 
 
 
