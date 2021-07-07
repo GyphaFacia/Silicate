@@ -47,14 +47,18 @@ function hills(){
     let e = new Poly(points)
     e.color = Hsl(45, 15, 25)
     e.ocolor = Hsl(69, 35, 33)
-    e.width = 15
+    
+    e.color = Clr(0)
+    e.ocolor = Clr(0)
+    
+    e.width = 10
     e.setPos(getRes().mul(0.5, 1))
     e.setScale(1.1)
     e.setStatic()
     
     document.body.applyCss(`
         // background: radial-gradient(circle at 50% 200%, hsl(15, 100%, 75%), hsl(280, 50%, 20%))
-        background: linear-gradient(to top, hsl(334, 65%, 80%) 25%, hsl(212, 66%, 90%));
+        // background: linear-gradient(to top, hsl(334, 65%, 80%) 25%, hsl(212, 66%, 90%));
     `)
     
     e.pushUp = setInterval(()=>{
@@ -68,7 +72,7 @@ function hills(){
                     v = verts[i]
                 }
             }
-            if(v.y + ent.getScale().y*2 < ent.getPos().y){
+            if(v.y + 10 < ent.getPos().y){
                 ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)
             }
         }

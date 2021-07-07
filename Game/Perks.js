@@ -59,7 +59,7 @@ class Perk {
     
     pick(){
         if(PAUSED){return null}
-        if(this.cd){return null}
+        // if(this.cd){return null}
         
         if(this.ply.dead){return null}
         this.getDeadPlayers()
@@ -558,12 +558,14 @@ class Reproduce extends Perk {
         let arr = this.alliesInRad()
         arr = arr.filter(ent => ent.getScale().x >= __MINSCALE)
         for(let ent of arr){
-            let sclTo = ent.getScale()
-            let child = this.ply.spawnSilicate()
-            child.setScale(1)
-            child.setPos(ent.getPos())
-            
-            child.scaleTo(ent.getScale())
+            setTimeout(()=>{
+                let sclTo = ent.getScale()
+                let child = this.ply.spawnSilicate()
+                child.setScale(1)
+                child.setPos(ent.getPos())
+                
+                child.scaleTo(ent.getScale())
+            }, random(1000))
         }
     }
     

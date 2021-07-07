@@ -101,13 +101,15 @@ body{
 	transform: translate(-50%, -50%);
 	width: 100vw;
 	height: 100vh;
+	// transition-duration: 255ms;
+	filter: drop-shadow(0 0 1px white);
 }
 
 .perks{
 	@include flex;
 	
 	position: fixed;
-	z-index: 9999;
+	z-index: 100;
 	bottom: 0;
 	left: 50%;
 	transform: translateX(-50%);
@@ -123,23 +125,27 @@ body{
 .perk{
 	position: relative;
 	transition-duration: 255ms;
-	opacity: 0.33;
+	
+	// filter:
+	// drop-shadow(0 0 1px white)
+	// drop-shadow(0 0 1px white)
+	// ;
 }
 
 .perk-img{
 	width: 100px;
 	height: 100px;
 	object-fit: contain;
-	border: 3px solid red;
+	border: 3px solid white;
 	padding: 25px;
 	border-radius: 15px;
 	cursor: pointer;
 	
-	filter:	saturate(0) brightness(10);
+	filter:	saturate(0) brightness(100);
 }
 
 .perk-clip{
-	background-color: #000c;
+	background-color: #5558;
 	width: 100px;
 	height: 100px;
 	position: absolute;
@@ -153,12 +159,12 @@ body{
 }
 
 .perk:hover, .perk--active{
-	opacity: 1;
+	// opacity: 1;
 	transform: rotate(-15deg) scale(1.1) translateY(-25%);
-	filter: 
-	saturate(0) brightness(10)
-	drop-shadow(0 0 5px white)
-	;
+	// filter: 
+	// saturate(0) brightness(10)
+	// drop-shadow(0 0 5px white)
+	// ;
 }
 
 .perk:hover:nth-child(2n), .perk--active:nth-child(2n){
@@ -167,28 +173,126 @@ body{
 
 .pause-button{
 	position: fixed;
-	z-index: 9999;
+	z-index: 100;
 	top: 15px;
 	right: 15px;
 	font-size: 66px;
 	border-radius: 50%;
-	background: #333;
-	color: #fa9;
-	padding: 5px;
+	color: #fff;
 	opacity: 0.25;
 	
+	transform-origin: top right;
 	transition-duration: 255ms;
 	&:hover, &--paused{
 		opacity: 1;
-		transform: scale(1.25);
+		transform: scale(1.5);
 	}
 	
 	&--paused{
-		box-shadow: 0 0 0 10000px #0009;
 	}
 }
 
+.pause-menu{
+	@include flex(column);
+	@include center(fixed);
+	z-index: 200;
+	padding: 30px;
+	
+	&__button{
+		font-size: 50px;
+		padding: 30px;
+		color: white;
+		border-radius: 50px;
+		
+		width: 100%;
+		z-index: 300;
+		box-shadow: 0 0 5px white inset;
+		background: linear-gradient(to bottom right, #f051, #fff0);
+		
+		backdrop-filter: blur(3px);
+		
+		transition-duration: 125ms;
+		&:hover{
+			text-shadow: 0 0 5px white;
+			transform: scale(1.1)
+		}
+	}
+	&__button:not(:last-child){
+		margin-bottom: 25px;	
+	}
+	
+	&-wrapper-1{
+		position: absolute;
+		height: 100%;
+		width: 100%;
+	}
+	
+	&-wrapper-2{
+		position: relative;
+		height: 100%;
+		width: 100%;
+	}
+	
+	&__fullsize-glass{
+		width: 100%;
+		height: 100%;
+		backdrop-filter: blur(10px);
+		border-radius: 0 50px 0 50px;
+		box-shadow: 0 0 5px white inset;
+	}
+	
+	&__glass-1{
+		box-shadow: 0 0 5px white inset;
+		position: absolute;
+		left: 0;
+		top: 0;
+		transform: translate(-33%, -33%);
+		z-index: 400;
+		border-radius: 10px;
+		padding: 66px;
+		backdrop-filter: blur(3px);
+	}
+	
+	&__glass-2{
+		box-shadow: 0 0 5px white inset;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		transform: translate(33%, 33%);
+		z-index: 400;
+		border-radius: 10px;
+		padding: 35px;
+		backdrop-filter: blur(3px);
+	}
+	
+	&__glass-3{
+		box-shadow: 0 0 5px white inset;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		transform: translate(-25%, 25%);
+		z-index: -1;
+		border-radius: 10px;
+		padding: 33px;
+		backdrop-filter: blur(3px);
+	}
+	
+	&__glass-4{
+		box-shadow: 0 0 5px white inset;
+		position: absolute;
+		right: 0;
+		top: 22%;
+		transform: translate(50%, -50%);
+		z-index: 400;
+		border-radius: 5px;
+		padding: 15px;
+		backdrop-filter: blur(3px);
+	}
+}
 
+.hide{
+	display: none;
+}
 
 
 

@@ -121,7 +121,7 @@ class Bot extends Player{
         e.setScale(__MINSCALE)
         e.setPos(pos)
         e.team = this.team
-        e.color = Hsl(69, 100, 40)
+        e.color = Clr(0)
         return e
     }
 }
