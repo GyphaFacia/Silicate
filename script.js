@@ -67,7 +67,7 @@ ply.spawnSilicate(getRes().mul(0.15, 0.5))
 let bot = new Bot(2)
 bot.spawnSilicate(getRes().mul(0.85, 0.5))
 
-
+handlePause()
 
 
 

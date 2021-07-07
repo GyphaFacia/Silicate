@@ -51,6 +51,7 @@ class Perk {
     
     pick(){
         if(PAUSED){return null}
+        if(this.cd){return null}
         
         for(let perk of PERKS){perk.cancel()}
         this.active = true
@@ -257,6 +258,10 @@ class Perk {
 	}
 }
 
+const __COOLDOWN_FAST = 2500
+const __COOLDOWN_MID = 5000
+const __COOLDOWN_ELITE = 10000
+
 // .d8888b.                                  
 // d88P  Y88b                                 
 // Y88b.                                      
@@ -279,7 +284,7 @@ class SpawnSome extends Perk {
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE * 2, __COOLDOWN_ELITE)
     }
     
     optimalCast(){this.aiSpawn()}
@@ -306,7 +311,7 @@ class SpawnBig extends Perk {
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE * 2, __COOLDOWN_ELITE)
     }
     optimalCast(){this.aiAttack(1)}
 }
@@ -333,7 +338,7 @@ class Explode extends Perk{
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_MID, __COOLDOWN_FAST)
     }
     optimalCast(){this.aiBuff()}
 }
@@ -357,7 +362,7 @@ class Grow extends Perk {
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE, __COOLDOWN_MID)
     }
     optimalCast(){this.aiBuff(1)}
 }
@@ -389,7 +394,8 @@ class Joker extends Perk{
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = __COOLDOw
+        this.cooldown = this.disperce(__COOLDOWN_ELITE*5, __COOLDOWN_MID*2)
     }
     optimalCast(){this.aiDeBuff(1)}
 }
@@ -420,7 +426,7 @@ class Jump extends Perk{
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_MID, __COOLDOWN_FAST)
     }
     optimalCast(){this.aiBuff()}
 }
@@ -448,7 +454,7 @@ class Kill extends Perk{
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE*5, __COOLDOWN_MID*2)
     }
     optimalCast(){this.aiDeBuff(1)}
 }
@@ -484,7 +490,7 @@ class Levi extends Perk{
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE, __COOLDOWN_MID)
     }
     optimalCast(){this.aiBuff()}
 }
@@ -517,6 +523,7 @@ class Randomize extends Perk {
         this._level = lvl
         this.rad = 100
         this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE, __COOLDOWN_MID)
     }
     optimalCast(){this.aiBuff()}
 }
@@ -551,6 +558,7 @@ class Reproduce extends Perk {
         this._level = lvl
         this.rad = 100
         this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE, __COOLDOWN_MID)
     }
     optimalCast(){this.aiBuff(1)}
 }
@@ -580,6 +588,7 @@ class Spin extends Perk {
         this._level = lvl
         this.rad = 100
         this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_MID, __COOLDOWN_FAST)
     }
     optimalCast(){this.aiBuff(1)}
 }
@@ -618,7 +627,7 @@ class Split extends Perk {
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE, __COOLDOWN_MID)
     }
     optimalCast(){this.aiBuff(1)}
 }
@@ -649,6 +658,7 @@ class Swap extends Perk {
         this._level = lvl
         this.rad = 100
         this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_MID, __COOLDOWN_FAST)
     }
     optimalCast(){this.aiBuff()}
 }
@@ -681,6 +691,7 @@ class Union extends Perk {
         this._level = lvl
         this.rad = 100
         this.cooldown = 500
+        this.cooldown = this.disperce(__COOLDOWN_ELITE*2, __COOLDOWN_ELITE)
     }
     optimalCast(){this.aiBuff()}
 } 
