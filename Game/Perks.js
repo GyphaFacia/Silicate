@@ -49,9 +49,20 @@ class Perk {
     
     callback(){}
     
+    getDeadPlayers(){
+        for(let ply of PLAYERS){
+            if(!ENTITIES.filter(ent => ent.team == ply.team).length){
+                ply.dead = true
+            }
+        }
+    }
+    
     pick(){
         if(PAUSED){return null}
         if(this.cd){return null}
+        
+        if(this.ply.dead){return null}
+        this.getDeadPlayers()
         
         for(let perk of PERKS){perk.cancel()}
         this.active = true
@@ -62,6 +73,9 @@ class Perk {
         console.log('canceled');
     }
     apply(){
+        if(this.ply.dead){return null}
+        this.getDeadPlayers()
+        
         if(this.active){
             this.active = false
             this.callback()

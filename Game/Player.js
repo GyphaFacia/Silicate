@@ -5,6 +5,8 @@ class Player {
         
         this.first(...arguments)
         this.second()
+        
+        PLAYERS.push(this)
     }
     
     get perks(){return PERKS.filter(perk => perk.team == this.team)}
@@ -19,11 +21,12 @@ class Player {
         }
     }
     
-    addPerk(name){
+    addPerk(name, cd = true){
         let perk = new name()
         this.perks.push(perk)
         perk.team = this.team
         perk.ply = this
+        perk.cd = cd ? time() : 0
     }
     
     spawnSilicate(){}
@@ -94,6 +97,8 @@ class Bot extends Player{
     }
     
     think(){
+        if(this.dead){return null}
+        
         if(!PAUSED){
             let perks = this.perks
             for(let i = 0; i < perks.length; i++){

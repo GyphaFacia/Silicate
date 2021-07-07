@@ -162,6 +162,7 @@ class Entity {
 		if(this.body){
 			Matter.Body.scale(this.body, scale.x, scale.y)
             this.updateVerts()
+            this.setMass(1)
 		}
 	}
     
