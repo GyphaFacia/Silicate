@@ -91,7 +91,8 @@ $clr_txt2: hsl($hue_txt, 70%, 85%);
 
 body{
 	overflow: hidden;
-	background-color: #333;
+	// background-color: #333;
+	background: linear-gradient(to bottom, #ccc, #000);
 }
 
 .game_canvas{
@@ -161,10 +162,11 @@ body{
 .perk:hover, .perk--active{
 	// opacity: 1;
 	transform: rotate(-15deg) scale(1.1) translateY(-25%);
-	// filter: 
-	// saturate(0) brightness(10)
-	// drop-shadow(0 0 5px white)
-	// ;
+	filter: 
+	saturate(0) brightness(10)
+	drop-shadow(0 0 5px white)
+	drop-shadow(0 0 5px white)
+	;
 }
 
 .perk:hover:nth-child(2n), .perk--active:nth-child(2n){
@@ -186,9 +188,6 @@ body{
 	&:hover, &--paused{
 		opacity: 1;
 		transform: scale(1.5);
-	}
-	
-	&--paused{
 	}
 }
 

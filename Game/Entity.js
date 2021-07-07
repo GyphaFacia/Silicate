@@ -101,9 +101,11 @@ class Entity {
 		this.drawEnd()
     }
     
-    drawEye(irisClr = 69, sclMul = null, posOffset = null){
+    drawEye(sclMul = null, posOffset = null){
         let pos = this.getPos()
         let scl = this.getScale()
+        
+        let eyeclr = this.eyeclr ? this.eyeclr : Hsl(69, 100, 50)
         
         if(sclMul){
             scl = scl.mul(sclMul)
@@ -121,12 +123,13 @@ class Entity {
         pos = pos.add(cursor().sub(pos).ort.mul(scl.x/15))
         
         ctx.beginPath()
-        ctx.fillStyle = Hsl(irisClr, 100, 25).hex
+        let eyeclr2 = Hsl(eyeclr.h, eyeclr.s, eyeclr.l-15)
+        ctx.fillStyle = eyeclr2.hex
         ctx.arc(...pos.$, scl.x/2.25, 0, 2*pi())
         ctx.fill()
         
         ctx.beginPath()
-        ctx.fillStyle = Hsl(irisClr, 100, 35).hex
+        ctx.fillStyle = eyeclr.hex
         ctx.arc(...pos.$, scl.x/2.5, 0, 2*pi())
         ctx.fill()
         

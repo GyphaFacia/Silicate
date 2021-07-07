@@ -85,11 +85,13 @@ var PLAYERS = []
 initPause()
 gameStart()
 
-// let ply = new Ply(1)
-// ply.spawnSilicate(getRes().mul(0.15, 0.5))
-// 
+let ply = new Ply(1)
+ply.spawnSilicate(getRes().mul(0.15, 0.5))
+
 // let bot = new Bot(2)
 // bot.spawnSilicate(getRes().mul(0.85, 0.5))
+
+let m = new Mush()
 
 // handlePause()
 

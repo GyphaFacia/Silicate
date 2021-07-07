@@ -697,9 +697,11 @@ class Union extends Perk {
             pos = pos.add(ent.getPos())
             ent.remove()
         }
-        pos = pos.div(cnt)        
-        let union = this.ply.spawnSilicate(pos)
-        union.setScale(Math.sqrt(area))
+        if(area > __MINSCALE*__MINSCALE){
+            pos = pos.div(cnt)        
+            let union = this.ply.spawnSilicate(pos)
+            union.setScale(Math.sqrt(area))
+        }
     }
     
     get level(){return this._level}

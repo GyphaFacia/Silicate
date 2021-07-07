@@ -25,7 +25,8 @@ class Silly extends Ngon {
     }
     
     second(){
-        this.color = Hsl(-15, 100, 15)
+        // this.color = Hsl(-15, 100, 15)
+        this.color = Clr(0)
         
         if(random()>0.8){
             this.afterDraw = this.drawEye
