@@ -4,7 +4,7 @@ function handlePause(){
     if(PAUSED){
         document.querySelector('.pause-menu').classList.remove('hide')
         document.querySelector('.pause-button').classList.add('pause-button--paused')
-        cnv.style.filter = 'drop-shadow(0 0 10px white) blur(10px)'
+        cnv.style.filter = 'blur(5px)'
     }
     else{
         document.querySelector('.pause-menu').classList.add('hide')
