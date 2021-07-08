@@ -47,14 +47,15 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 
 
 
-// 888b     d888          d8b          
-// 8888b   d8888          Y8P          
-// 88888b.d88888                       
-// 888Y88888P888  8888b.  888 88888b.  
-// 888 Y888P 888     "88b 888 888 "88b 
-// 888  Y8P  888 .d888888 888 888  888 
-// 888   "   888 888  888 888 888  888 
-// 888       888 "Y888888 888 888  888 
+
+// 888b     d888 d8b          d8b          
+// 8888b   d8888 Y8P          Y8P          
+// 88888b.d88888                           
+// 888Y88888P888 888 888  888 888 88888b.  
+// 888 Y888P 888 888 `Y8bd8P' 888 888 "88b 
+// 888  Y8P  888 888   X88K   888 888  888 
+// 888   "   888 888 .d8""8b. 888 888  888 
+// 888       888 888 888  888 888 888  888 
 @mixin flex($orientation:row) {
 	display: flex;
 	justify-content: center;
@@ -75,17 +76,160 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 	object-fit: $fit;
 }
 
+@mixin makeConvex($primclr:#fa5, $offset:5px, $scale:20px, $lighten:50%, $darken:50%){
+	$offp: $offset;
+	$offm: -$offset;
+	
+	$clrdark: mix(#000, $primclr, $darken);
+	$clrlight: mix(#fff, $primclr, $lighten);
+		
+	box-shadow: 
+	$offp $offp $scale $clrdark,
+	$offm $offm $scale $clrlight,
+	;
+}
+
+@mixin makeConcave($primclr:#fa5, $offset:5px, $scale:20px, $lighten:50%, $darken:50%){
+	$offp: $offset;
+	$offm: -$offset;
+	
+	$clrdark: mix(#000, $primclr, $darken);
+	$clrlight: mix(#fff, $primclr, $lighten);
+		
+	box-shadow: 
+	$offp $offp $scale $clrdark inset,
+	$offm $offm $scale $clrlight inset,
+	;
+}
 
 
+@mixin textConvex($primclr:#fa5, $offset:3px, $scale:5px, $lighten:50%, $darken:50%){
+	$offp: $offset;
+	$offm: -$offset;
+	
+	$clrdark: mix(#000, $primclr, $darken);
+	$clrlight: mix(#fff, $primclr, $lighten);
+		
+	text-shadow: 
+	$offm $offm $scale $clrlight,
+	$offp $offp $scale $clrdark,
+	;
+}
 
+$clrbg1: #333;
+$clrbg2: #444;
 
+$clrtxt1: hsl(69, 100%, 85%);
+$clrgit: hsl(69, 100%, 50%);
 
+// 888b     d888          d8b          
+// 8888b   d8888          Y8P          
+// 88888b.d88888                       
+// 888Y88888P888  8888b.  888 88888b.  
+// 888 Y888P 888     "88b 888 888 "88b 
+// 888  Y8P  888 .d888888 888 888  888 
+// 888   "   888 888  888 888 888  888 
+// 888       888 "Y888888 888 888  888 
+body{
+    font-size: 24px;
+    background-color: $clrbg1;
+    color: $clrtxt1;
+}
 
+hr{
+    background: linear-gradient(to right, $clrbg1, $clrtxt1, $clrbg1);
+    width: 100%;
+    height: 2px;
+}
 
+.header, .main, .footer{
+    @include flex;
+    width: 100%;
+}
+.main{
+    min-height: 100vh;
+}
 
+.header, .footer{
+    justify-content: space-between;
+    padding: 20px 5vw;
+    background-color: $clrbg2;
+}
 
+.footer{
+    font-size: 16px;
+    color: white;
+    
+    &__gitlink{
+        font-size: 45px;
+        color: $clrgit;
+        border-radius: 50%;
+        padding: 3px;
+        @include makeConvex($clrbg2, 5px, 10px, 33%, 66%);
+    }
+}
 
+.header{
+    &__title{
+        font-size: 33px;
+        text-transform: uppercase;
+    }
+    
+    &-currency{
+        @include flex;
+        
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid $clrbg1;
+        @include makeConcave($clrbg1, 5px, 10px, 15%, 5%);
+        
+        &>span{
+            margin: 0 20px;
+        }
+        
+        &__count{
+            font-size: 30px;
+        }
+        
+        &__currency{
+            font-size: 35px;
+        }
+    }
+}
 
+.main{
+    align-items: stretch;
+    padding: 50px;
+}
+
+.preview{
+    margin-right: 50px;
+    width: 100%;
+}
+
+.options, .preview{
+    background-color: $clrbg2;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 0 25px #0007;
+}
+
+.options{
+    width: 200%;
+}
+
+.preview{
+    &__canvas{
+        border-radius: 15px;
+    }
+    
+    &-canvas-wrapper{
+        border-radius: 15px;
+        width: 100%;
+        background-color: #0001;
+        @include makeConcave($clrbg1, 5px, 10px, 25%, 25%);
+    }
+}
 
 
 
