@@ -101,6 +101,28 @@ class Entity {
 		this.drawEnd()
     }
     
+    addImage(src, pos, scl){
+        let img = new Image(800, 800)
+        img.src = src
+        pos = pos.sub(scl.mul(0.5, 1))
+        
+        if(!this.imgs){
+            this.imgs = []
+        }
+        
+        this.imgs.push({
+            src: img,
+            pos: pos,
+            scl: scl,
+        })
+    }
+    
+    drawImages(){
+        for(let img of this.imgs){
+            ctx.drawImage(img.src, ...img.pos.add(this.getPos()).$, ...img.scl.$)
+        }
+    }
+    
     drawEye(sclMul = null, posOffset = null){
         let pos = this.getPos()
         let scl = this.getScale()

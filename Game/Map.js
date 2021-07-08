@@ -76,10 +76,10 @@ function hills(){
     e.setScale(1.1)
     e.setStatic()
     
-    document.body.applyCss(`
-        // background: radial-gradient(circle at 50% 200%, hsl(15, 100%, 75%), hsl(280, 50%, 20%))
-        // background: linear-gradient(to top, hsl(334, 65%, 80%) 25%, hsl(212, 66%, 90%));
-    `)
+    // document.body.applyCss(`
+    //     // background: radial-gradient(circle at 50% 200%, hsl(15, 100%, 75%), hsl(280, 50%, 20%))
+    //     // background: linear-gradient(to top, hsl(334, 65%, 80%) 25%, hsl(212, 66%, 90%));
+    // `)
     
     e.pushUp = setInterval(()=>{
         let verts = e.verts.slice()
@@ -97,6 +97,38 @@ function hills(){
             }
         }
     }, 255)
+    
+    let smallmushes = [
+        './src/Foliage/FourMushes.svg',
+        './src/Foliage/FourMushesM.svg',
+    ]
+    
+    let midmushes = [
+        './src/Foliage/ThreeMushes.svg',
+        './src/Foliage/ThreeMushesM.svg',
+    ]
+    
+    let bigmushes = [
+        './src/Foliage/BigMush.svg',
+        './src/Foliage/BigMushM.svg',
+        
+    ]
+    
+    for(let i = 0; i < 33; i++){
+        e.addImage(randelt(smallmushes), randelt(e.verts), vec(random(25, 33)))
+    }
+    for(let i = 0; i < 15; i++){
+        e.addImage(randelt(midmushes), randelt(e.verts).add(0, 5), vec(random(50, 66)))
+    }
+    for(let i = 0; i < 3; i++){
+        e.addImage(randelt(bigmushes), randelt(e.verts).add(0, 25), vec(random(150, 200)))
+    }
+    
+    for(let i = 0; i < 5; i++){
+        // e.addImage('./src/Foliage/ThreeMushes.svg', vec(0, -500), vec(100))
+    }
+    
+    e.afterDraw = e.drawImages
     
     return e
 }

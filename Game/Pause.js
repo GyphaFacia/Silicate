@@ -4,10 +4,12 @@ function handlePause(){
     if(PAUSED){
         document.querySelector('.pause-menu').classList.remove('hide')
         document.querySelector('.pause-button').classList.add('pause-button--paused')
+        cnv.style.filter = 'drop-shadow(0 0 10px white) blur(10px)'
     }
     else{
         document.querySelector('.pause-menu').classList.add('hide')
         document.querySelector('.pause-button').classList.remove('pause-button--paused')
+        cnv.style.filter = 'drop-shadow(0 0 1px white)'
     }
     
     for(let perk of PERKS){
