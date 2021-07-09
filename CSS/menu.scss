@@ -130,15 +130,20 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 
 $clrbg1: #111;
 $clrbg2: #333;
-$clrtxt: #eee;
-$clrbright: #f05;
+
+$clrtxt1: #eee;
+$clrtxt2: #999;
+
 $clrborder1: #eee;
 $clrborder2: #555;
+
+$clrbright: #f05;
+
 
 body{
 	font-family: 'DotGothic16', sans-serif;
 	background-color: $clrbg1;
-	color: $clrtxt;
+	color: $clrtxt1;
 	font-size: 24px;
 }
 
@@ -152,7 +157,7 @@ body{
 	@include flex;
 	position: relative;
 	font-size: 55px;
-	padding: 15px;
+	padding: 33px;
 	
 	&__title{
 		border: 10px dashed $clrborder1;
@@ -162,41 +167,43 @@ body{
 	}
 }
 
-.balance{
-	border: 1px solid $clrborder1;
-	border-top: none;
-	border-right: none;
-	@include flex;
-	padding: 25px;
-	position: absolute;
-	right: 0;
-	top: 100%;
-	transform: translateY(0%);
-	background-color: $clrbg1;
-	
-	&__prefix{
-		font-size: 20px;
-		text-transform: lowercase;
-	}
-	
-	&__count{
-		margin: 0 10px 0 25px;
-		font-size: 30px;
-		color: $clrbright;
-	}
-	
-	&__value{
-		font-family: 'Press Start 2P', cursive;
-		font-size: 33px;
-		color: $clrbright;
-	}
-}
+// .balance{
+// 	border: 1px solid $clrborder1;
+// 	border-top: none;
+// 	border-right: none;
+// 	@include flex;
+// 	padding: 25px;
+// 	position: absolute;
+// 	right: 0;
+// 	top: 100%;
+// 	transform: translateY(0%);
+// 	background-color: $clrbg1;
+// 
+// 	&__prefix{
+// 		font-size: 20px;
+// 		text-transform: lowercase;
+// 		color: $clrtxt2;
+// 	}
+// 
+// 	&__count{
+// 		margin: 0 10px 0 25px;
+// 		font-size: 30px;
+// 		color: $clrbright;
+// 	}
+// 
+// 	&__value{
+// 		font-family: 'Press Start 2P', cursive;
+// 		font-size: 33px;
+// 		color: $clrbright;
+// 	}
+// }
 
 .footer{
 	border-top: 1px solid $clrborder1;
 	@include flex;
 	justify-content: space-between;
 	padding: 25px;
+	color: $clrtxt2;
 	
 	&__gitlink{
 		font-size: 40px;
@@ -240,6 +247,10 @@ body{
 		@include flex;
 		margin: 25px 0;
 		width: 100%;
+		
+		&__hint{
+			color: $clrtxt2;
+		}
 	}
 	
 	&__plyname{
@@ -254,6 +265,7 @@ body{
 	}
 	
 	&-perks{
+		color: $clrtxt2;
 		border: 1px solid $clrborder2;
 		width: 100%;
 		padding: 25px;
@@ -274,6 +286,7 @@ body{
 			width: 100%;
 			padding: 15px;
 			font-size: 24px;
+			color: $clrtxt2;
 		}
 		
 		overflow: auto;
@@ -297,6 +310,18 @@ body{
 .options-item{
 	@include flex(column);
 	
+	transition-duration: 255ms;
+	&:hover{
+		& .options-item__button{
+			color: $clrbg1;
+			box-shadow: 115px 0 0 $clrtxt1 inset;
+		}
+		
+		& .options-item__content{
+			transform: translateY(-10%);
+		}
+	}
+	
 	&__content{
 		border: 1px solid $clrborder1;
 		width: 100px;
@@ -304,17 +329,21 @@ body{
 		background-size: 50%;
 		background-repeat: no-repeat;
 		background-position: center;
+		
+		transition-duration: 255ms;
 	}
 	
 	&__button{
 		border: 1px solid $clrborder1;
-		color: $clrtxt;
+		color: $clrtxt1;
 		font-size: 22px;
 		width: 100%;
 		margin: 15px 0;
 		padding: 10px;
 		background: none;
 		text-transform: uppercase;
+		
+		transition-duration: 255ms;
 	}
 }
 

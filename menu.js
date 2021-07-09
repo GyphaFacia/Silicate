@@ -74,16 +74,17 @@ setInterval(()=>{
 }, 16)
 
 
-const colors = '000 '.repeat(25)
-const eyecolors = '000 '.repeat(25)
+const colors = '111 500 050 005 502 450 305 aaa'
+const eyecolors = 'af0 0af fa0 f05'
 const shapes = '3 4 5 6 r'
+const perks = 'SpawnSome SpawnBig Explode Grow Joker Jump Kill Levi Randomize Reproduce Spin Split Swap Union'
 
 let sect = document.querySelector('.options-color')
 for(let option of colors.split(' ')){
     let itm = sect.addElement('options-item', 'div')
     let cont = itm.addElement('options-item__content', 'span')
     let btn = itm.addElement('options-item__button', 'button')
-    btn.innerText = random()>0.5 ? 'Buy' : 'Pick'
+    btn.innerText = 'Pick'
     cont.style.backgroundColor = `#${option}`
 }
 
@@ -92,7 +93,7 @@ for(let option of eyecolors.split(' ')){
     let itm = sect.addElement('options-item', 'div')
     let cont = itm.addElement('options-item__content', 'span')
     let btn = itm.addElement('options-item__button', 'button')
-    btn.innerText = random()>0.5 ? 'Buy' : 'Pick'
+    btn.innerText = 'Pick'
     cont.style.backgroundColor = `#${option}`
 }
 
@@ -101,15 +102,32 @@ for(let option of shapes.split(' ')){
     let itm = sect.addElement('options-item', 'div')
     let cont = itm.addElement('options-item__content', 'span')
     let btn = itm.addElement('options-item__button', 'button')
-    btn.innerText = random()>0.5 ? 'Buy' : 'Pick'
+    btn.innerText = 'Pick'
     cont.style.backgroundImage = `url(./src/Shapes/${option}.svg)`
 }
 
+sect = document.querySelector('.options-perks')
+for(let option of perks.split(' ')){
+    let itm = sect.addElement('options-item', 'div')
+    let title = itm.addElement('options-item__title', 'p')
+    let cont = itm.addElement('options-item__content', 'span')
+    let btn = itm.addElement('options-item__button', 'button')
+    btn.innerText = 'Pick'
+    title.style.margin = '50px 0 0 0'
+    title.innerText = option
+    cont.style.backgroundImage = `url(./src/Perks/${option}.svg)`
+    cont.style.filter = 'invert(1)'
+    cont.style.border = 'none'
+    sect.style.flexWrap = 'wrap'
+}
 
 // <div class="options-item">
 //     <span class="options-item__content" style="background-color: #501"></span>
 //     <button class="options-item__button">Buy</button>
 // </div>
+
+
+
 
 
 
