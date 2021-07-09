@@ -74,7 +74,42 @@ setInterval(()=>{
 }, 16)
 
 
+const colors = '000 '.repeat(25)
+const eyecolors = '000 '.repeat(25)
+const shapes = '3 4 5 6 r'
 
+let sect = document.querySelector('.options-color')
+for(let option of colors.split(' ')){
+    let itm = sect.addElement('options-item', 'div')
+    let cont = itm.addElement('options-item__content', 'span')
+    let btn = itm.addElement('options-item__button', 'button')
+    btn.innerText = random()>0.5 ? 'Buy' : 'Pick'
+    cont.style.backgroundColor = `#${option}`
+}
+
+sect = document.querySelector('.options-eyecolor')
+for(let option of eyecolors.split(' ')){
+    let itm = sect.addElement('options-item', 'div')
+    let cont = itm.addElement('options-item__content', 'span')
+    let btn = itm.addElement('options-item__button', 'button')
+    btn.innerText = random()>0.5 ? 'Buy' : 'Pick'
+    cont.style.backgroundColor = `#${option}`
+}
+
+sect = document.querySelector('.options-shape')
+for(let option of shapes.split(' ')){
+    let itm = sect.addElement('options-item', 'div')
+    let cont = itm.addElement('options-item__content', 'span')
+    let btn = itm.addElement('options-item__button', 'button')
+    btn.innerText = random()>0.5 ? 'Buy' : 'Pick'
+    cont.style.backgroundImage = `url(./src/Shapes/${option}.svg)`
+}
+
+
+// <div class="options-item">
+//     <span class="options-item__content" style="background-color: #501"></span>
+//     <button class="options-item__button">Buy</button>
+// </div>
 
 
 

@@ -81,11 +81,11 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 	$offm: -$offset;
 	
 	$clrdark: mix(#000, $primclr, $darken);
-	$clrlight: mix(#fff, $primclr, $lighten);
+	$clrborder1: mix(#fff, $primclr, $lighten);
 		
 	box-shadow: 
 	$offp $offp $scale $clrdark,
-	$offm $offm $scale $clrlight,
+	$offm $offm $scale $clrborder1,
 	;
 }
 
@@ -94,11 +94,11 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 	$offm: -$offset;
 	
 	$clrdark: mix(#000, $primclr, $darken);
-	$clrlight: mix(#fff, $primclr, $lighten);
+	$clrborder1: mix(#fff, $primclr, $lighten);
 		
 	box-shadow: 
 	$offp $offp $scale $clrdark inset,
-	$offm $offm $scale $clrlight inset,
+	$offm $offm $scale $clrborder1 inset,
 	;
 }
 
@@ -108,10 +108,10 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 	$offm: -$offset;
 	
 	$clrdark: mix(#000, $primclr, $darken);
-	$clrlight: mix(#fff, $primclr, $lighten);
+	$clrborder1: mix(#fff, $primclr, $lighten);
 		
 	text-shadow: 
-	$offm $offm $scale $clrlight,
+	$offm $offm $scale $clrborder1,
 	$offp $offp $scale $clrdark,
 	;
 }
@@ -125,16 +125,198 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 // 888   "   888 888  888 888 888  888 
 // 888       888 "Y888888 888 888  888 
 
+// font-family: 'DotGothic16', sans-serif;
+// font-family: 'Press Start 2P', cursive;
 
+$clrbg1: #111;
+$clrbg2: #333;
+$clrtxt: #eee;
+$clrbright: #f05;
+$clrborder1: #eee;
+$clrborder2: #555;
 
+body{
+	font-family: 'DotGothic16', sans-serif;
+	background-color: $clrbg1;
+	color: $clrtxt;
+	font-size: 24px;
+}
 
+::-webkit-scrollbar{
+	width: 0;
+	height: 0;
+}
 
+.header{
+	border-bottom: 1px solid $clrborder1;
+	@include flex;
+	position: relative;
+	font-size: 55px;
+	padding: 15px;
+	
+	&__title{
+		border: 10px dashed $clrborder1;
+		@include flex;
+		padding: 15px;
+		text-transform: uppercase;
+	}
+}
 
+.balance{
+	border: 1px solid $clrborder1;
+	border-top: none;
+	border-right: none;
+	@include flex;
+	padding: 25px;
+	position: absolute;
+	right: 0;
+	top: 100%;
+	transform: translateY(0%);
+	background-color: $clrbg1;
+	
+	&__prefix{
+		font-size: 20px;
+		text-transform: lowercase;
+	}
+	
+	&__count{
+		margin: 0 10px 0 25px;
+		font-size: 30px;
+		color: $clrbright;
+	}
+	
+	&__value{
+		font-family: 'Press Start 2P', cursive;
+		font-size: 33px;
+		color: $clrbright;
+	}
+}
 
+.footer{
+	border-top: 1px solid $clrborder1;
+	@include flex;
+	justify-content: space-between;
+	padding: 25px;
+	
+	&__gitlink{
+		font-size: 40px;
+		color: $clrbright;
+		&, &>i{
+			border-radius: 50%;
+			border: 1px solid $clrborder1;
+			padding: 5px;
+			transition-duration: 125ms;
+		}
+		
+		&:hover{
+			color: white;
+			&>i{
+				transform: scale(1.25);
+			}
+		}
+	}
+}
 
+.main{
+	@include flex;
+	min-height: 100vh;
+	align-items: stretch;
+	padding: 50px;
+}
 
+.preview{
+	@include flex(column);
+	justify-content: flex-start;
+	border: 1px solid $clrborder2;
+	width: 100%;
+	margin-right: 50px;
+	padding: 25px;
+	
+	&__canvas{
+		border: 1px solid $clrborder2;
+	}
+	
+	&-plyname{
+		@include flex;
+		margin: 25px 0;
+		width: 100%;
+	}
+	
+	&__plyname{
+		border: 1px solid $clrborder1;
+		@include flex;
+		width: 100%;
+		background: none;
+		color: $clrbright;
+		text-align: center;
+		padding: 15px;
+		font-size: 33px;
+	}
+	
+	&-perks{
+		border: 1px solid $clrborder2;
+		width: 100%;
+		padding: 25px;
+	}
+}
 
+.options{
+	width: 200%;
+	border: 1px solid $clrborder2;
+	
+	padding: 25px;
+	
+	&-section{
+		border: 1px solid $clrborder2;
+		margin-bottom: 50px;
+		
+		&__title{
+			width: 100%;
+			padding: 15px;
+			font-size: 24px;
+		}
+		
+		overflow: auto;
+		max-width: calc(100vw * 0.66 - 150px);
+		
+		&-content{
+			width: 100%;
+			@include flex;
+			justify-content: flex-start;
+			// flex-wrap: wrap;
+			padding: 15px;
+			padding-bottom: 0;
+			
+			&>.options-item:not(:last-child){
+				margin-right: 15px;
+			}
+		}
+	}
+}
 
+.options-item{
+	@include flex(column);
+	
+	&__content{
+		border: 1px solid $clrborder1;
+		width: 100px;
+		height: 100px;
+		background-size: 50%;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+	
+	&__button{
+		border: 1px solid $clrborder1;
+		color: $clrtxt;
+		font-size: 22px;
+		width: 100%;
+		margin: 15px 0;
+		padding: 10px;
+		background: none;
+		text-transform: uppercase;
+	}
+}
 
 
 
