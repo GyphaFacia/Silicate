@@ -204,6 +204,9 @@ function Hsl(){
     return new ColorHsl(...arguments)
 }
 
+function Hex(){
+	return new Clr(...hexToRgb(...arguments))
+}
 
 
 

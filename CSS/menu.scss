@@ -311,6 +311,7 @@ body{
 	@include flex(column);
 	
 	transition-duration: 255ms;
+	cursor: pointer;
 	&:hover{
 		& .options-item__button{
 			color: $clrbg1;

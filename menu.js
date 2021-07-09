@@ -39,6 +39,14 @@ setInterval(()=>{
     ctx.filter = 'none'
     let pos = vec(cnv.width/2)
     let scl = vec(RAD)
+    switch (SIDES) {
+        case 3:
+            scl = scl.div(1.5)
+            break;
+        case 50:
+            scl = scl.mul(1.25)
+            break;
+    }
     
     let eyeclr = EYECLR
     
@@ -75,7 +83,7 @@ setInterval(()=>{
 
 
 const colors = '111 500 050 005 502 450 305 aaa'
-const eyecolors = 'af0 0af fa0 f05'
+const eyecolors = 'd9ff00 0af fa0 f05 aaa'
 const shapes = '3 4 5 6 r'
 const perks = 'SpawnSome SpawnBig Explode Grow Joker Jump Kill Levi Randomize Reproduce Spin Split Swap Union'
 
@@ -86,6 +94,10 @@ for(let option of colors.split(' ')){
     let btn = itm.addElement('options-item__button', 'button')
     btn.innerText = 'Pick'
     cont.style.backgroundColor = `#${option}`
+    
+    itm.onclick = (e)=>{
+        COLOR = Hex(option)
+    }
 }
 
 sect = document.querySelector('.options-eyecolor')
@@ -95,6 +107,10 @@ for(let option of eyecolors.split(' ')){
     let btn = itm.addElement('options-item__button', 'button')
     btn.innerText = 'Pick'
     cont.style.backgroundColor = `#${option}`
+    
+    itm.onclick = (e)=>{
+        EYECLR = Hex(option)
+    }
 }
 
 sect = document.querySelector('.options-shape')
@@ -104,6 +120,10 @@ for(let option of shapes.split(' ')){
     let btn = itm.addElement('options-item__button', 'button')
     btn.innerText = 'Pick'
     cont.style.backgroundImage = `url(./src/Shapes/${option}.svg)`
+    
+    itm.onclick = (e)=>{
+        SIDES = parseInt(option == 'r' ? 50 : option)
+    }
 }
 
 sect = document.querySelector('.options-perks')
@@ -121,10 +141,7 @@ for(let option of perks.split(' ')){
     sect.style.flexWrap = 'wrap'
 }
 
-// <div class="options-item">
-//     <span class="options-item__content" style="background-color: #501"></span>
-//     <button class="options-item__button">Buy</button>
-// </div>
+
 
 
 
