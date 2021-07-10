@@ -125,9 +125,6 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 // 888   "   888 888  888 888 888  888 
 // 888       888 "Y888888 888 888  888 
 
-// font-family: 'DotGothic16', sans-serif;
-// font-family: 'Press Start 2P', cursive;
-
 $clrbg1: #111;
 $clrbg2: #333;
 
@@ -141,7 +138,7 @@ $clrbright: #f05;
 
 
 body{
-	font-family: 'DotGothic16', sans-serif;
+	font-family: 'Big Shoulders Display', cursive;
 	background-color: $clrbg1;
 	color: $clrtxt1;
 	font-size: 24px;
@@ -265,10 +262,21 @@ body{
 	}
 	
 	&-perks{
+		@include flex(column);
 		color: $clrtxt2;
 		border: 1px solid $clrborder2;
 		width: 100%;
 		padding: 25px;
+		
+		&__title{
+			margin-bottom: 25px;
+			font-size: 33px;
+		}
+		
+		&-wrapper{
+			@include flex;
+			flex-wrap: wrap;
+		}
 	}
 }
 
@@ -289,14 +297,14 @@ body{
 			color: $clrtxt2;
 		}
 		
-		overflow: auto;
-		max-width: calc(100vw * 0.66 - 150px);
+		// overflow: auto;
+		// max-width: calc(100vw * 0.66 - 150px);
 		
 		&-content{
 			width: 100%;
 			@include flex;
 			justify-content: flex-start;
-			// flex-wrap: wrap;
+			flex-wrap: wrap;
 			padding: 15px;
 			padding-bottom: 0;
 			
@@ -348,7 +356,17 @@ body{
 	}
 }
 
-
+.perk{
+	// padding: 20%;
+	padding: 75px;
+	margin-right: 25px;
+	margin-bottom: 25px;
+	background-position: center;
+	background-size: 50%;
+	background-repeat: no-repeat;
+	border: 1px solid invert($clrborder1);
+	filter: invert(1);
+}
 
 
 

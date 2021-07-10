@@ -10,6 +10,8 @@ var SIDES = 6
 var EYECLR = Clr(255, 200, 0)
 var COLOR = Clr(25)
 var RAD = cnv.width/2.5
+var PERKS = 'SpawnSome Grow Reproduce Union'.split(' ')
+drawPerks()
 
 document.onmousemove = (e)=>{window.mousePos = vec(e.clientX, e.clientY)}
 function cursor(){return window.mousePos}
@@ -82,8 +84,10 @@ setInterval(()=>{
 }, 16)
 
 
-const colors = '111 500 050 005 502 450 305 aaa'
-const eyecolors = 'd9ff00 0af fa0 f05 aaa'
+// const colors = '000 500 050 005 502 450 305 aaa'
+// const eyecolors = 'd9ff00 0af fa0 f05 502 111 305 aaa 0ff'
+const colors = '000 111 502 305 030 aaa fab fa5 fff'
+const eyecolors = 'df0 0ff 09f fa0 f05 fab fa5 bbb'
 const shapes = '3 4 5 6 r'
 const perks = 'SpawnSome SpawnBig Explode Grow Joker Jump Kill Levi Randomize Reproduce Spin Split Swap Union'
 
@@ -99,6 +103,8 @@ for(let option of colors.split(' ')){
         COLOR = Hex(option)
     }
 }
+COLOR = Hex(colors.split(' ')[0])
+
 
 sect = document.querySelector('.options-eyecolor')
 for(let option of eyecolors.split(' ')){
@@ -112,6 +118,7 @@ for(let option of eyecolors.split(' ')){
         EYECLR = Hex(option)
     }
 }
+EYECLR = Hex(eyecolors.split(' ')[0])
 
 sect = document.querySelector('.options-shape')
 for(let option of shapes.split(' ')){
@@ -138,11 +145,54 @@ for(let option of perks.split(' ')){
     cont.style.backgroundImage = `url(./src/Perks/${option}.svg)`
     cont.style.filter = 'invert(1)'
     cont.style.border = 'none'
-    sect.style.flexWrap = 'wrap'
+    
+    itm.onclick = (e)=>{
+        addPerk(option)
+        drawPerks()
+    }
 }
 
+function drawPerks(){
+    let perksSect = document.querySelector('.preview-perks-wrapper')
+    perksSect.innerHTML = ``
+    
+    for(let perk of PERKS){
+        let perkElt = perksSect.addElement('perk', 'dev')
+        perkElt.applyCss(`
+            background-image: url(./src/Perks/${perk}.svg);
+        `)
+        
+        perkElt.onclick = (e)=>{
+            perkElt.fade = setInterval(()=>{
+                let alpha = window.getComputedStyle(perkElt)['opacity']
+                alpha = parseFloat(alpha) - 0.05
+                console.log(alpha);
+                perkElt.style.opacity = alpha
+                if(alpha < 0){
+                    clearInterval(perkElt.fade)
+                    removePerk(perk)
+                    drawPerks()
+                }
+            }, 10)
+        }
+    }
+}
 
+function addPerk(perk){
+    if(PERKS.length + 1 > 6){
+        PERKS.shift()
+    }
+    PERKS.push(perk)
+}
 
+function removePerk(perk){
+    for(let i = 0; i < PERKS.length; i++){
+        if(PERKS[i] == perk){
+            PERKS.splice(i, 1)
+            break
+        }
+    }
+}
 
 
 
