@@ -25,7 +25,7 @@ function gameStart(){
 }
 
 const __MINSCALE = 10
-const __MAXSCALE = 255
+const __MAXSCALE = 175
 const __MAXCRISPS = 300
 
 let PAUSED = false
@@ -42,8 +42,8 @@ gameStart()
 let ply = new Ply(1)
 ply.spawnSilicate(getRes().mul(0.15, 0.5))
 
-// let bot = new Bot(2)
-// bot.spawnSilicate(getRes().mul(0.85, 0.5))
+let bot = new Bot(2)
+bot.spawnSilicate(getRes().mul(0.85, 0.5))
 
 // handlePause()
 

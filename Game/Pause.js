@@ -60,8 +60,8 @@ function bindPause(){
     document.querySelector('#retry').onclick = (e)=>{
         document.location.reload()
     }
-    document.querySelector('#quit').onclick = (e)=>{
-        // ???
+    document.querySelector('#about').onclick = (e)=>{
+        window.open('https://github.com/GyphaFacia', '_blank')
     }
     
     document.querySelector('#customize').onclick = (e)=>{

@@ -188,8 +188,11 @@ class Entity {
 		}
 	}
 	setScale(){
-		let scale = vec(...arguments).div(this.getScale())
-		this.scale = vec(...arguments)
+        // let scale = vec(...arguments).div(this.getScale())
+        let scl = vec(...arguments)
+        scl = scl.x > __MAXSCALE ? vec(__MAXSCALE) : scl
+        let scale = scl.div(this.getScale())
+        this.scale = scl
 		if(this.body){
 			Matter.Body.scale(this.body, scale.x, scale.y)
             this.updateVerts()
