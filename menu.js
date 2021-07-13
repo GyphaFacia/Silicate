@@ -86,8 +86,8 @@ setInterval(()=>{
 
 // const colors = '000 500 050 005 502 450 305 aaa'
 // const eyecolors = 'd9ff00 0af fa0 f05 502 111 305 aaa 0ff'
-const colors = '000 111 502 305 030 aaa fab fa5 fff'
-const eyecolors = 'df0 0ff 09f fa0 f05 fab fa5 bbb'
+const colors = '000 111 502 305 030 aaa fab fa5 fff 003'
+const eyecolors = 'df0 0ff 09f fa0 f05 fab fa5 bbb 000'
 const shapes = '3 4 5 6 r'
 const perks = 'SpawnSome SpawnBig Explode Grow Joker Jump Kill Levi Randomize Reproduce Spin Split Swap Union'
 
@@ -204,7 +204,7 @@ function saveOptions(){
     obj.color = COLOR
     obj.eyeclr = EYECLR
     obj.perks = PERKS
-    obj.sides = SIDES
+    obj.sides = SIDES > 25 ? 25 : SIDES
     obj.playername = document.querySelector('input').value
     
     obj = JSON.stringify(obj)

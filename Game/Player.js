@@ -88,6 +88,7 @@ class Ply extends Player{
         this.color = Clr(...loadOptions().color.$)
         this.eyeclr = Clr(...loadOptions().eyeclr.$)
         this.name = loadOptions().plyname
+        this.sides = loadOptions().sides
         
         this.team = arguments[0]
         for(let perk of loadOptions().perks){
@@ -102,7 +103,7 @@ class Ply extends Player{
     
     spawnSilicate(pos = getCenter()){
         playSound('pop', random(0.1, 0.25), random(0.5, 2), random(255))
-        let e = new Silly()
+        let e = new Silly(this.sides)
         e.color = this.color
         e.eyeclr = this.eyeclr
         e.setScale(__MINSCALE)

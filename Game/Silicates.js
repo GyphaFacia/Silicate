@@ -21,7 +21,7 @@ class Crisp extends Ngon {
 
 class Silly extends Ngon {
     first(){
-        this.sides = 6
+        this.sides = arguments[0] ? arguments[0] : 6
     }
     
     second(){

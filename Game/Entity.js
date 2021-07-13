@@ -128,6 +128,12 @@ class Entity {
         let scl = this.getScale()
         
         let eyeclr = this.eyeclr ? this.eyeclr : Hsl(69, 100, 50)
+        if(this.sides < 4){
+            scl = scl.mul(0.66)
+        }
+        if(this.sides > 7){
+            scl = scl.mul(1.25)
+        }
         
         if(sclMul){
             scl = scl.mul(sclMul)
