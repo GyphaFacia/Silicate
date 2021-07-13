@@ -52,3 +52,37 @@ function initPause(){
         }
     }
 }
+
+function bindPause(){
+    document.querySelector('#resume').onclick = (e)=>{
+        handlePause()
+    }
+    document.querySelector('#retry').onclick = (e)=>{
+        document.location.reload()
+    }
+    document.querySelector('#quit').onclick = (e)=>{
+        // ???
+    }
+    
+    document.querySelector('#customize').onclick = (e)=>{
+        document.location.href = 'menu.html'
+    }
+    
+}
+bindPause()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

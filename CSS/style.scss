@@ -139,7 +139,6 @@ body{
 	object-fit: fill;
 	border: 3px solid black;
 	padding: 25px;
-	border-radius: 15px;
 	cursor: pointer;
 	
 	filter:	invert(1);
@@ -152,7 +151,6 @@ body{
 	position: absolute;
 	left: 0;
 	top: 0;
-	border-radius: 15px;
 }
 
 .perk:not(:last-child){
@@ -201,12 +199,11 @@ body{
 		font-size: 50px;
 		padding: 30px;
 		color: white;
-		border-radius: 50px;
 		
 		width: 100%;
 		z-index: 300;
 		box-shadow: 0 0 5px white inset;
-		background: linear-gradient(to bottom right, #f051, #fff0);
+		background: linear-gradient(to bottom right, #fff5, #0001);
 		
 		backdrop-filter: blur(3px);
 		
@@ -236,7 +233,6 @@ body{
 		width: 100%;
 		height: 100%;
 		backdrop-filter: blur(10px);
-		border-radius: 0 50px 0 50px;
 		box-shadow: 0 0 5px white inset;
 	}
 	
@@ -247,7 +243,6 @@ body{
 		top: 0;
 		transform: translate(-33%, -33%);
 		z-index: 400;
-		border-radius: 10px;
 		padding: 66px;
 		backdrop-filter: blur(3px);
 	}
@@ -259,7 +254,6 @@ body{
 		bottom: 0;
 		transform: translate(33%, 33%);
 		z-index: 400;
-		border-radius: 10px;
 		padding: 35px;
 		backdrop-filter: blur(3px);
 	}
@@ -271,7 +265,6 @@ body{
 		bottom: 0;
 		transform: translate(-25%, 25%);
 		z-index: -1;
-		border-radius: 10px;
 		padding: 33px;
 		backdrop-filter: blur(3px);
 	}
@@ -283,7 +276,6 @@ body{
 		top: 22%;
 		transform: translate(50%, -50%);
 		z-index: 400;
-		border-radius: 5px;
 		padding: 15px;
 		backdrop-filter: blur(3px);
 	}
