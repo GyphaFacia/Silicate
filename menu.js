@@ -194,6 +194,25 @@ function removePerk(perk){
     }
 }
 
+function saveOptions(){
+    let obj = {}
+    obj.color = COLOR
+    obj.eyeclr = EYECLR
+    obj.perks = PERKS
+    obj.sides = SIDES
+    obj.playername = document.querySelector('input').value
+    
+    obj = JSON.stringify(obj)
+    
+    console.log(obj);
+    localStorage.setItem('player', obj)
+}
+
+document.querySelector('.preview__playbutton').onclick = (e)=>{
+    saveOptions()
+    window.location.href = 'game.html'
+}
+
 
 
 

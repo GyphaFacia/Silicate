@@ -57,16 +57,37 @@ class Player {
     }
 }
 
+function perkname2perk(){
+    let arr = {
+        'SpawnSome': SpawnSome,
+        'SpawnBig': SpawnBig,
+        'Explode': Explode,
+        'Grow': Grow,
+        'Joker': Joker,
+        'Jump': Jump,
+        'Kill': Kill,
+        'Levi': Levi,
+        'Randomize': Randomize,
+        'Reproduce': Reproduce,
+        'Spin': Spin,
+        'Split': Split,
+        'Swap': Swap,
+        'Union': Union,
+    }
+    return arr[arguments[0]]
+}
+
 
 class Ply extends Player{
     first(){
+        this.color = Clr(...loadOptions().color.$)
+        this.eyeclr = Clr(...loadOptions().eyeclr.$)
+        this.name = loadOptions().plyname
+        
         this.team = arguments[0]
-        
-        this.addPerk(SpawnSome)
-        this.addPerk(Grow)
-        this.addPerk(Reproduce)
-        this.addPerk(Union)
-        
+        for(let perk of loadOptions().perks){
+            this.addPerk(perkname2perk(perk))
+        }
         
         this.render()
         for(let perk of this.perks){
@@ -77,6 +98,8 @@ class Ply extends Player{
     spawnSilicate(pos = getCenter()){
         playSound('pop', random(0.1, 0.25), random(0.5, 2), random(255))
         let e = new Silly()
+        e.color = this.color
+        e.eyeclr = this.eyeclr
         e.setScale(__MINSCALE)
         e.setPos(pos)
         e.team = this.team
