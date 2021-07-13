@@ -39,20 +39,6 @@ var PLAYERS = []
 initPause()
 gameStart()
 
-function loadOptions(){
-    let obj = localStorage.getItem('player')
-    obj = JSON.parse(obj)
-
-    // obj.color = COLOR
-    // obj.eyecolor = EYECLR
-    // obj.perks = PERKS
-    // obj.sides = SIDES
-    // obj.playername = document.querySelector('input').value
-    
-    console.log(obj);
-    return obj
-}
-
 let ply = new Ply(1)
 ply.spawnSilicate(getRes().mul(0.15, 0.5))
 

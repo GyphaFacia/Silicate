@@ -101,6 +101,7 @@ for(let option of colors.split(' ')){
     
     itm.onclick = (e)=>{
         COLOR = Hex(option)
+        saveOptions()
     }
 }
 COLOR = Hex(colors.split(' ')[0])
@@ -116,6 +117,7 @@ for(let option of eyecolors.split(' ')){
     
     itm.onclick = (e)=>{
         EYECLR = Hex(option)
+        saveOptions()
     }
 }
 EYECLR = Hex(eyecolors.split(' ')[0])
@@ -130,6 +132,7 @@ for(let option of shapes.split(' ')){
     
     itm.onclick = (e)=>{
         SIDES = parseInt(option == 'r' ? 50 : option)
+        saveOptions()
     }
 }
 
@@ -183,6 +186,7 @@ function addPerk(perk){
         PERKS.shift()
     }
     PERKS.push(perk)
+    saveOptions()
 }
 
 function removePerk(perk){
@@ -192,6 +196,7 @@ function removePerk(perk){
             break
         }
     }
+    saveOptions()
 }
 
 function saveOptions(){
@@ -208,12 +213,27 @@ function saveOptions(){
     localStorage.setItem('player', obj)
 }
 
+function loadOptions(){
+    let obj = localStorage.getItem('player')
+    obj = JSON.parse(obj)
+
+    COLOR = Clr(...obj.color.$)
+    EYECLR = Clr(...obj.eyeclr.$)
+    PERKS = obj.perks
+    SIDES = obj.sides
+    document.querySelector('input').value = obj.playername
+    drawPerks()
+    
+    console.log(obj);
+    return obj
+}
+
 document.querySelector('.preview__playbutton').onclick = (e)=>{
     saveOptions()
     window.location.href = 'game.html'
 }
 
-
+console.log(loadOptions())
 
 
 

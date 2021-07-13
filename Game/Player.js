@@ -77,6 +77,11 @@ function perkname2perk(){
     return arr[arguments[0]]
 }
 
+function loadOptions(){
+    let obj = localStorage.getItem('player')
+    obj = JSON.parse(obj)
+    return obj
+}
 
 class Ply extends Player{
     first(){
