@@ -12,7 +12,7 @@ function setBounds(width = 500){
         
         second(){
             this.color = Clr(255)
-            this.width = 10
+            this.width = 3
             this.ocolor = Clr(0)
         }
     }
@@ -29,8 +29,9 @@ function setBounds(width = 500){
     
     let r = new Bounds()
     r.setPos(getRes().mul(1, 0.5).add(width/2, 0))
-    r.setScale(getRes().mul(0, 1).add(width, 0))
+    r.setScale(getRes().mul(0, 1).sub(width, 0))
     r.setStatic()
+    
     
     let l = new Bounds()
     l.setPos(getRes().mul(0, 0.5).sub(width/2, 0))
