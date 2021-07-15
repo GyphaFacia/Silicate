@@ -296,6 +296,9 @@ body{
 	color: white;
 	backdrop-filter: brightness(0.9);
 	
+	pointer-events: none;
+	user-select: none;
+	
 	&>p{
 		border-bottom: 1px solid white;
 		margin-bottom: 15px;
