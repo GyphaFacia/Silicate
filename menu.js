@@ -221,7 +221,7 @@ function loadOptions(){
     EYECLR = Clr(...obj.eyeclr.$)
     PERKS = obj.perks
     SIDES = obj.sides
-    document.querySelector('input').value = obj.playername
+    document.querySelector('input').value = obj.plyname
     drawPerks()
     
     console.log(obj);
