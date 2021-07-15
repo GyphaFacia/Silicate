@@ -59,7 +59,7 @@ class Perk {
     
     pick(){
         if(PAUSED){return null}
-        // if(this.cd){return null}
+        if(this.cd){return null}
         
         if(this.ply.dead){return null}
         this.getDeadPlayers()
@@ -408,7 +408,6 @@ class Joker extends Perk{
     set level(lvl){
         this._level = lvl
         this.rad = 100
-        this.cooldown = __COOLDOw
         this.cooldown = this.disperce(__COOLDOWN_ELITE*5, __COOLDOWN_MID*2)
     }
     optimalCast(){this.aiDeBuff(1)}

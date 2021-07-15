@@ -285,7 +285,25 @@ body{
 	display: none;
 }
 
-
+.score{
+	position: absolute;
+	left: 15px;
+	top: 15px;
+	font-size: 24px;
+	padding: 15px;
+	padding-bottom: 0;
+	border: 1px solid white;
+	color: white;
+	backdrop-filter: brightness(0.9);
+	
+	&>p{
+		border-bottom: 1px solid white;
+		margin-bottom: 15px;
+		:nth-child(2n){
+			margin-left: 15px;
+		}
+	}
+}
 
 
 

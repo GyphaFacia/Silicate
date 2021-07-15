@@ -47,8 +47,21 @@ bot.spawnSilicate(getRes().mul(0.85, 0.5))
 
 // handlePause()
 
-
-
+setInterval(()=>{
+    let score = document.querySelector('.score')
+    for(let i = 0; i < score.children.length; i++){
+        let ply = PLAYERS[i]
+        if(ply){
+            let name = ply.name ? ply.name : ply.constructor.name
+            let cnt = ENTITIES.filter(ent=> ent.team == ply.team).length
+            score.children[i].children[0].innerText = name
+            score.children[i].children[1].innerText = cnt
+        }
+        else{
+            score.children[i].style.display = 'none'
+        }
+    }
+}, 255)
 
 
 

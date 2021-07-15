@@ -57,6 +57,23 @@ class Player {
     }
 }
 
+function allPerks(){
+    return `SpawnSome
+    SpawnBig
+    Explode
+    Grow
+    Joker
+    Jump
+    Kill
+    Levi
+    Randomize
+    Reproduce
+    Spin
+    Split
+    Swap
+    Union`.split('\n')
+}
+
 function perkname2perk(){
     let arr = {
         'SpawnSome': SpawnSome,
@@ -117,10 +134,18 @@ class Bot extends Player{
     first(){
         this.team = arguments[0]
         
-        this.addPerk(SpawnSome)
-        this.addPerk(Grow)
-        this.addPerk(Reproduce)
-        this.addPerk(Union)
+        this.color = Clr(0)
+        this.eyeclr = Clr(255,0,0)
+        this.sides = randelt([3, 4, 5, 6, 33])
+        
+        for(let i = 0; i < 4; i++){
+            let perk = randelt(allPerks())
+            perk = perk.trim()
+            console.log(`Bot got ${perk} perk`);
+            perk = perkname2perk(perk)
+            this.addPerk(perk)
+        }
+        
         
         this.think()
     }
@@ -146,11 +171,14 @@ class Bot extends Player{
     }
     
     spawnSilicate(pos = getCenter()){
-        let e = new Silly()
+        let e = new Silly(this.sides)
+        
+        e.color = this.color
+        e.eyeclr = this.eyeclr
+        
         e.setScale(__MINSCALE)
         e.setPos(pos)
         e.team = this.team
-        e.color = Clr(0)
         return e
     }
 }

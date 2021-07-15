@@ -205,7 +205,7 @@ function saveOptions(){
     obj.eyeclr = EYECLR
     obj.perks = PERKS
     obj.sides = SIDES > 25 ? 25 : SIDES
-    obj.playername = document.querySelector('input').value
+    obj.plyname = document.querySelector('input').value
     
     obj = JSON.stringify(obj)
     
