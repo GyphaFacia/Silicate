@@ -15,6 +15,12 @@ class Layer{
         this.ents = []
     }
     
+    clear(){
+        this.ctx.clearRect(0, 0, ...this.res.arr)
+    }
+    
+    update(){}
+    
     autoSize(mul = 1){
         this.res = this.size.mul(mul)
     }
@@ -51,7 +57,9 @@ function getEntities(layername){
     return LAYERS[layername].ents
 }
 
-
+function getRes(){
+    return LAYERS[Object.keys(LAYERS)[0]].res
+}
 
 
 
