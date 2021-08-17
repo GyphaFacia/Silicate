@@ -16,12 +16,24 @@ class Layer{
     }
     
     autoSize(mul = 1){
-        this.cnv.width = this.rect.width * mul
-        this.cnv.height = this.rect.height * mul
+        this.res = this.size.mul(mul)
     }
     
     get rect(){
         return this.cnv.getBoundingClientRect()
+    }
+    
+    get size(){
+        return vec(this.rect.width, this.rect.height)
+    }
+    
+    get res(){
+        return vec(this.cnv.width, this.cnv.height)
+    }
+    set res(v){
+        let {x,y} = v
+        this.cnv.width = x
+        this.cnv.height = y
     }
 }
 
