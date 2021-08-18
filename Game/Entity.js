@@ -189,7 +189,7 @@ class Entity{
 
         for(let i = 0; i < this.layer.ents.length; i++){
             if(this.layer.ents[i].r == this.r){
-                this.host.splice(i, 1)
+                this.layer.ents.splice(i, 1)
                 break
             }
         }
@@ -204,7 +204,7 @@ class Entity{
             this.ctx.fillStyle = clr
             if(width){
                 this.ctx.strokeStyle = oclr
-                this.ctx.width = width
+                this.ctx.lineWidth = width
             }
             this.ctx.arc(...pos.arr, rad, 0, 2*pi)
             this.ctx.fill()
@@ -224,7 +224,7 @@ class Entity{
 
         // iris
         pos = pos.add(aim.mul(rad/7))
-        circle(pos, rad * 0.75, '#af5', '#582', 4)
+        circle(pos, rad * 0.75, '#af5', '#582', 1)
 
         // pupil
         pos = pos.add(aim.mul(rad/9))
@@ -346,7 +346,7 @@ class Land extends Entity{
 
         if(v.y < ent.getPos().y){
             ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)
-            ent.setVel(0, -1)
+            ent.setVel(0, -5)
             console.log('pop');
         }
     }
@@ -357,6 +357,18 @@ class Land extends Entity{
 }
 
 
+
+//  .d8888b.           888                               
+// d88P  Y88b          888                               
+// Y88b.               888                               
+//  "Y888b.   88888b.  88888b.   .d88b.  888d888 .d88b.  
+//     "Y88b. 888 "88b 888 "88b d8P  Y8b 888P"  d8P  Y8b 
+//       "888 888  888 888  888 88888888 888    88888888 
+// Y88b  d88P 888 d88P 888  888 Y8b.     888    Y8b.     
+//  "Y8888P"  88888P"  888  888  "Y8888  888     "Y8888  
+//            888                                        
+//            888                                        
+//            888                                        
 class Sphere extends Entity{
     setSides(){}
     
@@ -375,26 +387,9 @@ class Sphere extends Entity{
         this.scale = vec(1)
         this.updateVerts()
     }
-    
-    pushOut(){
-        this.inc = this.inc == undefined ? 0 : this.inc
-        this.inc += 1
-        this.inc = this.inc % LAYERS.entities.ents.length
-        let ent = LAYERS.entities.ents[this.inc]
-        
-        let v1 = this.getPos()
-        let v2 = ent.getPos()
-        let dist = (this.getScale().max + ent.getScale().max)*2
-        if(v1.dist(v2) < dist){
-            let dir = v2.sub(v1).ort
-            ent.setPos(v2.add(dir.mul(dist)))
-        }
-    }
-    
-    update(){
-        // this.pushOut()
-    }
 }
+
+
 
 
 

@@ -1,5 +1,5 @@
 Game().start()
-Game().pixelate(0.25)
+Game().pixelate(0.33)
 
 let pix = 0.2
 let scl = 1 / pix
@@ -20,6 +20,8 @@ for(let i = 0; i < 100; i++){
 let l = new Land()
 
 
-
-
+// for(let i = 0; i < 255; i++){
+//     let e = new Effect()
+//     e.setPos(getRes().div(2))
+// }
 

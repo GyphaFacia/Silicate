@@ -72,6 +72,15 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 	// filter: drop-shadow(0 0 10px #fff3);
 }
 
+.effects{
+	filter:
+	drop-shadow(0 0 5px #f05)
+	drop-shadow(0 0 5px #f05)
+	drop-shadow(0 0 5px #f05)
+	blur(10px)
+	;
+}
+
 
 
 
