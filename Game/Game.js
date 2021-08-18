@@ -4,8 +4,7 @@ class GameClass{
     
     startEngine(){
         let engine = ensureGlobal('ENGINE', Matter.Engine.create())        
-        let runner = ensureGlobal('RUNNER', Matter.Runner.create())
-        Matter.Runner.run(runner, engine)
+        Matter.Runner.run(Matter.Runner.create(), engine)
     }
     
     setupLayers(){
@@ -21,12 +20,9 @@ class GameClass{
         }
         getLayer('background').update()
 
-        
-        createLayer('map')
-        createLayer('entities')
-        createLayer('effects')
-        
-        getLayer('entities').update = function(){this.clear()}
+        createLayer('map').update = function(){this.clear()}
+        createLayer('entities').update = function(){this.clear()}
+        createLayer('effects').update = function(){this.clear()}
     }
     
     start(){

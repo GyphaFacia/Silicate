@@ -7,14 +7,18 @@ class Entity{
           this.ocolor = '#fff'
           this.setSides()
           
-          this.layer = LAYERS.entities
+          this.layer = this.getDefaultLayer()
           this.cnv = this.layer.cnv
           this.ctx = this.layer.ctx
-          LAYERS.entities.ents.push(this)
+          this.getDefaultLayer().ents.push(this)
           
           this.first(...arguments)
           this.addBody()
           this.second(...arguments)
+     }
+     
+     getDefaultLayer(){
+         return LAYERS.entities
      }
      
      beforeDraw(){}
@@ -33,9 +37,6 @@ class Entity{
      
      update(){
           this.updateBody()
-          if(this.r > 0.85){
-                this.drawEye()
-          }
      }
      
      // // // // // // // // // // // // // // // // // // // // // // // // // 
@@ -254,9 +255,91 @@ class Rect extends Entity{
      first(){
           this.setRect(...arguments)
      }
+     
+     getDefaultLayer(){
+         return LAYERS.map
+     }
 }
 
+class Land extends Entity{
+    setSides(){
+        let res = getRes().mul(1.15)
+        
+        let bl = res.mul(0, 1)
+        let br = res.mul(1, 1)
+        
+        let n = 100
+        let wave = []
+        for(let i = 1; i < n; i++){
+            let t = 512*i/n
+            let h = (sin(t) + 1)/2
+            h = 0.5 + h * 0.25
+            let v = res.mul(i/n, h)
+            wave.push(v)
+        }
+        
+        this.verts = [bl, ...wave, br]
+    }
+    
+    getDefaultLayer(){
+        return LAYERS.map
+    }
+    
+    second(){
+        this.setStatic()
+        this.color = '#000'
+        this.ocolor = 'transparent'
+        this.width = 0
+        this.setPos(getRes().mul(0.55, 1))
+    }
+    
+    updateVerts(){
+        this.verts = []
+        let cx = this.body.position.x
+        let cy = this.body.position.y
+        for(let body of this.body.parts){
+            for(let vert of body.vertices){
+                let {x, y} = vert
+                this.verts.push(vec(x, y).sub(cx, cy))
+            }
+        }
+        
+        this.verts.sort((v1, v2)=>{
+            return v1.x > v2.x ? 1 : -1
+        })
+    }
 
+    update(){
+        this.inc = this.inc == undefined ? 0 : this.inc
+        this.inc += 1
+        this.inc = this.inc % LAYERS.entities.ents.length
+        
+        let verts = this.verts.slice()
+        let {x, y} = this.body.position
+        verts = verts.map((v)=>v.add(x, y))
+    
+        let ent = LAYERS.entities.ents[this.inc]
+    
+        let v = verts[0]
+        x = ent.getPos().x
+        for (let i = 1; i < verts.length; i++) {
+            if(Math.abs(x - verts[i].x) < Math.abs(x - v.x)){
+                v = verts[i]
+            }
+        }
+        
+        // LAYERS.map.ctx.beginPath()
+        // LAYERS.map.ctx.fillStyle = 'red'
+        // LAYERS.map.ctx.arc(...v.arr, 3, 0, 2*pi)
+        // LAYERS.map.ctx.closePath()
+        // LAYERS.map.ctx.fill()
+        
+        if(v.y + 10 < ent.getPos().y){
+            ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)
+            console.log('pop');
+        }
+    }
+}
 
 
 
