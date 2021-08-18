@@ -3,8 +3,8 @@ class Entity{
           this.r = Math.random()
           this.team = 0
           this.color = '#111'
-          this.width = 0.1
-          this.ocolor = '#fff'
+          this.width = 1
+          this.ocolor = '#333'
           this.setSides()
           
           this.layer = this.getDefaultLayer()
@@ -327,12 +327,6 @@ class Land extends Entity{
                 v = verts[i]
             }
         }
-        
-        // LAYERS.map.ctx.beginPath()
-        // LAYERS.map.ctx.fillStyle = 'red'
-        // LAYERS.map.ctx.arc(...v.arr, 3, 0, 2*pi)
-        // LAYERS.map.ctx.closePath()
-        // LAYERS.map.ctx.fill()
         
         if(v.y < ent.getPos().y){
             ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)

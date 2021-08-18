@@ -1,5 +1,5 @@
 Game().start()
-Game().pixelate(0.25)
+Game().pixelate(0.2)
 
 for(let i = 0; i < 100; i++){
     let e = new Entity()

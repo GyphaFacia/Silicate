@@ -13,7 +13,7 @@ class GameClass{
             let h = this.cnv.height
             
             let skyGrad = this.ctx.createLinearGradient(0, 0, 0, h)
-            skyGrad.addColorStop(0, '#555')
+            skyGrad.addColorStop(0, '#eee')
             skyGrad.addColorStop(1, '#000')
             this.ctx.fillStyle = skyGrad
             this.ctx.fillRect(0, 0, this.cnv.width, this.cnv.height)
