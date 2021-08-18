@@ -23,8 +23,3 @@ let l = new Land()
 
 
 
-
-
-
-
-

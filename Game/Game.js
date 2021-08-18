@@ -51,8 +51,8 @@ class GameClass{
     }
     
     pixelate(mul = 1){
-        for(let layerName in LAYERS){
-            let layer = LAYERS[layerName]
+        for(let layername in LAYERS){
+            let layer = LAYERS[layername]
             layer.autoSize(mul)
             layer.clear()
             layer.update()

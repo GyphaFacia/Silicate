@@ -41,6 +41,15 @@ class Vector{
     get arr(){
         return [this.x, this.y]
     }
+    
+    get max(){
+        return Math.max(this.x, this.y)
+    }
+    
+    dist(){
+        let other = vec(...arguments)
+        return other.sub(this).len
+    }
 }
 
 function vec(...args){
@@ -58,6 +67,13 @@ function vec(...args){
     return new Vector(args[0], args[0])
 }
 
+function angvec(t){
+    return vec(sin(t), cos(t))
+}
+
+function randvec(){
+    return angvec(random(360)).mul(random(...arguments))
+}
 
 
 
