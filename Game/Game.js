@@ -4,7 +4,8 @@ class GameClass{
     
     startEngine(){
         let engine = ensureGlobal('ENGINE', Matter.Engine.create())        
-        Matter.Runner.run(Matter.Runner.create(), engine)
+        let runner = ensureGlobal('RUNNER', Matter.Runner.create())
+        Matter.Runner.run(runner, engine)
     }
     
     setupLayers(){
@@ -34,6 +35,9 @@ class GameClass{
         setInterval(()=>{
             this.gameloop()
         }, 10)
+        setTimeout(()=>{
+            this.makeBorders()
+        }, 10)
     }
     
     gameloop(){
@@ -43,6 +47,9 @@ class GameClass{
             LAYERS[layer].update()
             for(let ent of LAYERS[layer].ents){
                 ent.update()
+                ent.beforeDraw()
+                ent.draw()
+                ent.afterDraw()
             }
         }
     }
@@ -56,10 +63,28 @@ class GameClass{
         }
     }
     
-    test(){
-        let e = new Entity()
+    makeBorders(){
+        let w = getRes().x
+        let h = getRes().y
+        let o = Math.min(w, h)/10
+        
+        let t = new Rect(w*5, o)
+        let b = new Rect(w*5, o)
+        let r = new Rect(o, h*5)
+        let l = new Rect(o, h*5)
+        
+        t.setPos(getRes().mul(0.5, 0).sub(o/2))
+        b.setPos(getRes().mul(0.5, 1).add(o/2))
+        l.setPos(getRes().mul(0, 0.5).sub(o/2))
+        r.setPos(getRes().mul(1, 0.5).add(o/2))
+        
+        for(let e of [t, b, r, l]){
+            e.setStatic()
+            e.color = 'transparent'
+            e.ocolor = 'transparent'
+        }
     }
-    
+        
     save(){}
     load(){}
     pause(){}
