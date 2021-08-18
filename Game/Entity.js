@@ -334,8 +334,9 @@ class Land extends Entity{
         // LAYERS.map.ctx.closePath()
         // LAYERS.map.ctx.fill()
         
-        if(v.y + 10 < ent.getPos().y){
+        if(v.y < ent.getPos().y){
             ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)
+            ent.setVel(0, -1)
             console.log('pop');
         }
     }

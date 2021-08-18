@@ -20,9 +20,9 @@ class GameClass{
         }
         getLayer('background').update()
 
-        createLayer('map').update = function(){this.clear()}
         createLayer('entities').update = function(){this.clear()}
         createLayer('effects').update = function(){this.clear()}
+        createLayer('map').update = function(){this.clear()}
     }
     
     start(){
