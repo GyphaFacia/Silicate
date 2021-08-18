@@ -1,10 +1,13 @@
 Game().start()
-Game().pixelate(0.2)
+Game().pixelate(0.25)
+
+let pix = 0.2
+let scl = 1 / pix
 
 for(let i = 0; i < 100; i++){
     let e = new Entity()
     e.setPos(getRes().mul(Math.random(), 0))
-    e.setScale(5+Math.random()*3)
+    e.setScale(scl+Math.random()*scl)
     e.setAng(deg(5))
 
     e.afterDraw = function(){

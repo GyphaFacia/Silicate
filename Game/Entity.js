@@ -2,9 +2,9 @@ class Entity{
      constructor(){
           this.r = Math.random()
           this.team = 0
-          this.color = '#111'
-          this.width = 1
-          this.ocolor = '#333'
+          this.color = '#000'
+          this.width = 2
+          this.ocolor = '#222'
           this.setSides()
           
           this.layer = this.getDefaultLayer()
@@ -189,56 +189,40 @@ class Entity{
      // // // // // // // // // // // // // // // // // // // // // // // // // 
      // eye
      // // // // // // // // // // // // // // // // // // // // // // // // // 
-     drawEye(sclMul = null, posOffset = null){
-         let pos = this.getPos()
-         let scl = this.getScale()
-         
-         if(this.sides < 4){
-              scl = scl.mul(0.66)
-         }
-         if(this.sides > 7){
-              scl = scl.mul(1.25)
-         }
-         
-         if(sclMul){
-              scl = scl.mul(sclMul)
-         }
-         if(posOffset){
-              pos = pos.add(posOffset)
+     drawEye(pos = vec(), aim = vec(), scaleMul = 0.66){
+         let circle = (pos, rad, clr, oclr = '#000', width = 0)=>{
+             this.ctx.beginPath()
+             this.ctx.fillStyle = clr
+             if(width){
+                 this.ctx.strokeStyle = oclr
+                 this.ctx.width = width
+             }
+             this.ctx.arc(...pos.arr, rad, 0, 2*pi)
+             this.ctx.fill()
+             if(width){
+                 this.ctx.stroke()
+             }
          }
          
-         this.ctx.beginPath()
-         this.ctx.fillStyle = `Hsl(15, 100%, 95%)`
-         this.ctx.arc(...pos.arr, scl.x/1.75, 0, 2*pi)
-         this.ctx.fill()
+         pos = this.getPos().add(pos)
+         let scl = this.getScale().mul(scaleMul)
+         let rad = Math.min(...scl.arr)
+         let irisClr = '#af5'
+         aim = aim.sub(pos).ort
          
-         function cursor() {
-              return getRes().div(2)
-         }
+         // white
+         circle(pos, rad, '#fff')
          
-         pos = pos.add(cursor().sub(pos).ort.mul(scl.x/15))
+         // iris
+         pos = pos.add(aim.mul(rad/7))
+         circle(pos, rad * 0.75, '#af5', '#582', 4)
          
-         this.ctx.beginPath()
-         this.ctx.fillStyle = '#333'
-         this.ctx.arc(...pos.arr, scl.x/2.25, 0, 2*pi)
-         this.ctx.fill()
-         
-         this.ctx.beginPath()
-         this.ctx.fillStyle = '#af0'
-         this.ctx.arc(...pos.arr, scl.x/2.5, 0, 2*pi)
-         this.ctx.fill()
-         
-         pos = pos.add(cursor().sub(pos).ort.mul(scl.x/20))
-         
-         this.ctx.beginPath()
-         this.ctx.fillStyle = '#000'
-         this.ctx.arc(...pos.arr, scl.x/3, 0, 2*pi)
-         this.ctx.fill()
-         
-         this.ctx.beginPath()
-         this.ctx.fillStyle = '#fffe'
-         this.ctx.arc(...pos.sub(scl.x*0.1).arr, scl.x/7, 0, 2*pi)
-         this.ctx.fill()
+         // pupil
+         pos = pos.add(aim.mul(rad/9))
+         circle(pos, rad * 0.5, '#000')
+         // flare
+         pos = pos.add(vec(0, -rad/10))
+         circle(pos, rad * 0.15, '#fff')
      }
 }
 
