@@ -1,61 +1,61 @@
 class Entity{
-     constructor(){
-          this.r = Math.random()
-          this.team = 0
-          this.color = '#000'
-          this.width = 2
-          this.ocolor = '#222'
-          this.setSides()
-          
-          this.layer = this.getDefaultLayer()
-          this.cnv = this.layer.cnv
-          this.ctx = this.layer.ctx
-          this.getDefaultLayer().ents.push(this)
-          
-          this.first(...arguments)
-          this.addBody()
-          this.second(...arguments)
-     }
-     
-     getDefaultLayer(){
-         return LAYERS.entities
-     }
-     
-     beforeDraw(){}
-     afterDraw(){}
-     first(){}
-     second(){}
-     last(){}
-     
-     setSides(sides = 5){
-          this.verts = []
-          for(let i = 0; i < sides; i++){
-                let t = 2*Math.PI/sides*i
-                this.verts.push(vec(Math.sin(t), Math.cos(t)))
-          }
-     }
-     
-     update(){
-          this.updateBody()
-     }
-     
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     // draw
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     drawStart(){
-		this.ctx.save()
-		this.ctx.beginPath()
-		this.ctx.translate(...this.getPos().arr)
-		this.ctx.rotate((this.getAng())/180*Math.PI)
-		this.ctx.filter = this.filter ? this.filter : 'none'
-	}
-	
-	drawEnd(){
-          this.ctx.closePath()
-          this.fill()
-		this.ctx.restore()
-	}
-     
+    constructor(){
+        this.r = Math.random()
+        this.team = 0
+        this.color = '#000'
+        this.width = 2
+        this.ocolor = '#222'
+        this.setSides()
+
+        this.layer = this.getDefaultLayer()
+        this.cnv = this.layer.cnv
+        this.ctx = this.layer.ctx
+        this.getDefaultLayer().ents.push(this)
+
+        this.first(...arguments)
+        this.addBody()
+        this.second(...arguments)
+    }
+
+    getDefaultLayer(){
+        return LAYERS.entities
+    }
+
+    beforeDraw(){}
+    afterDraw(){}
+    first(){}
+    second(){}
+    last(){}
+
+    setSides(sides = 5){
+        this.verts = []
+        for(let i = 0; i < sides; i++){
+            let t = 2*Math.PI/sides*i
+            this.verts.push(vec(Math.sin(t), Math.cos(t)))
+        }
+    }
+
+    update(){
+        this.updateBody()
+    }
+
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    // draw
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    drawStart(){
+        this.ctx.save()
+        this.ctx.beginPath()
+        this.ctx.translate(...this.getPos().arr)
+        this.ctx.rotate((this.getAng())/180*Math.PI)
+        this.ctx.filter = this.filter ? this.filter : 'none'
+    }
+
+    drawEnd(){
+        this.ctx.closePath()
+        this.fill()
+        this.ctx.restore()
+    }
+
     fill(){
         this.ctx.fillStyle = this.color ? this.color : 'transparent'
         this.ctx.lineWidth = this.width ? this.width : 0
@@ -63,7 +63,7 @@ class Entity{
         this.ctx.stroke()
         this.ctx.fill()
     }
-     
+
     draw(){
         this.drawStart()
 
@@ -74,184 +74,185 @@ class Entity{
 
         this.drawEnd()
     }
-     
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     // transform
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     setPos(){
-         this.pos = vec(...arguments)
-         if(this.body){
-              Matter.Body.setPosition(this.body, this.getPos())
-         }
-     }
-     setAng(){
-         this.ang = arguments[0]
-         if(this.body){
-              Matter.Body.setAngle(this.body, this.getAng())
-         }
-     }
-     setScale(){
-         // let scale = vec(...arguments).div(this.getScale())
-         let scl = vec(...arguments)
-         // scl = scl.x > __MAXSCALE ? vec(__MAXSCALE) : scl
-         let scale = scl.div(this.getScale())
-         this.scale = scl
-         if(this.body){
-              Matter.Body.scale(this.body, scale.x, scale.y)
-              this.updateVerts()
-              this.setMass(1)
-         }
-     }
 
-     getPos(){return this.pos}
-     getScale(){return this.scale}
-     getAng(){return this.ang}
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    // transform
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    setPos(){
+        this.pos = vec(...arguments)
+        if(this.body){
+            Matter.Body.setPosition(this.body, this.getPos())
+        }
+    }
+    
+    setAng(){
+        this.ang = arguments[0]
+        if(this.body){
+            Matter.Body.setAngle(this.body, this.getAng())
+        }
+    }
+    setScale(){
+        // let scale = vec(...arguments).div(this.getScale())
+        let scl = vec(...arguments)
+        // scl = scl.x > __MAXSCALE ? vec(__MAXSCALE) : scl
+        let scale = scl.div(this.getScale())
+        this.scale = scl
+        if(this.body){
+            Matter.Body.scale(this.body, scale.x, scale.y)
+            this.updateVerts()
+            this.setMass(1)
+        }
+    }
 
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     // phys body
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     addBody(){
-         this.body = Matter.Bodies.fromVertices(0, 0, this.verts)
-         Matter.World.add(ENGINE.world, this.body)
-         this.scale = vec(1)
-         this.updateVerts()
-     }
+    getPos(){return this.pos}
+    getScale(){return this.scale}
+    getAng(){return this.ang}
 
-     removeBody(){
-         if(!this.body){
-              return null
-         }
-         Matter.World.remove(engine.world, this.body)
-         Composite.remove(engine.world, this.body)
-     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    // phys body
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    addBody(){
+        this.body = Matter.Bodies.fromVertices(0, 0, this.verts)
+        Matter.World.add(ENGINE.world, this.body)
+        this.scale = vec(1)
+        this.updateVerts()
+    }
 
-     updateVerts(){
-         this.verts = []
-         let cx = this.body.position.x
-         let cy = this.body.position.y
-         for(let vert of this.body.vertices){
-              let {x, y} = vert
-              this.verts.push(vec(x, y).sub(cx, cy))
-         }
-     }
+    removeBody(){
+        if(!this.body){
+            return null
+        }
+        Matter.World.remove(engine.world, this.body)
+        Composite.remove(engine.world, this.body)
+    }
 
-     updateBody(){
-         if(!this.body){
-              return null
-         }
-         let {x, y} = this.body.position
-         this.pos = vec(x, y)
-         this.ang = this.body.angle / Math.PI * 180
-         if(this.getMass() != 0.123456789 && !ENGINE.gravity.scale){
-              this.applyForce(vec(0, 0.001).mul(this.getMass()))
-         }
-     }
+    updateVerts(){
+        this.verts = []
+        let cx = this.body.position.x
+        let cy = this.body.position.y
+        for(let vert of this.body.vertices){
+            let {x, y} = vert
+            this.verts.push(vec(x, y).sub(cx, cy))
+        }
+    }
 
-     setStatic(isStatic = true){
-         Matter.Body.setStatic(this.body, isStatic)
-     }
-     setAngVel(angvel = 0){
-         Matter.Body.setAngularVelocity(this.body, angvel)
-     }
-     setVel(){
-         let vel = vec(...arguments)
-         Matter.Body.setVelocity(this.body, vel)
-     }
-     setMass(mass = 0.5){
-         Matter.Body.setMass(this.body, mass)
-     }
-     applyForce(){
-         Matter.Body.applyForce(this.body, this.pos, vec(...arguments))
-     }
+    updateBody(){
+        if(!this.body){
+            return null
+        }
+        let {x, y} = this.body.position
+        this.pos = vec(x, y)
+        this.ang = this.body.angle / Math.PI * 180
+        if(this.getMass() != 0.123456789 && !ENGINE.gravity.scale){
+            this.applyForce(vec(0, 0.001).mul(this.getMass()))
+        }
+    }
 
-     isStatic(){return this.body.isStatic}
-     getAngVel(){return this.body.angularVelocity}
-     getVel(){return this.body.velocity}
-     getMass(){return this.body.mass}
+    setStatic(isStatic = true){
+        Matter.Body.setStatic(this.body, isStatic)
+    }
+    setAngVel(angvel = 0){
+        Matter.Body.setAngularVelocity(this.body, angvel)
+    }
+    setVel(){
+        let vel = vec(...arguments)
+        Matter.Body.setVelocity(this.body, vel)
+    }
+    setMass(mass = 0.5){
+        Matter.Body.setMass(this.body, mass)
+    }
+    applyForce(){
+        Matter.Body.applyForce(this.body, this.pos, vec(...arguments))
+    }
 
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     // remove
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     remove(wlast = false){
-         if(wlast){
-              this.last()
-         }
-         this.removeBody()
-         
-         for(let i = 0; i < this.layer.ents.length; i++){
-              if(this.layer.ents[i].r == this.r){
-                    this.host.splice(i, 1)
-                    break
-              }
-         }
-     }
+    isStatic(){return this.body.isStatic}
+    getAngVel(){return this.body.angularVelocity}
+    getVel(){return this.body.velocity}
+    getMass(){return this.body.mass}
 
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     // eye
-     // // // // // // // // // // // // // // // // // // // // // // // // // 
-     drawEye(pos = vec(), aim = vec(), scaleMul = 0.66){
-         let circle = (pos, rad, clr, oclr = '#000', width = 0)=>{
-             this.ctx.beginPath()
-             this.ctx.fillStyle = clr
-             if(width){
-                 this.ctx.strokeStyle = oclr
-                 this.ctx.width = width
-             }
-             this.ctx.arc(...pos.arr, rad, 0, 2*pi)
-             this.ctx.fill()
-             if(width){
-                 this.ctx.stroke()
-             }
-         }
-         
-         pos = this.getPos().add(pos)
-         let scl = this.getScale().mul(scaleMul)
-         let rad = Math.min(...scl.arr)
-         let irisClr = '#af5'
-         aim = aim.sub(pos).ort
-         
-         // white
-         circle(pos, rad, '#fff')
-         
-         // iris
-         pos = pos.add(aim.mul(rad/7))
-         circle(pos, rad * 0.75, '#af5', '#582', 4)
-         
-         // pupil
-         pos = pos.add(aim.mul(rad/9))
-         circle(pos, rad * 0.5, '#000')
-         // flare
-         pos = pos.add(vec(0, -rad/10))
-         circle(pos, rad * 0.15, '#fff')
-     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    // remove
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    remove(wlast = false){
+        if(wlast){
+            this.last()
+        }
+        this.removeBody()
+
+        for(let i = 0; i < this.layer.ents.length; i++){
+            if(this.layer.ents[i].r == this.r){
+                this.host.splice(i, 1)
+                break
+            }
+        }
+    }
+
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    // eye
+    // // // // // // // // // // // // // // // // // // // // // // // // // 
+    drawEye(pos = vec(), aim = vec(), scaleMul = 0.66){
+        let circle = (pos, rad, clr, oclr = '#000', width = 0)=>{
+            this.ctx.beginPath()
+            this.ctx.fillStyle = clr
+            if(width){
+                this.ctx.strokeStyle = oclr
+                this.ctx.width = width
+            }
+            this.ctx.arc(...pos.arr, rad, 0, 2*pi)
+            this.ctx.fill()
+            if(width){
+                this.ctx.stroke()
+            }
+        }
+
+        pos = this.getPos().add(pos)
+        let scl = this.getScale().mul(scaleMul)
+        let rad = Math.min(...scl.arr)
+        let irisClr = '#af5'
+        aim = aim.sub(pos).ort
+
+        // white
+        circle(pos, rad, '#fff')
+
+        // iris
+        pos = pos.add(aim.mul(rad/7))
+        circle(pos, rad * 0.75, '#af5', '#582', 4)
+
+        // pupil
+        pos = pos.add(aim.mul(rad/9))
+        circle(pos, rad * 0.5, '#000')
+        // flare
+        pos = pos.add(vec(0, -rad/10))
+        circle(pos, rad * 0.15, '#fff')
+    }
 }
 
 class Rect extends Entity{
-     setRect(){
-          let scale = vec(...arguments)
-          let lt = scale.mul(-1, -1).div(2)
-          let rt = scale.mul(1, -1).div(2)
-          let rb = scale.mul(1, 1).div(2)
-          let lb = scale.mul(-1, 1).div(2)
-          this.verts = [lt, rt, rb, lb]
-     }
-     
-     first(){
-          this.setRect(...arguments)
-     }
-     
-     getDefaultLayer(){
-         return LAYERS.map
-     }
+    setRect(){
+        let scale = vec(...arguments)
+        let lt = scale.mul(-1, -1).div(2)
+        let rt = scale.mul(1, -1).div(2)
+        let rb = scale.mul(1, 1).div(2)
+        let lb = scale.mul(-1, 1).div(2)
+        this.verts = [lt, rt, rb, lb]
+    }
+
+    first(){
+        this.setRect(...arguments)
+    }
+
+    getDefaultLayer(){
+        return LAYERS.map
+    }
 }
 
 class Land extends Entity{
     setSides(){
         let res = getRes().mul(1.15)
-        
+
         let bl = res.mul(0, 1)
         let br = res.mul(1, 1)
-        
+
         let n = 100
         let wave = []
         for(let i = 1; i < n; i++){
@@ -261,14 +262,14 @@ class Land extends Entity{
             let v = res.mul(i/n, h)
             wave.push(v)
         }
-        
+
         this.verts = [bl, ...wave, br]
     }
-    
+
     getDefaultLayer(){
         return LAYERS.map
     }
-    
+
     second(){
         this.setStatic()
         this.color = '#000'
@@ -276,7 +277,7 @@ class Land extends Entity{
         this.width = 0
         this.setPos(getRes().mul(0.55, 1))
     }
-    
+
     updateVerts(){
         this.verts = []
         let cx = this.body.position.x
@@ -287,7 +288,7 @@ class Land extends Entity{
                 this.verts.push(vec(x, y).sub(cx, cy))
             }
         }
-        
+
         this.verts.sort((v1, v2)=>{
             return v1.x > v2.x ? 1 : -1
         })
@@ -297,13 +298,13 @@ class Land extends Entity{
         this.inc = this.inc == undefined ? 0 : this.inc
         this.inc += 1
         this.inc = this.inc % LAYERS.entities.ents.length
-        
+
         let verts = this.verts.slice()
         let {x, y} = this.body.position
         verts = verts.map((v)=>v.add(x, y))
-    
+
         let ent = LAYERS.entities.ents[this.inc]
-    
+
         let v = verts[0]
         x = ent.getPos().x
         for (let i = 1; i < verts.length; i++) {
@@ -311,7 +312,7 @@ class Land extends Entity{
                 v = verts[i]
             }
         }
-        
+
         if(v.y < ent.getPos().y){
             ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)
             ent.setVel(0, -1)
