@@ -84,6 +84,16 @@ class Entity{
             this.ctx.lineTo(...this.verts[i].arr)
         }
     }
+    
+    drawImg(offset, sclmul, src){
+        if(!this.img || this.img.src != src){
+            this.img = new Image(100, 100)
+            this.img.src = src
+        }
+        let {x, y} = this.getScale().mul(sclmul)
+        let [ox, oy] = offset.arr
+        this.ctx.drawImage(this.img, -x/2 + ox, -y/2 + oy, x, y)
+    }
 
     // // // // // // // // // // // // // // // // // // // // // // // // // 
     // transform
@@ -177,7 +187,10 @@ class Entity{
 
     isStatic(){return this.body.isStatic}
     getAngVel(){return this.body.angularVelocity}
-    getVel(){return this.body.velocity}
+    getVel(){
+        let {x, y} = this.body.velocity
+        return vec(x, y)
+    }
     getMass(){return this.body.mass}
 
     // // // // // // // // // // // // // // // // // // // // // // // // // 
@@ -391,36 +404,41 @@ class Sphere extends Entity{
     }
 }
 
-class Menhir extends Entity{
-    drawImgRelative(offset, sclmul, src){
-        if(!this.img || this.img.src != src){
-            this.createImage(src)
-        }
-        let {x, y} = this.getScale().mul(sclmul)
-        let [ox, oy] = offset.arr
-        this.ctx.drawImage(this.img, -x/2 + ox, -y/2 + oy, x, y)
-    }
-    
-    createImage(src){
-        this.img = new Image(100, 100)
-        this.img.src = src
-    }
-    
+
+// 888b     d888                   888      d8b         
+// 8888b   d8888                   888      Y8P         
+// 88888b.d88888                   888                  
+// 888Y88888P888  .d88b.  88888b.  88888b.  888 888d888 
+// 888 Y888P 888 d8P  Y8b 888 "88b 888 "88b 888 888P"   
+// 888  Y8P  888 88888888 888  888 888  888 888 888     
+// 888   "   888 Y8b.     888  888 888  888 888 888     
+// 888       888  "Y8888  888  888 888  888 888 888     
+class Menhir extends Entity{    
     setSides(){
         this.verts = []
         let w = 1
         let h = 2.1
-        this.verts.push(vec(-w*0.5, -h))
-        this.verts.push(vec(w*0.5, -h))
+        this.verts.push(vec(-w*0.4, -h*0.66))
+        this.verts.push(vec(w*0.4, -h*1))
         this.verts.push(vec(w, h))
         this.verts.push(vec(-w, h))
     }
     
     draw(){
-        this.drawStart()
+        // this.drawStart()
         // this.color = '#fff1'
         // this.drawByVertices()
-        this.drawImgRelative(vec(0, -1), vec(6.5), '../src/Menhir/Buff.svg')
+        // this.drawEnd()
+        
+        this.drawStart()
+        this.drawImg(vec(0, -1), vec(6.5), '../src/Menhir/Buff.svg')
+        this.drawEnd()
+        
+        this.drawStart()
+        let b = (sin(time()/10) + 1)/2
+        b = b*0.5 + 0.5
+        this.ctx.filter = `drop-shadow(0 0 5px #f05) drop-shadow(0 0 5px #f05) brightness(${b})`
+        this.drawImg(vec(0, -1), vec(6.5), '../src/Menhir/BuffRunes.svg')
         this.drawEnd()
     }
 }
