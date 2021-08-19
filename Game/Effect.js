@@ -1,13 +1,12 @@
 class Effect{
     constructor(){
         this.pos = vec()
-        this.scale = vec(1)
+        this.scale = vec(random(1, 2))
         this.ang = 0
-        this.vel = randvec(0.25)
-        this.mass = 1
+
         this.color = '#000'
-        // this.ocolor = '#fff'
-        // this.width = 1
+        this.ocolor = '#f05'
+        this.width = 0.5
         this.friction = 0.01
         
         this.r = Math.random()
@@ -38,7 +37,8 @@ class Effect{
     getAng(){return this.ang}
         
     update(){
-        this.motionUpdate()
+        this.gasMotion()
+        this.deleteOOB()
     }
     
     remove(wlast = false){
@@ -88,21 +88,38 @@ class Effect{
     }
     
     // // // // // // // // // // // // // // // // // // // // // // // // // 
-    // motion
+    // misc
     // // // // // // // // // // // // // // // // // // // // // // // // // 
-    motionUpdate(){
-        this.setPos(this.getPos().add(this.vel))
-        this.vel = this.vel.mul(1 - this.friction)
-        
-        let ep = vec(0.5, -1).mul(getRes())
-        let dir = ep.sub(this.getPos())
-        let dist = ep.dist(this.getPos())/2
-        let av = dir.div(dist*dist)
-        this.vel = this.vel.add(av)
+    deleteOOB(){
+        let {x, y} = this.getPos()
+        if(x < 0){this.remove()}
+        if(y < 0){this.remove()}
+        if(x > getRes().x){this.remove()}
+        if(y > getRes().y){this.remove()}
     }
+    
+    gasMotion(){
+        let r = this.r
+        let ra = Math.sqrt(r)
+        let hor = sin(time()/(1+r*5))
+        let vert = (ra*5 + 2)/7
+        
+        let v = vec(hor/2, vert)
+        this.pos = this.pos.sub(v)
+    }
+    
 }
 
-
+function gas(pos, cnt){
+    for(let i = 0; i < cnt; i++){
+        let e = new Effect()
+        e.setPos(pos)
+        e.update = function(){
+            this.gasMotion()
+            this.deleteOOB()
+        }
+    }
+}
 
 
 

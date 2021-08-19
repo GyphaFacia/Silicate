@@ -20,8 +20,3 @@ for(let i = 0; i < 100; i++){
 let l = new Land()
 
 
-// for(let i = 0; i < 255; i++){
-//     let e = new Effect()
-//     e.setPos(getRes().div(2))
-// }
-

@@ -348,6 +348,7 @@ class Land extends Entity{
             ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)
             ent.setVel(0, -5)
             console.log('pop');
+            gas(ent.getPos(), 25)
         }
     }
 
