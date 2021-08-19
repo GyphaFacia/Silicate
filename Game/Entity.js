@@ -74,13 +74,15 @@ class Entity{
 
     draw(){
         this.drawStart()
-
+        this.drawByVertices()
+        this.drawEnd()
+    }
+    
+    drawByVertices(){
         this.ctx.moveTo(...this.verts[0].arr)
         for (let i = 1; i < this.verts.length; i++) {
             this.ctx.lineTo(...this.verts[i].arr)
         }
-
-        this.drawEnd()
     }
 
     // // // // // // // // // // // // // // // // // // // // // // // // // 
@@ -288,7 +290,7 @@ class Land extends Entity{
         let n = 100
         let wave = []
         for(let i = 1; i < n; i++){
-            let t = 512*i/n
+            let t = 0*i/n + 0
             let h = (sin(t) + 1)/2
             h = 0.5 + h * 0.25
             let v = res.mul(i/n, h)
@@ -348,7 +350,6 @@ class Land extends Entity{
             ent.setPos(ent.getPos().x, v.y - ent.getScale().y*2)
             ent.setVel(0, -5)
             console.log('pop');
-            gas(ent.getPos(), 25)
         }
     }
 
@@ -390,7 +391,39 @@ class Sphere extends Entity{
     }
 }
 
-
+class Menhir extends Entity{
+    drawImgRelative(offset, sclmul, src){
+        if(!this.img || this.img.src != src){
+            this.createImage(src)
+        }
+        let {x, y} = this.getScale().mul(sclmul)
+        let [ox, oy] = offset.arr
+        this.ctx.drawImage(this.img, -x/2 + ox, -y/2 + oy, x, y)
+    }
+    
+    createImage(src){
+        this.img = new Image(100, 100)
+        this.img.src = src
+    }
+    
+    setSides(){
+        this.verts = []
+        let w = 1
+        let h = 2.1
+        this.verts.push(vec(-w*0.5, -h))
+        this.verts.push(vec(w*0.5, -h))
+        this.verts.push(vec(w, h))
+        this.verts.push(vec(-w, h))
+    }
+    
+    draw(){
+        this.drawStart()
+        // this.color = '#fff1'
+        // this.drawByVertices()
+        this.drawImgRelative(vec(0, -1), vec(6.5), '../src/Menhir/Buff.svg')
+        this.drawEnd()
+    }
+}
 
 
 

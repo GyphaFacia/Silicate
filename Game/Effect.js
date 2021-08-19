@@ -1,13 +1,15 @@
 class Effect{
     constructor(){
         this.pos = vec()
-        this.scale = vec(random(1, 2))
+        this.scale = vec(2)
         this.ang = 0
+        this.vel = vec()
+        this.friction = 0.01
+        this.mass = -1
 
         this.color = '#000'
-        this.ocolor = '#f05'
-        this.width = 0.5
-        this.friction = 0.01
+        // this.ocolor = '#f05'
+        // this.width = 0.5
         
         this.r = Math.random()
         
@@ -31,10 +33,12 @@ class Effect{
     setPos(){this.pos = vec(...arguments)}
     setScale(){this.scale = vec(...arguments)}
     setAng(ang){this.ang = ang!=undefined ? ang : 0}
+    setVel(){this.vel = vec(...arguments)}
     
     getPos(){return this.pos}
     getScale(){return this.scale}
     getAng(){return this.ang}
+    getVel(){return this.vel}
         
     update(){
         this.gasMotion()
@@ -99,27 +103,13 @@ class Effect{
     }
     
     gasMotion(){
-        let r = this.r
-        let ra = Math.sqrt(r)
-        let hor = sin(time()/(1+r*5))
-        let vert = (ra*5 + 2)/7
-        
-        let v = vec(hor/2, vert)
-        this.pos = this.pos.sub(v)
+        this.setPos(this.getPos().add(this.vel))
+        this.setVel(this.getVel().mul(1 - this.friction))
+        this.setVel(this.getVel().add(0, this.mass * 0.02))
     }
     
 }
 
-function gas(pos, cnt){
-    for(let i = 0; i < cnt; i++){
-        let e = new Effect()
-        e.setPos(pos)
-        e.update = function(){
-            this.gasMotion()
-            this.deleteOOB()
-        }
-    }
-}
 
 
 
