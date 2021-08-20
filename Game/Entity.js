@@ -373,6 +373,8 @@ class Land extends Entity{
 
 
 
+
+
 //  .d8888b.           888                               
 // d88P  Y88b          888                               
 // Y88b.               888                               
@@ -403,6 +405,9 @@ class Sphere extends Entity{
         this.updateVerts()
     }
 }
+
+
+
 
 
 // 888b     d888                   888      d8b         
@@ -443,6 +448,37 @@ class Menhir extends Entity{
     }
 }
 
+
+
+
+
+//  .d8888b.  888                        888    
+// d88P  Y88b 888                        888    
+// 888    888 888                        888    
+// 888        88888b.   .d88b.  .d8888b  888888 
+// 888  88888 888 "88b d88""88b 88K      888    
+// 888    888 888  888 888  888 "Y8888b. 888    
+// Y88b  d88P 888  888 Y88..88P      X88 Y88b.  
+//  "Y8888P88 888  888  "Y88P"   88888P'  "Y888 
+class GhostEntity extends Entity{
+    addBody(){this.scale = vec(1)}
+    setScale(){
+        let oldscale = this.getScale()
+        let newscale = vec(...arguments)
+        let scalePower = newscale.div(oldscale)
+        
+        let center = vec()
+        for(let v of this.verts){
+            center = center.add(v)
+        }
+        center = center.div(this.verts.length)
+        
+        for (let i = 0; i < this.verts.length; i++) {
+            let oldvert = this.verts[i].sub(center)
+            this.verts[i] = center.add(oldvert.mul(scalePower))
+        }
+    }
+}
 
 
 // 888b     d888 d8b                   
