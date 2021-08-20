@@ -18,14 +18,10 @@ let scl = 1 / pix
 // }
 
 let l = new Land()
-// let m = new Menhir()
-// m.setScale(25)
-// m.setPos(getRes().mul(0.5, 0.63))
-// m.setStatic()
-
-let g = new GhostEntity()
-g.setPos(getRes().div(2))
-g.setScale(25)
+let m = new Menhir()
+m.setScale(25)
+m.setPos(getRes().mul(0.5, 0.63))
+m.setStatic()
 
 // for(let i = 0; i < 255; i++){
 //     setTimeout(function () {

@@ -13,7 +13,7 @@ class Entity{
         this.color = '#000'
         this.width = 2
         this.ocolor = '#222'
-        this.setSides()
+        this.setVertices()
 
         this.layer = this.getDefaultLayer()
         this.cnv = this.layer.cnv
@@ -35,11 +35,10 @@ class Entity{
     second(){}
     last(){}
 
-    setSides(sides = 5){
+    setVertices(sides = 5){
         this.verts = []
         for(let i = 0; i < sides; i++){
-            let t = 2*Math.PI/sides*i
-            this.verts.push(vec(Math.sin(t), Math.cos(t)))
+            this.verts.push(angvec(360/sides*i))
         }
     }
 
@@ -294,7 +293,7 @@ class Rect extends Entity{
 // 888      888  888 888  888 Y88b 888 
 // 88888888 "Y888888 888  888  "Y88888 
 class Land extends Entity{
-    setSides(){
+    setVertices(){
         let res = getRes().mul(1.15)
 
         let bl = res.mul(0, 1)
@@ -387,7 +386,7 @@ class Land extends Entity{
 //            888                                        
 //            888                                        
 class Sphere extends Entity{
-    setSides(){}
+    setVertices(){}
     
     getDefaultLayer(){
         return LAYERS.map
@@ -419,7 +418,7 @@ class Sphere extends Entity{
 // 888   "   888 Y8b.     888  888 888  888 888 888     
 // 888       888  "Y8888  888  888 888  888 888 888     
 class Menhir extends Entity{    
-    setSides(){
+    setVertices(){
         this.verts = []
         let w = 1
         let h = 2.1
@@ -427,6 +426,22 @@ class Menhir extends Entity{
         this.verts.push(vec(w*0.4, -h*1))
         this.verts.push(vec(w, h))
         this.verts.push(vec(-w, h))
+    }
+    
+    second(){
+        this.rocks = []
+        let n = 4
+        for(let i = 0; i < n; i++){
+            let rock = new Blob()
+            this.rocks.push(rock)
+            rock.setScale(3)
+            rock.afterDraw = ()=>{
+                let v = this.getPos().sub(this.getScale().mul(0, 3.5))
+                v = v.add(0, sin(time()/(5+i) + 90*i)*2)
+                v = v.add(angvec(360/n*i + 180).mul(2, 4).mul(5))
+                rock.setPos(v)
+            }
+        }
     }
     
     draw(){
@@ -461,7 +476,10 @@ class Menhir extends Entity{
 // Y88b  d88P 888  888 Y88..88P      X88 Y88b.  
 //  "Y8888P88 888  888  "Y88P"   88888P'  "Y888 
 class GhostEntity extends Entity{
-    addBody(){this.scale = vec(1)}
+    addBody(){
+        this.scale = vec(1)
+        this.pos = vec()
+    }
     setScale(){
         let oldscale = this.getScale()
         let newscale = vec(...arguments)
@@ -480,6 +498,15 @@ class GhostEntity extends Entity{
     }
 }
 
+class Blob extends GhostEntity {
+    setVertices(){
+        let n = 9
+        this.verts = []
+        for(let i = 0; i < n; i++){
+            this.verts.push(angvec(360/n*i).mul(random(0.8, 1.2)))
+        }
+    }
+}
 
 // 888b     d888 d8b                   
 // 8888b   d8888 Y8P                   
