@@ -13,7 +13,7 @@ class Layer{
         this.ctx = this.cnv.getContext('2d')
     }
     
-    update(){}
+    update(){this.clear()}
     
     clear(){
         this.ctx.clearRect(0, 0, ...this.res.arr)
