@@ -244,7 +244,6 @@ ensureGlobe('GAME', new Game())
 ensureGlobe('CURSOR', vec())
 
 document.body.onmousemove = (e)=>{
-    console.log('here');
     let v = vec(e.clientX, e.clientY)
     v = v.div(GAME.layers.background.size)
     v = v.mul(GAME.layers.background.res)
