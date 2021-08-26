@@ -71,6 +71,8 @@ class Game{
             eff.draw()
             eff.afterDraw()
         }
+        
+        drawCursor()
     }
     
     // // // // // // // // // // // // // // // // // // // // // // // // // 
@@ -90,6 +92,7 @@ class Game{
     // entity&effects factory
     // // // // // // // // // // // // // // // // // // // // // // // // //     
     spawn(){ this.addEntity(...arguments) }
+    effect(){ this.addEffect(...arguments) }
     
     addEntity(type = null, pos = null, scale = null){
         pos = pos ? pos : getRes().div(2)
@@ -209,6 +212,32 @@ function relvec(){
 
 function getRes(){
     return GAME.layers.background.res
+}
+
+function getCenter() {
+    return getRes().div(2)
+}
+
+function drawCursor(){
+    let ctx = GAME.layers.map.ctx
+    ctx.strokeStyle = '#aaaa'
+    ctx.lineWidth = 1
+    let n = 3
+    
+    ensureGlobe('CURSOR_RAD', 30)
+    let j = 0
+    for(let j = 0; j < 2; j++){
+        let rad = CURSOR_RAD - j*3
+        for(let i = 0; i < n; i++){
+            let a1 = 2*pi()/n*i + time()/500*(j ? 1 : -1) + 2*pi()/6*j
+            a1 = a1%(2*pi())
+            let a2 = a1 + 2*pi()/n/1.25
+            ctx.beginPath()
+            ctx.arc(...CURSOR.arr, rad, a1, a2)
+            ctx.stroke()
+        }
+    }
+    
 }
 
 ensureGlobe('GAME', new Game())
