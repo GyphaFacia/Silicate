@@ -13,6 +13,7 @@ class Effect{
         this.color = '#000'
         this.width = 2
         this.ocolor = '#222'
+        this.life = null
         this.setVertices()
 
         this.layer = this.getDefaultLayer()
@@ -39,15 +40,14 @@ class Effect{
     second(){}
     last(){}
 
-    setVertices(sides = 5){
+    setVertices(sides = 15){
         this.verts = []
         for(let i = 0; i < sides; i++){
             this.verts.push(angvec(360/sides*i))
         }
     }
 
-    update(){
-    }
+    update(){}
 
     // // // // // // // // // // // // // // // // // // // // // // // // // 
     // draw
@@ -153,4 +153,20 @@ class Effect{
         }
         return false
     }
+    
+    particleBehavior(){
+        this.killOOB()
+        
+        if(this.life != null){
+            this.life -= 0.01
+            if(this.life <= 0){
+                this.remove()
+            }
+        }
+    }
 }
+
+
+
+
+
