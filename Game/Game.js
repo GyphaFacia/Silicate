@@ -135,6 +135,46 @@ class Game{
             return eff
         }
         
+        if(type == 'Gas'){
+            let eff = new Effect()
+            eff.setPos(pos)
+            eff.setScale(relvec(random(0.1, 0.5)))
+            eff.lifetime = eff.life = random(1, 2)
+            eff.vel = randvec(1)
+            eff.mass = random(0.025, 0.075)
+            
+            eff.collection = this.effs
+            eff.collection.push(eff)
+            return eff
+        }
+        
+        if(type == 'Fire'){
+            let eff = new Effect()
+            
+            eff.setScale(relvec(random(1, 2)))
+            eff.setPos(pos)
+            eff.lifetime = eff.life = random(0.5, 1)
+            eff.startcolor = Clr(255, 255, 200)
+            eff.endcolor = Clr(255, 0, 50, 0.5)
+            eff.vel = randvec(0.2)
+            eff.mass = random(0.01, 0.02)
+            
+            eff.last = function () {
+                let eff = GAME.addEffect()
+                eff.setScale(relvec(random(0.5, 1)))
+                eff.setPos(this.getPos())
+                eff.lifetime = eff.life = random(0.5, 1)
+                eff.startcolor = Clr(125, 125, 125, 0.5)
+                eff.endcolor = Clr(0,0,0,0)
+                eff.vel = randvec(0.2)
+                eff.mass = random(0.02, 0.04)
+            }
+
+            eff.collection = this.effs
+            eff.collection.push(eff)
+            return eff
+        }
+        
         return null
     }
     

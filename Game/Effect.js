@@ -11,10 +11,13 @@ class Effect{
         this.r = Math.random()
         this.team = 0
         this.color = '#000'
-        this.width = 2
+        this.width = 0
         this.ocolor = '#222'
-        this.life = null
+        this.lifetime = null
         this.setVertices()
+        
+        this.startcolor = Clr(255, 255, 255, 1)
+        this.endcolor = Clr(255, 255, 255, 0)
 
         this.layer = this.getDefaultLayer()
         this.cnv = this.layer.cnv
@@ -28,7 +31,15 @@ class Effect{
     }
 
     get type(){return this.constructor.name}
-
+    
+    updateColor(){
+        let life = this.life / this.lifetime
+        life = life.clamp(0, 1)
+        let mix = this.startcolor.mix(this.endcolor, life, 1)
+        
+        this.color = mix.rgb
+    }
+    
     getDefaultLayer(){
         return GAME.layers.effects
     }
@@ -47,7 +58,11 @@ class Effect{
         }
     }
 
-    update(){}
+    update(){
+        this.particleBehavior()
+        this.simpleMotion()
+        this.updateColor()
+    }
 
     // // // // // // // // // // // // // // // // // // // // // // // // // 
     // draw
@@ -154,13 +169,21 @@ class Effect{
         return false
     }
     
+    simpleMotion(){
+        if(this.vel){
+            this.pos = this.pos.add(this.vel)
+            this.vel = this.vel.mul(0.95)
+            this.vel = this.vel.sub(0, this.mass ? this.mass : 0.05)
+        }
+    }
+    
     particleBehavior(){
         this.killOOB()
         
-        if(this.life != null){
+        if(this.lifetime != null){
             this.life -= 0.01
             if(this.life <= 0){
-                this.remove()
+                this.remove(1)
             }
         }
     }
