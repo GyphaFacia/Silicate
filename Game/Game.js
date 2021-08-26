@@ -2,6 +2,7 @@ class Game{
     constructor(){
         this.layers = {}
         this.ents = []
+        this.effs = []
         this.pixelate = 0.35
     }
     
@@ -21,6 +22,7 @@ class Game{
         bg.passive = true
         
         this.addLayer('entities')
+        this.addLayer('effects')
         this.addLayer('map')
     }
     
@@ -43,9 +45,9 @@ class Game{
         
         this.addEntity('Land')
         
-        for(let i = 0; i < 50; i++){
-            this.addEntity().setPos(getRes().mul(random(), 0.1))
-        }
+        // for(let i = 0; i < 50; i++){
+        //     this.addEntity().setPos(getRes().mul(random(), 0.1))
+        // }
     }
     
     gameloop(){
@@ -61,6 +63,13 @@ class Game{
             ent.beforeDraw()
             ent.draw()
             ent.afterDraw()
+        }
+        
+        for(let eff of this.effs){
+            eff.update()
+            eff.beforeDraw()
+            eff.draw()
+            eff.afterDraw()
         }
     }
     
@@ -78,36 +87,55 @@ class Game{
     }
     
     // // // // // // // // // // // // // // // // // // // // // // // // // 
-    // entity factory
+    // entity&effects factory
     // // // // // // // // // // // // // // // // // // // // // // // // //     
     spawn(){ this.addEntity(...arguments) }
     
     addEntity(type = null, pos = null, scale = null){
-        let ent
+        pos = pos ? pos : getRes().div(2)
+        scale = scale ? scale : relvec(10)
         
         if(type == 'Silicate' || type == null){
-            pos = pos ? pos : getRes().div(2)
-            scale = scale ? scale : relvec(10)
-            ent = new Entity()
-            ent.collection = this.ents
-            
+            let ent = new Entity()
             ent.setPos(pos)
             ent.setScale(scale)
             ent.setAng(deg(random(360)))
+            
             if(ent.r > 0.85){
                 ent.afterDraw = function (){
                     this.drawEye()
                 }
             }
+            
+            ent.collection = this.ents
+            ent.collection.push(ent)
+            return ent
         }
         
         if(type == 'Land'){
-            ent = new Land()
+            let ent = new Land()
             ent.collection = this.ents
+            ent.collection.push(ent)
+            return ent
         }
         
-        ent.collection.push(ent)
-        return ent
+        return null
+    }
+    
+    addEffect(type = null, pos = null, scale = null){
+        pos = pos ? pos : getRes().div(2)
+        scale = scale ? scale : relvec(10)
+        
+        if(type == null){
+            let eff = new Effect()
+            eff.setPos(pos)
+            eff.setScale(scale)
+            eff.collection = this.effs
+            eff.collection.push(eff)
+            return eff
+        }
+        
+        return null
     }
     
     makeBorders(){

@@ -68,7 +68,9 @@ class Entity{
         this.ctx.fillStyle = this.color ? this.color : 'transparent'
         this.ctx.lineWidth = this.width ? this.width : 0
         this.ctx.strokeStyle = this.ocolor ? this.ocolor : 'transparent'
-        this.ctx.stroke()
+        if(this.width){
+            this.ctx.stroke()
+        }
         this.ctx.fill()
     }
 
