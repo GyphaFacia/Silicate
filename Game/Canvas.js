@@ -71,6 +71,7 @@ function gameLoop(){
 }
 
 function playSound(src, volume = 0.1, pitch = 1, delay = 0){
+    return null
     setTimeout(()=>{
         let sound = document.createElement('audio')
         sound.src = `./src/Sounds/${src}.mp3`
