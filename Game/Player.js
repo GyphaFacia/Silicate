@@ -1,4 +1,3 @@
-ensureGlobe('PLAYERS', [])
 class Player {
     constructor(team = 0){
         this.team = team
@@ -103,9 +102,10 @@ function loadOptions(){
 
 class Ply extends Player{
     first(){
-        this.color = Clr(0)
-        this.eyeclr = Clr(255)
-        this.name = 'Tester'
+        this.color = Clr(...loadOptions().color.$)
+        this.eyeclr = Clr(...loadOptions().eyeclr.$)
+        this.name = loadOptions().plyname
+        this.sides = loadOptions().sides
         
         this.team = arguments[0]
         for(let perk of loadOptions().perks){

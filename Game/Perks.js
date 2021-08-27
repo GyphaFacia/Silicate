@@ -6,7 +6,6 @@
 // 888       88888888 888     888888K  
 // 888       Y8b.     888     888 "88b 
 // 888        "Y8888  888     888  888 
-ensureGlobe('PERKS', [])
 class Perk {
     constructor(lvl = 1){
         PERKS.push(this)
@@ -74,24 +73,24 @@ class Perk {
         console.log('canceled');
     }
     apply(){
-        if(this.ply && this.ply.dead){return null}
+        if(this.ply.dead){return null}
         this.getDeadPlayers()
         
         if(this.active){
             this.active = false
             this.callback()
-            console.log(`applied ${this.constructor.name} at ${CURSOR.str}`);
+            console.log(`applied ${this.constructor.name} at ${cursor().round().str}`);
             
             this.cd = time()
         }
     }
     
     applyAt(pos = getCenter()){
-        let cursorBackup = CURSOR
-        CURSOR = pos
+        let cursorBackup = cursor()
+        window.mousePos = pos
         this.active = true
         this.apply()
-        CURSOR = cursorBackup
+        window.mousePos = cursorBackup
     }
     
     render(){
@@ -161,14 +160,29 @@ class Perk {
     
     draw(){
         this.handleClip()
+        
         if(!this.active){ return null }
+        
+        let n = 3
+        for(let i = 0; i < n; i++){
+            ctx.strokeStyle = '#aaaa'
+            ctx.lineWidth = 3
+            
+            for(let j = 0; j < 2; j++){
+                ctx.beginPath()
+                let ang1 = 2*pi()/n*i + time(2)%(2*pi())*(j ? 1 : -1)
+                let ang2 = ang1 + 2*pi()/n*0.75
+                ctx.arc(...cursor().$, this.rad - (j ? 0 : 10), ang1, ang2)
+                ctx.stroke()
+            }
+        }
     }
     
     // searches
     alliesInRad(){
         let arr = ENTITIES.filter(ent => ent.team == this.team)
         arr = arr.filter(
-            ent => ent.getPos().sub(CURSOR).len < this.rad + ent.getScale().x
+            ent => ent.getPos().sub(cursor()).len < this.rad + ent.getScale().x
         )
         return arr
     }
@@ -176,14 +190,14 @@ class Perk {
     enemiesInRad(){
         let arr = ENTITIES.filter(ent => ent.team != this.team)
         arr = arr.filter(
-            ent => ent.getPos().sub(CURSOR).len < this.rad + ent.getScale().x
+            ent => ent.getPos().sub(cursor()).len < this.rad + ent.getScale().x
         )
         return arr
     }
     
     allInRad(){
         let arr = ENTITIES.filter(
-            ent => ent.getPos().sub(CURSOR).len < this.rad + ent.getScale().x
+            ent => ent.getPos().sub(cursor()).len < this.rad + ent.getScale().x
         )
         return arr
     }
@@ -275,13 +289,8 @@ class SpawnSome extends Perk {
         let n = this.disperce(3, 6)
         let rad = n * 5
         for(let i = 0; i < n; i++){
-            let pos = CURSOR.add(sin(360/n*i)*rad, cos(360/n*i)*rad)
-            if(this.ply){
-                let e = this.ply.spawnSilicate(pos)
-            }
-            else{
-                let e = GAME.addEntity(null, pos)
-            }
+            let pos = cursor().add(sin(360/n*i)*rad, cos(360/n*i)*rad)
+            let e = this.ply.spawnSilicate(pos)
         }
     }
     
@@ -308,7 +317,7 @@ class SpawnSome extends Perk {
 //                 "Y88P"  
 class SpawnBig extends Perk {
     callback(){
-        let e = this.ply.spawnSilicate(CURSOR)
+        let e = this.ply.spawnSilicate(cursor())
         e.setScale(e.getScale().mul(this.disperce(2, 4)))
     }
     
@@ -335,7 +344,7 @@ class SpawnBig extends Perk {
 class Explode extends Perk{
     callback(){
         for(let ent of this.alliesInRad()){
-            ent.setVel(ent.getPos().sub(CURSOR).ort.mul(this.disperce(10, 20)))
+            ent.setVel(ent.getPos().sub(cursor()).ort.mul(this.disperce(10, 20)))
         }
     }
     
@@ -386,7 +395,7 @@ class Grow extends Perk {
 class Joker extends Perk{
     callback(){
         for(let ent of this.enemiesInRad()){
-            let e = this.ply.spawnSilicate(CURSOR)
+            let e = this.ply.spawnSilicate(cursor())
             e.setPos(ent.getPos())
             e.setScale(ent.getScale())
             e.setAng(ent.getAng())
@@ -652,7 +661,7 @@ class Split extends Perk {
 class Swap extends Perk {
     callback(){
         for(let ent of this.alliesInRad()){
-            let v = CURSOR.sub(ent.getPos()).mul(2, 0)
+            let v = cursor().sub(ent.getPos()).mul(2, 0)
             v = ent.getPos().add(v)
             // ent.setPos(v)
             ent.moveTo(v)
