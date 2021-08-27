@@ -182,7 +182,7 @@ function drawPerks(){
 }
 
 function addPerk(perk){
-    if(PERKS.length + 1 > 6){
+    if(PERKS.length + 1 > 9){
         PERKS.shift()
     }
     PERKS.push(perk)

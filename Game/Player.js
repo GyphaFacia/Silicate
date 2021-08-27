@@ -74,6 +74,21 @@ function allPerks(){
     Union`.split('\n')
 }
 
+function botPerks(){
+    return `SpawnSome
+    SpawnBig
+    Explode
+    Grow
+    Joker
+    Jump
+    Kill
+    Levi
+    Randomize
+    Reproduce
+    Split
+    Union`.split('\n')
+}
+
 function perkname2perk(){
     let arr = {
         'SpawnSome': SpawnSome,
@@ -134,12 +149,12 @@ class Bot extends Player{
     first(){
         this.team = arguments[0]
         
-        this.color = Clr(0)
+        this.color = Clr(255)
         this.eyeclr = Clr(255,0,0)
         this.sides = randelt([3, 4, 5, 6, 33])
         
         for(let i = 0; i < 4; i++){
-            let perk = randelt(allPerks())
+            let perk = randelt(botPerks())
             perk = perk.trim()
             console.log(`Bot got ${perk} perk`);
             perk = perkname2perk(perk)
