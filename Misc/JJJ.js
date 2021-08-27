@@ -370,7 +370,29 @@ function ensureGlobe(name, defaultValue){
 }
 
 
+function addElement(name, parent, tag = 'div'){
+	if(typeof(parent) == 'string'){
+		parent = document.querySelector(parent)
+	}
+	
+	let elt = document.createElement(tag)
+	
+	if(name[0]=='.'){
+		elt.classList.add(name.slice(1))
+	}
+	else if(name[0]=='#'){
+		elt.id = name.slice(1)
+	}
+	else{
+		elt.classList.add(name)
+	}
 
+	parent.appendChild(elt)
+	return elt
+}
+Element.prototype.addElement = function(name, tag = 'div'){
+	return addElement(name, this, tag)
+}
 
 
 
