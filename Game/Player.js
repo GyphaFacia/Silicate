@@ -151,16 +151,21 @@ class Bot extends Player{
         
         this.color = Clr(255)
         this.eyeclr = Clr(255,0,0)
-        this.sides = randelt([3, 4, 5, 6, 33])
+        this.sides = randelt([4, 5, 6, 33])
         
-        for(let i = 0; i < 4; i++){
-            let perk = randelt(botPerks())
+        // for(let i = 0; i < 10; i++){
+        //     let perk = randelt(botPerks())
+        //     perk = perk.trim()
+        //     console.log(`Bot got ${perk} perk`);
+        //     perk = perkname2perk(perk)
+        //     this.addPerk(perk)
+        // }
+        'SpawnSome SpawnBig Explode Grow Levi Reproduce Union'.split(' ').forEach((perk, i) => {
             perk = perk.trim()
             console.log(`Bot got ${perk} perk`);
             perk = perkname2perk(perk)
             this.addPerk(perk)
-        }
-        
+        })
         
         this.think()
     }
@@ -182,7 +187,7 @@ class Bot extends Player{
         
         setTimeout(()=>{
             this.think()
-        }, random(1000, 2000))
+        }, random(100, 200))
     }
     
     spawnSilicate(pos = getCenter()){
